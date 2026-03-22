@@ -1,0 +1,1 @@
+Standard text-to-image generation using Z-Image Turbo. This is extremely fast. Selected for general prompt-to-image requests when NO reference image is attached, or when the user wants a fast generation.

@@ -1,0 +1,1 @@
+Fast Z-Image Turbo generation guided by a ControlNet structure. Selected ONLY when the user provides a reference image AND the prompt implies using that image for pose, structure, outline, or edge control (e.g. 'use this pose', 'make a person standing like this', etc.), rather than style or direct pixel editing.
