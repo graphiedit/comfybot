@@ -1,0 +1,13 @@
+{
+  "user_id": "1473543208133857425",
+  "preferred_styles": {
+    "realistic": 4
+  },
+  "preferred_models": {
+    "Juggernaut-XL_v9_RunDiffusion.safetensors": 4
+  },
+  "favorite_prompts": [],
+  "generation_count": 4,
+  "last_used_preset": "",
+  "custom_defaults": {}
+}

@@ -86,7 +86,7 @@ class AIDirectorBot(commands.Bot):
         logger.info(f"  🎨 AI Director Bot is ONLINE")
         logger.info(f"  Bot: {self.user.name}#{self.user.discriminator}")
         logger.info(f"  Guilds: {len(self.guilds)}")
-        logger.info(f"  LLM: {self.config.get('llm', {}).get('provider', 'ollama')}")
+        logger.info(f"  LLM: {self.engine.llm.active_provider_name}")
         logger.info(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         
         # Set rich presence

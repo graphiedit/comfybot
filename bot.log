@@ -1171,3 +1171,1225 @@ aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gatewa
 2026-03-22 13:15:41,560 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 2026-03-22 13:16:05,335 [INFO] ai_director: Received mention chat text: hello
 2026-03-22 13:16:05,866 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 13:23:01,693 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 13:23:01,693 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 13:23:36,011 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 13:23:36,011 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 13:26:57,134 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 13:26:57,134 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 13:26:59,444 [INFO] llm.base: Creating LLM provider: gemini
+2026-03-22 13:27:00,308 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 13:27:00,864 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 13:27:00,864 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 13:27:00,864 [INFO] engine: AI Director Engine stopped
+2026-03-22 13:27:00,865 [ERROR] ai_director: Invalid Discord token! Check your config.yaml
+2026-03-22 13:28:41,636 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 13:28:41,636 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 13:28:42,801 [INFO] llm.base: Creating LLM provider: gemini
+2026-03-22 13:28:43,759 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 13:28:44,835 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 13:28:44,837 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 13:28:44,837 [INFO] engine: Starting AI Director Engine...
+2026-03-22 13:28:44,837 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 13:28:46,909 [WARNING] registry.model_registry: Could not query CheckpointLoaderSimple: Cannot connect to host 127.0.0.1:8188 ssl:default [The remote computer refused the network connection]
+2026-03-22 13:28:48,961 [WARNING] registry.model_registry: Could not query LoraLoader: Cannot connect to host 127.0.0.1:8188 ssl:default [The remote computer refused the network connection]
+2026-03-22 13:28:51,013 [WARNING] registry.model_registry: Could not query ControlNetLoader: Cannot connect to host 127.0.0.1:8188 ssl:default [The remote computer refused the network connection]
+2026-03-22 13:28:53,070 [WARNING] registry.model_registry: Could not query UNETLoader: Cannot connect to host 127.0.0.1:8188 ssl:default [The remote computer refused the network connection]
+2026-03-22 13:28:55,124 [WARNING] registry.model_registry: Could not query DualCLIPLoader: Cannot connect to host 127.0.0.1:8188 ssl:default [The remote computer refused the network connection]
+2026-03-22 13:28:56,146 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 13:28:56,147 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 13:28:56,147 [INFO] engine: AI Director Engine stopped
+2026-03-22 13:29:41,333 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 13:29:41,335 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 13:29:42,470 [INFO] llm.base: Creating LLM provider: gemini
+2026-03-22 13:29:43,351 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 13:29:44,386 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 13:29:44,387 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 13:29:44,388 [INFO] engine: Starting AI Director Engine...
+2026-03-22 13:29:44,388 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 13:29:44,426 [WARNING] registry.model_registry: Could not query CheckpointLoaderSimple: 404, message='Not Found', url='http://192.168.29.23:8188//object_info/CheckpointLoaderSimple'
+2026-03-22 13:29:44,435 [WARNING] registry.model_registry: Could not query LoraLoader: 404, message='Not Found', url='http://192.168.29.23:8188//object_info/LoraLoader'
+2026-03-22 13:29:44,643 [WARNING] registry.model_registry: Could not query ControlNetLoader: 404, message='Not Found', url='http://192.168.29.23:8188//object_info/ControlNetLoader'
+2026-03-22 13:29:44,652 [WARNING] registry.model_registry: Could not query UNETLoader: 404, message='Not Found', url='http://192.168.29.23:8188//object_info/UNETLoader'
+2026-03-22 13:29:44,660 [WARNING] registry.model_registry: Could not query DualCLIPLoader: 404, message='Not Found', url='http://192.168.29.23:8188//object_info/DualCLIPLoader'
+2026-03-22 13:29:44,806 [WARNING] registry.model_registry: Could not query VAELoader: 404, message='Not Found', url='http://192.168.29.23:8188//object_info/VAELoader'
+2026-03-22 13:29:45,031 [WARNING] registry.model_registry: Could not query IPAdapterModelLoader: 404, message='Not Found', url='http://192.168.29.23:8188//object_info/IPAdapterModelLoader'
+2026-03-22 13:29:45,039 [WARNING] registry.model_registry: Could not query CLIPVisionLoader: 404, message='Not Found', url='http://192.168.29.23:8188//object_info/CLIPVisionLoader'
+2026-03-22 13:29:45,040 [INFO] registry.model_registry: Registry loaded: 0 checkpoints, 0 diffusion models, 0 LoRAs, 0 ControlNets, 0 IP-Adapters
+2026-03-22 13:29:45,040 [INFO] core.queue_manager: Queue manager started
+2026-03-22 13:29:45,048 [WARNING] engine: ⚠️ ComfyUI is not reachable — generation will fail until it's started
+2026-03-22 13:29:45,048 [INFO] engine: AI Director Engine ready!
+2026-03-22 13:29:45,548 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 13:29:48,513 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 13:29:48,514 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 13:29:48,514 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 13:29:48,514 [INFO] ai_director:   Guilds: 1
+2026-03-22 13:29:48,514 [INFO] ai_director:   LLM: gemini
+2026-03-22 13:29:48,515 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 13:29:54,624 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 13:29:54,624 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 13:29:54,624 [INFO] engine: AI Director Engine stopped
+2026-03-22 13:30:39,180 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 13:30:39,180 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 13:30:40,306 [INFO] llm.base: Creating LLM provider: gemini
+2026-03-22 13:30:41,096 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 13:30:42,155 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 13:30:42,158 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 13:30:42,158 [INFO] engine: Starting AI Director Engine...
+2026-03-22 13:30:42,159 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 13:30:42,225 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 4 diffusion models, 6 LoRAs, 1 ControlNets, 1 IP-Adapters
+2026-03-22 13:30:42,225 [INFO] registry.model_registry: Diffusion models found: ['flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 13:30:42,225 [INFO] core.queue_manager: Queue manager started
+2026-03-22 13:30:42,233 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 13:30:42,233 [INFO] engine: AI Director Engine ready!
+2026-03-22 13:30:42,736 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 13:30:45,693 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 13:30:45,693 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 13:30:45,694 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 13:30:45,694 [INFO] ai_director:   Guilds: 1
+2026-03-22 13:30:45,694 [INFO] ai_director:   LLM: gemini
+2026-03-22 13:30:45,694 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 13:37:28,810 [INFO] ai_director: Received mention chat text: what can you do?
+2026-03-22 13:37:29,343 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 13:38:16,274 [INFO] ai_director: Received mention chat text: what happen?
+2026-03-22 13:38:16,818 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 13:39:42,844 [INFO] core.queue_manager: Job 3ab9863846f4 queued (position: 1)
+2026-03-22 13:39:42,847 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 13:39:53,098 [INFO] engine: Plan: arch=flux, model=z_image_bf16.safetensors, steps=30, cfg=1.0
+2026-03-22 13:39:53,099 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=stylized 2.5D digital painting in the cinematic concept art style of Arcane
+2026-03-22 13:39:53,099 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 13:39:53,099 [INFO] core.workflow_builder: Workflow built with 11 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'flux_guidance', 'empty_latent', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 13:39:53,159 [ERROR] core.queue_manager: Job 3ab9863846f4 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"clip_loader": {"errors": [{"type": "value_not_in_list", "message": "Value not in list", "details": "clip_name1: 't5xxl_fp8_e4m3fn.safetensors' not in ['mistral_3_small_flux2_bf16.safetensors', 'qwen_2.5_vl_7b_fp8_scaled.safetensors', 'qwen_3_4b.safetensors']", "extra_info": {"input_name": "clip_name1", "input_config": [["mistral_3_small_flux2_bf16.safetensors", "qwen_2.5_vl_7b_fp8_scaled.safetensors", "qwen_3_4b.safetensors"], {}], "received_value": "t5xxl_fp8_e4m3fn.safetensors"}}, {"type": "value_not_in_list", "message": "Value not in list", "details": "clip_name2: 'clip_l.safetensors' not in ['mistral_3_small_flux2_bf16.safetensors', 'qwen_2.5_vl_7b_fp8_scaled.safetensors', 'qwen_3_4b.safetensors']", "extra_info": {"input_name": "clip_name2", "input_config": [["mistral_3_small_flux2_bf16.safetensors", "qwen_2.5_vl_7b_fp8_scaled.safetensors", "qwen_3_4b.safetensors"], {}], "received_value": "clip_l.safetensors"}}], "dependent_outputs": ["save_image"], "class_type": "DualCLIPLoader"}}}
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 377, in _process_job
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 71, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 189, in _run_workflow
+    prompt_id = await self.engine.comfyui.queue_prompt(workflow)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 51, in queue_prompt
+    raise RuntimeError(f"ComfyUI rejected workflow: {error_text}")
+RuntimeError: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"clip_loader": {"errors": [{"type": "value_not_in_list", "message": "Value not in list", "details": "clip_name1: 't5xxl_fp8_e4m3fn.safetensors' not in ['mistral_3_small_flux2_bf16.safetensors', 'qwen_2.5_vl_7b_fp8_scaled.safetensors', 'qwen_3_4b.safetensors']", "extra_info": {"input_name": "clip_name1", "input_config": [["mistral_3_small_flux2_bf16.safetensors", "qwen_2.5_vl_7b_fp8_scaled.safetensors", "qwen_3_4b.safetensors"], {}], "received_value": "t5xxl_fp8_e4m3fn.safetensors"}}, {"type": "value_not_in_list", "message": "Value not in list", "details": "clip_name2: 'clip_l.safetensors' not in ['mistral_3_small_flux2_bf16.safetensors', 'qwen_2.5_vl_7b_fp8_scaled.safetensors', 'qwen_3_4b.safetensors']", "extra_info": {"input_name": "clip_name2", "input_config": [["mistral_3_small_flux2_bf16.safetensors", "qwen_2.5_vl_7b_fp8_scaled.safetensors", "qwen_3_4b.safetensors"], {}], "received_value": "clip_l.safetensors"}}], "dependent_outputs": ["save_image"], "class_type": "DualCLIPLoader"}}}
+2026-03-22 13:45:01,806 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 13:45:01,806 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 13:45:01,806 [INFO] engine: AI Director Engine stopped
+2026-03-22 14:53:36,444 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 14:53:36,444 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 14:53:37,568 [INFO] llm.base: Creating LLM provider: gemini
+2026-03-22 14:53:38,190 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 14:53:39,332 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 14:53:39,334 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 14:53:39,334 [INFO] engine: Starting AI Director Engine...
+2026-03-22 14:53:39,334 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 14:53:39,497 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 6 LoRAs, 1 ControlNets, 1 IP-Adapters
+2026-03-22 14:53:39,497 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 14:53:39,498 [INFO] core.queue_manager: Queue manager started
+2026-03-22 14:53:39,516 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 14:53:39,516 [INFO] engine: AI Director Engine ready!
+2026-03-22 14:53:40,095 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 14:53:42,989 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 14:53:42,989 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 14:53:42,989 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 14:53:42,989 [INFO] ai_director:   Guilds: 1
+2026-03-22 14:53:42,990 [INFO] ai_director:   LLM: gemini
+2026-03-22 14:53:42,990 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 14:54:21,019 [INFO] core.queue_manager: Job 4306d3068ecf queued (position: 1)
+2026-03-22 14:54:21,030 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 14:54:32,813 [INFO] engine: Plan: arch=flux, model=z_image_bf16.safetensors, steps=30, cfg=1.0
+2026-03-22 14:54:32,813 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=artistic
+2026-03-22 14:54:32,813 [INFO] core.workflow_builder: Added 2 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors', 'indian_miniature_manuscript.safetensors']
+2026-03-22 14:54:32,814 [INFO] core.workflow_builder: Workflow built with 12 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image', 'lora_0', 'lora_1']
+2026-03-22 14:54:32,842 [INFO] core.comfyui_client: Workflow queued: 92442639-896c-4046-a8e9-96d8c0e8f892
+2026-03-22 14:54:44,067 [ERROR] core.queue_manager: Job 4306d3068ecf failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 377, in _process_job
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 71, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 190, in _run_workflow
+    output_data = await self.engine.comfyui.wait_for_result(prompt_id)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 113, in wait_for_result
+    raise RuntimeError(
+RuntimeError: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 14:59:57,520 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 14:59:57,520 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 14:59:57,520 [INFO] engine: AI Director Engine stopped
+2026-03-22 14:59:59,375 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 14:59:59,376 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 15:00:00,258 [INFO] llm.base: Creating LLM provider: gemini
+2026-03-22 15:00:00,895 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 15:00:01,843 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 15:00:01,845 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 15:00:01,845 [INFO] engine: Starting AI Director Engine...
+2026-03-22 15:00:01,845 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 15:00:01,920 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 6 LoRAs, 1 ControlNets, 1 IP-Adapters
+2026-03-22 15:00:01,921 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 15:00:01,922 [INFO] core.queue_manager: Queue manager started
+2026-03-22 15:00:01,932 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 15:00:01,934 [INFO] engine: AI Director Engine ready!
+2026-03-22 15:00:02,525 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 15:00:05,452 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 15:00:05,452 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 15:00:05,452 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 15:00:05,452 [INFO] ai_director:   Guilds: 1
+2026-03-22 15:00:05,453 [INFO] ai_director:   LLM: gemini
+2026-03-22 15:00:05,453 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 15:28:41,356 [INFO] core.queue_manager: Job 06b2e3cf4667 queued (position: 1)
+2026-03-22 15:28:41,358 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 15:28:52,144 [INFO] engine: Plan: arch=sdxl, model=DreamShaperXL_Lightning.safetensors, steps=30, cfg=7.0
+2026-03-22 15:28:52,144 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=artistic
+2026-03-22 15:28:52,144 [INFO] core.workflow_builder: Workflow built with 7 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 15:28:52,156 [INFO] core.comfyui_client: Workflow queued: 608cc30b-183a-4f71-8a31-f31a2ee7fac3
+2026-03-22 15:29:23,192 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files "HTTP/1.1 200 OK"
+2026-03-22 15:29:26,769 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files?upload_id=AGQBYWyU7CZW8lpTrFSS_Gv7lHaI3Gz0X-ewRyHN_kdHgVzNAzYcPlVDo8J1jetXp4flqc2YVq3AEfbuXfTQhX271NpvSLQsPtnVFDnVPJp8lw&upload_protocol=resumable "HTTP/1.1 200 OK"
+2026-03-22 15:29:26,772 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 15:29:32,206 [INFO] core.pipeline: Quality Score: 8.5 (Faces: 9.0, Artifacts: 0.0)
+2026-03-22 15:29:32,206 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 15:29:32,208 [INFO] core.queue_manager: Job 06b2e3cf4667 completed in 50.9s
+2026-03-22 15:30:30,554 [INFO] core.queue_manager: Job 19aef935b571 queued (position: 1)
+2026-03-22 15:30:30,555 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 15:30:42,610 [WARNING] engine: AI chose unavailable checkpoint: z_image_turbo_bf16, using default
+2026-03-22 15:30:42,611 [INFO] engine: Plan: arch=sdxl, model=DreamShaperXL_Lightning.safetensors, steps=30, cfg=7.0
+2026-03-22 15:30:42,611 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=artistic
+2026-03-22 15:30:42,611 [INFO] core.workflow_builder: Workflow built with 7 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 15:30:42,622 [INFO] core.comfyui_client: Workflow queued: f7c8e05c-9d3e-4111-9774-17e3b2df7bf1
+2026-03-22 15:30:53,345 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files "HTTP/1.1 200 OK"
+2026-03-22 15:30:56,863 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files?upload_id=AMNfjG1GYSqaM4c2aCFcddjTY51ECwBImgFPsPq8x8MA9izgRk5F_RSNauqN5dmtatRItlwsxKH_CvF7ZSbRWPzNCMSVgZzQvguGU2-golo4apY&upload_protocol=resumable "HTTP/1.1 200 OK"
+2026-03-22 15:30:56,866 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 15:31:03,796 [INFO] core.pipeline: Quality Score: 8.5 (Faces: 9.0, Artifacts: 1.0)
+2026-03-22 15:31:03,796 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 15:31:03,798 [INFO] core.queue_manager: Job 19aef935b571 completed in 33.2s
+2026-03-22 15:32:02,930 [INFO] ai_director: Received mention chat text: write a prompt lineless model digital semirealistic illustration artwork of a person standing straight
+2026-03-22 15:32:03,458 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 15:36:25,465 [INFO] core.queue_manager: Job 2fb75e9d50a6 queued (position: 1)
+2026-03-22 15:36:25,466 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 15:36:36,385 [WARNING] engine: AI chose unavailable checkpoint: z_image_turbo_bf16, using default
+2026-03-22 15:36:36,385 [INFO] engine: Plan: arch=sdxl, model=DreamShaperXL_Lightning.safetensors, steps=30, cfg=7.0
+2026-03-22 15:36:36,386 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=artistic
+2026-03-22 15:36:36,386 [INFO] core.workflow_builder: Workflow built with 7 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 15:36:36,396 [INFO] core.comfyui_client: Workflow queued: 3571b223-4f57-4c07-acb2-d44c7354ac72
+2026-03-22 15:36:46,767 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files "HTTP/1.1 200 OK"
+2026-03-22 15:36:50,548 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files?upload_id=AMNfjG1FhU02W1JGizCNglGsyVEV2xL2ufkks6_gSZnnx5xvDJnWw-HZi3kW0-HfqXkYNhrb8FddTwmvy1HaMSWj5o56E2p-gmne6MSc7yvbKQ&upload_protocol=resumable "HTTP/1.1 200 OK"
+2026-03-22 15:36:50,549 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 15:36:56,136 [INFO] core.pipeline: Quality Score: 8.5 (Faces: 9.0, Artifacts: 1.0)
+2026-03-22 15:36:56,138 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 15:36:56,138 [INFO] core.queue_manager: Job 2fb75e9d50a6 completed in 30.7s
+2026-03-22 15:40:54,158 [INFO] core.queue_manager: Job a7b3d3eb2685 queued (position: 1)
+2026-03-22 15:40:54,160 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 15:41:06,874 [INFO] engine: Plan: arch=flux, model=z_image_bf16.safetensors, steps=30, cfg=1.0
+2026-03-22 15:41:06,874 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=artistic
+2026-03-22 15:41:06,874 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 15:41:06,874 [INFO] core.workflow_builder: Workflow built with 11 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 15:41:06,886 [INFO] core.comfyui_client: Workflow queued: 49450aed-9c2a-4f3b-bbae-f3fc6bece1d2
+2026-03-22 15:41:12,603 [ERROR] core.queue_manager: Job a7b3d3eb2685 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 377, in _process_job
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 71, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 190, in _run_workflow
+    output_data = await self.engine.comfyui.wait_for_result(prompt_id)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 113, in wait_for_result
+    raise RuntimeError(
+RuntimeError: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 15:43:33,783 [INFO] core.queue_manager: Job 1eb4fecddb28 queued (position: 1)
+2026-03-22 15:43:33,785 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 15:43:46,171 [WARNING] engine: AI chose unavailable checkpoint: z_image_bf16, using default
+2026-03-22 15:43:46,171 [INFO] engine: Plan: arch=sdxl, model=DreamShaperXL_Lightning.safetensors, steps=30, cfg=7.0
+2026-03-22 15:43:46,172 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=lineless model digital semirealistic illustration artwork
+2026-03-22 15:43:46,172 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 15:43:46,173 [INFO] core.workflow_builder: Workflow built with 8 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 15:43:46,183 [INFO] core.comfyui_client: Workflow queued: dbae9743-d81e-4ed1-9be7-e079bc55981e
+2026-03-22 15:44:03,658 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files "HTTP/1.1 200 OK"
+2026-03-22 15:44:07,481 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files?upload_id=AGQBYWzzaW2LzpKR3jwnezORSaB1v7iE5_yMP65LgNHVc4tFkdkf84Bpwdrmg8UIdmC8mgtDI7AUvrAAdtc-m-LF6nSZUAqtIqHvsiZJ2S9kyQ&upload_protocol=resumable "HTTP/1.1 200 OK"
+2026-03-22 15:44:07,483 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 15:44:13,797 [INFO] core.pipeline: Quality Score: 8.5 (Faces: 9.0, Artifacts: 2.0)
+2026-03-22 15:44:13,798 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 15:44:13,800 [INFO] core.queue_manager: Job 1eb4fecddb28 completed in 40.0s
+2026-03-22 16:27:02,701 [INFO] core.queue_manager: Job 8b0e709ea0f0 queued (position: 1)
+2026-03-22 16:27:02,702 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 16:30:08,566 [INFO] core.queue_manager: Job b2ab31e80696 queued (position: 1)
+2026-03-22 16:30:44,242 [WARNING] llm.gemini_provider: Failed to parse LLM JSON output: {
+    "action": "generate",
+    "style_category": "realistic",
+    "checkpoint": "Juggernaut-XL_v9_RunDiffusion.safetensors",
+    "model_arch": "sdxl",
+    "loras": [],
+    "use_controlnet": false,
+  
+2026-03-22 16:30:44,243 [WARNING] llm.gemini_provider: Intent analysis returned no valid JSON, using defaults
+2026-03-22 16:30:44,244 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 16:30:48,141 [INFO] engine: Plan: arch=sdxl, model=Juggernaut-XL_v9_RunDiffusion.safetensors, steps=30, cfg=7.0
+2026-03-22 16:30:48,141 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=realistic
+2026-03-22 16:30:48,141 [INFO] core.workflow_builder: Workflow built with 7 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 16:30:48,152 [INFO] core.comfyui_client: Workflow queued: 7f294985-fdd4-429f-9744-ab2715154600
+2026-03-22 16:31:12,520 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files "HTTP/1.1 200 OK"
+2026-03-22 16:31:16,142 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files?upload_id=AGQBYWyOY1ckFsPwg_0BW24TwrSWbKLBeLF0uWW2P3UNz-tTaDy1cymrRn2fz4msgmUJeFOmR-3XxGTGxZR20larhNzy3QIajbRTld6aRM0I9p8&upload_protocol=resumable "HTTP/1.1 200 OK"
+2026-03-22 16:31:16,143 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 16:31:22,188 [INFO] core.pipeline: Quality Score: 8.5 (Faces: 9.0, Artifacts: 1.0)
+2026-03-22 16:31:22,189 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 16:31:22,191 [INFO] core.queue_manager: Job 8b0e709ea0f0 completed in 259.5s
+2026-03-22 16:31:25,051 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 16:31:30,465 [INFO] engine: Plan: arch=sdxl, model=Juggernaut-XL_v9_RunDiffusion.safetensors, steps=30, cfg=7.0
+2026-03-22 16:31:30,465 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=realistic
+2026-03-22 16:31:30,465 [INFO] core.workflow_builder: Workflow built with 7 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 16:31:31,008 [INFO] core.comfyui_client: Workflow queued: e17ba5b4-4346-4361-b2ed-b00c7b1c722b
+2026-03-22 16:31:41,345 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files "HTTP/1.1 200 OK"
+2026-03-22 16:31:45,031 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files?upload_id=AMNfjG2__e7RwWEEazvAjduSKU3PZ_7KhEr77qLdFn1OzufU9xI4BtFkU5vD8WVUkSeW5N2nT0OpU71WVVHcdAfmgjlMsi3u6H_NUImgYwFf7A&upload_protocol=resumable "HTTP/1.1 200 OK"
+2026-03-22 16:31:45,032 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 16:31:53,314 [INFO] core.pipeline: Quality Score: 8.5 (Faces: 9.5, Artifacts: 1.0)
+2026-03-22 16:31:53,314 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 16:31:53,316 [INFO] core.queue_manager: Job b2ab31e80696 completed in 28.3s
+2026-03-22 16:32:02,647 [INFO] core.queue_manager: Job f81148537906 queued (position: 1)
+2026-03-22 16:32:02,647 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 16:32:09,285 [INFO] engine: Plan: arch=sdxl, model=Juggernaut-XL_v9_RunDiffusion.safetensors, steps=30, cfg=7.0
+2026-03-22 16:32:09,285 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=realistic
+2026-03-22 16:32:09,285 [INFO] core.workflow_builder: Workflow built with 7 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 16:32:09,296 [INFO] core.comfyui_client: Workflow queued: 3270fa39-c499-4bb1-b9f8-5f89283ab88b
+2026-03-22 16:32:20,397 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files "HTTP/1.1 200 OK"
+2026-03-22 16:32:24,009 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files?upload_id=AGQBYWw9ZPkYYMQZXHUOdtRJLivBMZpY7FLHXSUdGMjBMYHjYECiK0-OvCX8EThOJyZRDwRRNhIPnck6RxwAidVzEmpczN5l1DU47C7-WaPMdQ&upload_protocol=resumable "HTTP/1.1 200 OK"
+2026-03-22 16:32:24,010 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 16:32:24,483 [ERROR] core.quality_analyzer: Gemini Quality Analysis failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 32.642333522s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '32s'}]}}
+2026-03-22 16:32:24,485 [ERROR] core.quality_analyzer: Quality analysis failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 32.642333522s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '32s'}]}}
+2026-03-22 16:32:24,485 [INFO] core.pipeline: Quality Score: 10.0 (Faces: 8.0, Artifacts: 2.0)
+2026-03-22 16:32:24,486 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 16:32:24,487 [INFO] core.queue_manager: Job f81148537906 completed in 21.8s
+2026-03-22 16:33:07,335 [INFO] core.queue_manager: Job ca463773c8ea queued (position: 1)
+2026-03-22 16:33:07,336 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 16:33:08,375 [ERROR] llm.gemini_provider: Gemini intent analysis failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 48.717690016s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '48s'}]}}
+2026-03-22 16:33:08,375 [WARNING] llm.gemini_provider: Intent analysis returned no valid JSON, using defaults
+2026-03-22 16:33:08,376 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 16:33:08,820 [WARNING] llm.gemini_provider: Prompt enhancement failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 48.278220001s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '48s'}]}}
+2026-03-22 16:33:08,821 [INFO] engine: Plan: arch=sdxl, model=Juggernaut-XL_v9_RunDiffusion.safetensors, steps=30, cfg=7.0
+2026-03-22 16:33:08,821 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=realistic
+2026-03-22 16:33:08,823 [INFO] core.workflow_builder: Workflow built with 7 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 16:33:08,831 [INFO] core.comfyui_client: Workflow queued: a6d667e8-5f66-4ff6-b9bc-b70c8ccda6c2
+2026-03-22 16:33:19,425 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files "HTTP/1.1 200 OK"
+2026-03-22 16:33:23,381 [INFO] httpx: HTTP Request: POST https://generativelanguage.googleapis.com/upload/v1beta/files?upload_id=AGQBYWwN9GkJx8-u-_gGX5vEG5xOxY2Qf92qYAxI6NO56JK0sP3x7ghlzRB9Nsh3hFAb2NIWjW4i5m5m49RhyL5Oh61XVYrknJ1XSrMyPk8oKq0&upload_protocol=resumable "HTTP/1.1 200 OK"
+2026-03-22 16:33:23,382 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 16:33:23,830 [ERROR] core.quality_analyzer: Gemini Quality Analysis failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 33.266842281s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '33s'}]}}
+2026-03-22 16:33:23,830 [ERROR] core.quality_analyzer: Quality analysis failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 33.266842281s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '33s'}]}}
+2026-03-22 16:33:23,832 [INFO] core.pipeline: Quality Score: 10.0 (Faces: 8.0, Artifacts: 2.0)
+2026-03-22 16:33:23,832 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 16:33:23,833 [INFO] core.queue_manager: Job ca463773c8ea completed in 16.5s
+2026-03-22 17:19:57,622 [INFO] core.queue_manager: Job 28f78afc5df8 queued (position: 1)
+2026-03-22 17:19:57,624 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:19:58,679 [ERROR] llm.gemini_provider: Gemini intent analysis failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 58.352559212s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '58s'}]}}
+2026-03-22 17:19:58,680 [WARNING] llm.gemini_provider: Intent analysis returned no valid JSON, using defaults
+2026-03-22 17:19:58,681 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:19:59,260 [WARNING] llm.gemini_provider: Prompt enhancement failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 57.846862141s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '57s'}]}}
+2026-03-22 17:19:59,261 [INFO] engine: Plan: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=1.0
+2026-03-22 17:19:59,261 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:19:59,261 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:19:59,350 [INFO] core.comfyui_client: Workflow queued: ba61aa01-380f-4148-b3ec-a274939e2524
+2026-03-22 17:20:05,760 [ERROR] core.queue_manager: Job 28f78afc5df8 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 377, in _process_job
+    plan.checkpoint = self.registry.get_best_checkpoint(plan.style_category) or self.config.get("defaults", {}).get("ckpt", "Juggernaut-XL_v9_RunDiffusion.safetensors")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 71, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 190, in _run_workflow
+    output_data = await self.engine.comfyui.wait_for_result(prompt_id)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 113, in wait_for_result
+    raise RuntimeError(
+RuntimeError: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:23:32,153 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 17:23:32,154 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 17:23:32,154 [INFO] engine: AI Director Engine stopped
+2026-03-22 17:25:57,039 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 17:25:57,040 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 17:25:57,046 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 17:25:58,236 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 17:25:58,241 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 17:25:58,247 [INFO] engine: Starting AI Director Engine...
+2026-03-22 17:26:01,407 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 17:26:02,719 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 17:26:02,719 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 17:26:02,720 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 17:26:02,721 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 17:26:02,721 [INFO] engine: LLM providers ready: gemini
+2026-03-22 17:26:02,721 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 17:26:02,883 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 17:26:02,883 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 17:26:02,884 [INFO] core.queue_manager: Queue manager started
+2026-03-22 17:26:02,902 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 17:26:02,902 [INFO] engine: AI Director Engine ready!
+2026-03-22 17:26:03,629 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 17:26:06,637 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:26:06,637 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 17:26:06,639 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 17:26:06,639 [INFO] ai_director:   Guilds: 1
+2026-03-22 17:26:06,639 [INFO] ai_director:   LLM: ollama
+2026-03-22 17:26:06,639 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:26:25,795 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 17:26:25,795 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 17:26:25,796 [INFO] engine: AI Director Engine stopped
+2026-03-22 17:27:11,945 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 17:27:11,946 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 17:27:11,950 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 17:27:12,890 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 17:27:12,924 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 17:27:12,924 [INFO] engine: Starting AI Director Engine...
+2026-03-22 17:27:14,492 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 17:27:15,685 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 17:27:15,685 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 17:27:15,686 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 17:27:15,686 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 17:27:15,687 [INFO] engine: LLM providers ready: gemini
+2026-03-22 17:27:15,687 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 17:27:15,756 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 17:27:15,757 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 17:27:15,757 [INFO] core.queue_manager: Queue manager started
+2026-03-22 17:27:15,782 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 17:27:15,783 [INFO] engine: AI Director Engine ready!
+2026-03-22 17:27:16,302 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 17:27:19,295 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:27:19,295 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 17:27:19,296 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 17:27:19,296 [INFO] ai_director:   Guilds: 1
+2026-03-22 17:27:19,296 [INFO] ai_director:   LLM: ollama
+2026-03-22 17:27:19,296 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:27:59,502 [INFO] core.queue_manager: Job c6a2aad29e74 queued (position: 1)
+2026-03-22 17:27:59,511 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:28:00,438 [ERROR] llm.gemini_provider: Gemini intent analysis failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 56.797934753s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '56s'}]}}
+2026-03-22 17:28:00,438 [WARNING] llm.gemini_provider: Intent analysis returned no valid JSON, using defaults
+2026-03-22 17:28:00,438 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:28:00,830 [WARNING] llm.gemini_provider: Prompt enhancement failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 56.177107902s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '56s'}]}}
+2026-03-22 17:28:00,830 [INFO] engine: Plan: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=1.0
+2026-03-22 17:28:00,831 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:28:00,831 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:28:00,853 [INFO] core.comfyui_client: Workflow queued: 9538d3df-4915-474b-af7b-e3778215da18
+2026-03-22 17:28:01,169 [WARNING] engine: Generation attempt 1 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:28:01,171 [INFO] engine: 🔧 Auto-recovery: Model failed to load (meta tensor error). Retrying with fp16 weight dtype.
+2026-03-22 17:28:01,664 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:28:01,664 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:28:01,677 [WARNING] engine: Generation attempt 2 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"erro
+2026-03-22 17:28:01,677 [INFO] engine: 🔧 Auto-recovery: Invalid weight_dtype: 'fp16'. Auto-switching to 'default'.
+2026-03-22 17:28:01,677 [INFO] core.error_recovery: Recovery: replaced weight_dtype 'fp16' → 'default'
+2026-03-22 17:28:02,093 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:28:02,093 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:28:02,680 [WARNING] engine: Generation attempt 3 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"erro
+2026-03-22 17:28:02,680 [INFO] engine: 🔧 Auto-recovery: Invalid weight_dtype: 'fp16'. Auto-switching to 'default'.
+2026-03-22 17:28:02,682 [INFO] core.error_recovery: Recovery: replaced weight_dtype 'fp16' → 'default'
+2026-03-22 17:28:03,275 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:28:03,276 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:28:03,287 [WARNING] engine: Generation attempt 4 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"erro
+2026-03-22 17:28:03,287 [ERROR] core.queue_manager: Job c6a2aad29e74 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"errors": [{"type": "value_not_in_list", "message": "Value not in list", "details": "weight_dtype: 'fp16' not in ['default', 'fp8_e4m3fn', 'fp8_e4m3fn_fast', 'fp8_e5m2']", "extra_info": {"input_name": "weight_dtype", "input_config": [["default", "fp8_e4m3fn", "fp8_e4m3fn_fast", "fp8_e5m2"], {"advanced": true}], "received_value": "fp16"}}], "dependent_outputs": ["save_image"], "class_type": "UNETLoader"}}}
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 420, in _process_job
+    result_images = await self._execute_with_recovery(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 453, in _execute_with_recovery
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 71, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 189, in _run_workflow
+    prompt_id = await self.engine.comfyui.queue_prompt(workflow)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 51, in queue_prompt
+    raise RuntimeError(f"ComfyUI rejected workflow: {error_text}")
+RuntimeError: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"errors": [{"type": "value_not_in_list", "message": "Value not in list", "details": "weight_dtype: 'fp16' not in ['default', 'fp8_e4m3fn', 'fp8_e4m3fn_fast', 'fp8_e5m2']", "extra_info": {"input_name": "weight_dtype", "input_config": [["default", "fp8_e4m3fn", "fp8_e4m3fn_fast", "fp8_e5m2"], {"advanced": true}], "received_value": "fp16"}}], "dependent_outputs": ["save_image"], "class_type": "UNETLoader"}}}
+2026-03-22 17:28:39,553 [INFO] core.queue_manager: Job 5efe9bebb7a3 queued (position: 1)
+2026-03-22 17:28:39,553 [INFO] engine: Cache hit for prompt: lord  ram
+2026-03-22 17:28:39,554 [INFO] engine: Plan: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=1.0
+2026-03-22 17:28:39,554 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:28:39,555 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:28:39,568 [INFO] core.comfyui_client: Workflow queued: 98e2ce57-3ebc-48d6-8664-89d10c2d167c
+2026-03-22 17:28:39,963 [WARNING] engine: Generation attempt 1 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:28:39,963 [INFO] engine: 🔧 Auto-recovery: Model failed to load (meta tensor error). Retrying with fp16 weight dtype.
+2026-03-22 17:28:40,444 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:28:40,445 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:28:40,459 [WARNING] engine: Generation attempt 2 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"erro
+2026-03-22 17:28:40,460 [INFO] engine: 🔧 Auto-recovery: Invalid weight_dtype: 'fp16'. Auto-switching to 'default'.
+2026-03-22 17:28:40,460 [INFO] core.error_recovery: Recovery: replaced weight_dtype 'fp16' → 'default'
+2026-03-22 17:28:40,881 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:28:40,881 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:28:40,895 [WARNING] engine: Generation attempt 3 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"erro
+2026-03-22 17:28:40,897 [INFO] engine: 🔧 Auto-recovery: Invalid weight_dtype: 'fp16'. Auto-switching to 'default'.
+2026-03-22 17:28:40,897 [INFO] core.error_recovery: Recovery: replaced weight_dtype 'fp16' → 'default'
+2026-03-22 17:28:41,396 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:28:41,396 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:28:41,409 [WARNING] engine: Generation attempt 4 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"erro
+2026-03-22 17:28:41,409 [ERROR] core.queue_manager: Job 5efe9bebb7a3 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"errors": [{"type": "value_not_in_list", "message": "Value not in list", "details": "weight_dtype: 'fp16' not in ['default', 'fp8_e4m3fn', 'fp8_e4m3fn_fast', 'fp8_e5m2']", "extra_info": {"input_name": "weight_dtype", "input_config": [["default", "fp8_e4m3fn", "fp8_e4m3fn_fast", "fp8_e5m2"], {"advanced": true}], "received_value": "fp16"}}], "dependent_outputs": ["save_image"], "class_type": "UNETLoader"}}}
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 420, in _process_job
+    result_images = await self._execute_with_recovery(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 453, in _execute_with_recovery
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 71, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 189, in _run_workflow
+    prompt_id = await self.engine.comfyui.queue_prompt(workflow)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 51, in queue_prompt
+    raise RuntimeError(f"ComfyUI rejected workflow: {error_text}")
+RuntimeError: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"errors": [{"type": "value_not_in_list", "message": "Value not in list", "details": "weight_dtype: 'fp16' not in ['default', 'fp8_e4m3fn', 'fp8_e4m3fn_fast', 'fp8_e5m2']", "extra_info": {"input_name": "weight_dtype", "input_config": [["default", "fp8_e4m3fn", "fp8_e4m3fn_fast", "fp8_e5m2"], {"advanced": true}], "received_value": "fp16"}}], "dependent_outputs": ["save_image"], "class_type": "UNETLoader"}}}
+2026-03-22 17:29:04,201 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 17:29:04,201 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 17:29:04,201 [INFO] engine: AI Director Engine stopped
+2026-03-22 17:29:06,518 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 17:29:06,519 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 17:29:06,523 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 17:29:07,712 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 17:29:07,713 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 17:29:07,714 [INFO] engine: Starting AI Director Engine...
+2026-03-22 17:29:09,350 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 17:29:10,548 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 17:29:10,549 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 17:29:10,549 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 17:29:10,549 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 17:29:10,550 [INFO] engine: LLM providers ready: gemini
+2026-03-22 17:29:10,550 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 17:29:10,644 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 17:29:10,644 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 17:29:10,644 [INFO] core.queue_manager: Queue manager started
+2026-03-22 17:29:10,694 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 17:29:10,694 [INFO] engine: AI Director Engine ready!
+2026-03-22 17:29:11,139 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 17:29:14,430 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:29:14,431 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 17:29:14,431 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 17:29:14,431 [INFO] ai_director:   Guilds: 1
+2026-03-22 17:29:14,431 [INFO] ai_director:   LLM: gemini
+2026-03-22 17:29:14,431 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:29:32,159 [INFO] core.queue_manager: Job 137ad08b2455 queued (position: 1)
+2026-03-22 17:29:32,160 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:29:33,171 [ERROR] llm.gemini_provider: Gemini intent analysis failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 23.810777794s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '23s'}]}}
+2026-03-22 17:29:33,172 [WARNING] llm.gemini_provider: Intent analysis returned no valid JSON, using defaults
+2026-03-22 17:29:33,172 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:29:33,545 [WARNING] llm.gemini_provider: Prompt enhancement failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 23.44149541s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '23s'}]}}
+2026-03-22 17:29:33,545 [INFO] engine: Plan: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=1.0
+2026-03-22 17:29:33,546 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:29:33,546 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:29:33,557 [INFO] core.comfyui_client: Workflow queued: ff02ffc2-f2ed-4a58-8487-3afde84b603b
+2026-03-22 17:29:33,932 [WARNING] engine: Generation attempt 1 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:29:33,933 [INFO] engine: 🔧 Auto-recovery: Model failed to load (meta tensor error). Retrying with fp16 weight dtype.
+2026-03-22 17:29:34,534 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:29:34,534 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:29:34,549 [WARNING] engine: Generation attempt 2 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"erro
+2026-03-22 17:29:34,550 [INFO] engine: 🔧 Auto-recovery: Invalid weight_dtype: 'fp16'. Auto-switching to 'default'.
+2026-03-22 17:29:34,550 [INFO] core.error_recovery: Recovery: replaced weight_dtype 'fp16' → 'default'
+2026-03-22 17:29:35,066 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:29:35,067 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:29:35,081 [WARNING] engine: Generation attempt 3 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"erro
+2026-03-22 17:29:35,082 [INFO] engine: 🔧 Auto-recovery: Invalid weight_dtype: 'fp16'. Auto-switching to 'default'.
+2026-03-22 17:29:35,082 [INFO] core.error_recovery: Recovery: replaced weight_dtype 'fp16' → 'default'
+2026-03-22 17:29:35,571 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:29:35,571 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:29:35,583 [WARNING] engine: Generation attempt 4 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"erro
+2026-03-22 17:29:35,584 [ERROR] core.queue_manager: Job 137ad08b2455 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"errors": [{"type": "value_not_in_list", "message": "Value not in list", "details": "weight_dtype: 'fp16' not in ['default', 'fp8_e4m3fn', 'fp8_e4m3fn_fast', 'fp8_e5m2']", "extra_info": {"input_name": "weight_dtype", "input_config": [["default", "fp8_e4m3fn", "fp8_e4m3fn_fast", "fp8_e5m2"], {"advanced": true}], "received_value": "fp16"}}], "dependent_outputs": ["save_image"], "class_type": "UNETLoader"}}}
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 420, in _process_job
+    result_images = await self._execute_with_recovery(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 453, in _execute_with_recovery
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 71, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 189, in _run_workflow
+    prompt_id = await self.engine.comfyui.queue_prompt(workflow)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 51, in queue_prompt
+    raise RuntimeError(f"ComfyUI rejected workflow: {error_text}")
+RuntimeError: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"errors": [{"type": "value_not_in_list", "message": "Value not in list", "details": "weight_dtype: 'fp16' not in ['default', 'fp8_e4m3fn', 'fp8_e4m3fn_fast', 'fp8_e5m2']", "extra_info": {"input_name": "weight_dtype", "input_config": [["default", "fp8_e4m3fn", "fp8_e4m3fn_fast", "fp8_e5m2"], {"advanced": true}], "received_value": "fp16"}}], "dependent_outputs": ["save_image"], "class_type": "UNETLoader"}}}
+2026-03-22 17:33:39,552 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 17:33:39,553 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 17:33:39,553 [INFO] engine: AI Director Engine stopped
+2026-03-22 17:33:42,463 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 17:33:42,464 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 17:33:42,472 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 17:33:43,565 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 17:33:43,566 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 17:33:43,567 [INFO] engine: Starting AI Director Engine...
+2026-03-22 17:33:45,146 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 17:33:46,492 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 17:33:46,492 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 17:33:46,492 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 17:33:46,494 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 17:33:46,494 [INFO] engine: LLM providers ready: gemini
+2026-03-22 17:33:46,494 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 17:33:46,607 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 17:33:46,607 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 17:33:46,608 [INFO] core.queue_manager: Queue manager started
+2026-03-22 17:33:46,617 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 17:33:46,617 [INFO] engine: AI Director Engine ready!
+2026-03-22 17:33:47,138 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 17:33:50,092 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:33:50,092 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 17:33:50,093 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 17:33:50,093 [INFO] ai_director:   Guilds: 1
+2026-03-22 17:33:50,093 [INFO] ai_director:   LLM: gemini
+2026-03-22 17:33:50,093 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:34:22,387 [INFO] core.queue_manager: Job 720c6c9eb34d queued (position: 1)
+2026-03-22 17:34:22,388 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:34:23,393 [ERROR] llm.gemini_provider: Gemini intent analysis failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 33.595857898s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '33s'}]}}
+2026-03-22 17:34:23,393 [WARNING] llm.gemini_provider: Intent analysis returned no valid JSON, using defaults
+2026-03-22 17:34:23,394 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:34:23,841 [WARNING] llm.gemini_provider: Prompt enhancement failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 33.21137769s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '33s'}]}}
+2026-03-22 17:34:23,841 [INFO] engine: Plan: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=1.0
+2026-03-22 17:34:23,842 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:34:23,842 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:34:23,852 [INFO] core.comfyui_client: Workflow queued: fd3f635e-9564-4cb3-b409-3fb99141dd1a
+2026-03-22 17:34:24,229 [WARNING] engine: Generation attempt 1 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:34:24,229 [INFO] engine: 🔧 Auto-recovery: Model failed to load (meta tensor error). Retrying with fp16 weight dtype.
+2026-03-22 17:34:24,809 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:34:24,809 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:34:24,823 [WARNING] engine: Generation attempt 2 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"unet_loader": {"erro
+2026-03-22 17:34:24,823 [INFO] engine: 🔧 Auto-recovery: Invalid weight_dtype: 'fp16'. Auto-switching to 'default'.
+2026-03-22 17:34:24,824 [INFO] core.error_recovery: Recovery: updated plan.weight_dtype → 'default'
+2026-03-22 17:34:24,824 [INFO] core.error_recovery: Recovery: replaced weight_dtype 'fp16' → 'default'
+2026-03-22 17:34:25,316 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:34:25,316 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:34:25,329 [INFO] core.comfyui_client: Workflow queued: 22214f7e-a713-4570-807f-4a5b2b146b94
+2026-03-22 17:34:25,370 [WARNING] engine: Generation attempt 3 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:34:25,371 [INFO] engine: 🔧 Auto-recovery: Persistent model loading failure. Falling back to SDXL.
+2026-03-22 17:34:25,371 [INFO] core.error_recovery: Recovery: falling back to SDXL (DreamShaperXL_Lightning)
+2026-03-22 17:34:25,858 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=realistic
+2026-03-22 17:34:25,858 [INFO] core.workflow_builder: Workflow built with 7 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:34:25,870 [INFO] core.comfyui_client: Workflow queued: d73111ef-1994-4dd0-9f1f-22bd2f50f16b
+2026-03-22 17:34:45,298 [WARNING] core.quality_analyzer: Unknown LLM provider ProviderManager for QualityAnalyzer. Returning default score.
+2026-03-22 17:34:45,300 [INFO] core.pipeline: Quality Score: 8.0 (Faces: 8.0, Artifacts: 2.0)
+2026-03-22 17:34:45,300 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 17:34:45,309 [INFO] core.queue_manager: Job 720c6c9eb34d completed in 22.9s
+2026-03-22 17:37:53,845 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 17:37:53,845 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 17:37:53,845 [INFO] engine: AI Director Engine stopped
+2026-03-22 17:37:57,327 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 17:37:57,328 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 17:37:57,330 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 17:37:58,240 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 17:37:58,242 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 17:37:58,242 [INFO] engine: Starting AI Director Engine...
+2026-03-22 17:37:59,077 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 17:37:59,680 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 17:37:59,680 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 17:37:59,680 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 17:37:59,681 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 17:37:59,681 [INFO] engine: LLM providers ready: gemini
+2026-03-22 17:37:59,681 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 17:37:59,845 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 17:37:59,845 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 17:37:59,846 [INFO] core.queue_manager: Queue manager started
+2026-03-22 17:37:59,855 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 17:37:59,856 [INFO] engine: AI Director Engine ready!
+2026-03-22 17:38:00,366 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 17:38:03,318 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:38:03,318 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 17:38:03,319 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 17:38:03,319 [INFO] ai_director:   Guilds: 1
+2026-03-22 17:38:03,319 [INFO] ai_director:   LLM: gemini
+2026-03-22 17:38:03,319 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:38:15,032 [INFO] core.queue_manager: Job a53bc8561260 queued (position: 1)
+2026-03-22 17:38:15,034 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:38:15,729 [ERROR] llm.gemini_provider: Gemini intent analysis failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 41.285833771s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '41s'}]}}
+2026-03-22 17:38:15,730 [WARNING] llm.gemini_provider: Intent analysis returned no valid JSON, using defaults
+2026-03-22 17:38:15,731 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:38:16,102 [WARNING] llm.gemini_provider: Prompt enhancement failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 40.879854763s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '40s'}]}}
+2026-03-22 17:38:16,103 [INFO] engine: Plan: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=1.0
+2026-03-22 17:38:16,103 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:38:16,103 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:38:16,117 [INFO] core.comfyui_client: Workflow queued: 7f7f3081-b883-465c-bd62-ff2b61ab8c3b
+2026-03-22 17:38:20,056 [WARNING] engine: Generation attempt 1 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:38:20,057 [INFO] engine: 🔧 Auto-recovery: Model failed to load (meta tensor error). Retrying with fp8_e4m3fn weight dtype.
+2026-03-22 17:38:20,519 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:38:20,520 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:38:20,531 [INFO] core.comfyui_client: Workflow queued: 6f59028e-eb0b-436c-8d99-47c2900d438e
+2026-03-22 17:38:20,588 [WARNING] engine: Generation attempt 2 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:38:20,589 [INFO] engine: 🔧 Auto-recovery: Model still failing. Switching to a different model. Using 'Juggernaut-XL_v9_RunDiffusion.safetensors'.
+2026-03-22 17:38:21,161 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:38:21,162 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:38:21,171 [INFO] core.comfyui_client: Workflow queued: 14d8c888-e8e1-4d08-a2b1-68a51ae3e92e
+2026-03-22 17:38:21,221 [WARNING] engine: Generation attempt 3 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:38:21,222 [INFO] engine: 🔧 Auto-recovery: Persistent model loading failure. Falling back to SDXL.
+2026-03-22 17:38:21,222 [INFO] core.error_recovery: Recovery: falling back to SDXL (DreamShaperXL_Lightning)
+2026-03-22 17:38:21,735 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=realistic
+2026-03-22 17:38:21,735 [INFO] core.workflow_builder: Workflow built with 7 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:38:21,747 [INFO] core.comfyui_client: Workflow queued: b4e73fbe-77b6-48a1-ab1e-cdbe7e8bd665
+2026-03-22 17:38:32,578 [WARNING] core.quality_analyzer: Unknown LLM provider ProviderManager for QualityAnalyzer. Returning default score.
+2026-03-22 17:38:32,579 [INFO] core.pipeline: Quality Score: 8.0 (Faces: 8.0, Artifacts: 2.0)
+2026-03-22 17:38:32,579 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 17:38:32,580 [INFO] core.queue_manager: Job a53bc8561260 completed in 17.5s
+2026-03-22 17:39:59,970 [INFO] ai_director: Received mention chat text: why cant u use z image turbo model
+2026-03-22 17:40:00,464 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:40:01,458 [ERROR] llm.gemini_provider: Chat failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 55.561202429s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '55s'}]}}
+2026-03-22 17:47:09,055 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 17:47:09,055 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 17:47:09,056 [INFO] engine: AI Director Engine stopped
+2026-03-22 17:52:42,966 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 17:52:42,966 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 17:52:42,969 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 17:52:43,894 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 17:52:43,896 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 17:52:43,896 [INFO] engine: Starting AI Director Engine...
+2026-03-22 17:52:44,727 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 17:52:45,386 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 17:52:45,386 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 17:52:45,386 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 17:52:45,386 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 17:52:45,386 [INFO] engine: LLM providers ready: gemini
+2026-03-22 17:52:45,386 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 17:52:45,461 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 17:52:45,461 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 17:52:45,462 [INFO] core.queue_manager: Queue manager started
+2026-03-22 17:52:45,472 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 17:52:45,473 [INFO] engine: AI Director Engine ready!
+2026-03-22 17:52:45,928 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 17:52:48,833 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:52:48,833 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 17:52:48,833 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 17:52:48,833 [INFO] ai_director:   Guilds: 1
+2026-03-22 17:52:48,833 [INFO] ai_director:   LLM: gemini
+2026-03-22 17:52:48,834 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 17:53:08,580 [INFO] ai_director: Received mention chat text: why cant u use z image turbo model
+2026-03-22 17:53:09,103 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:53:09,776 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 60.0s (failures: 1)
+2026-03-22 17:53:09,785 [ERROR] llm.ollama_provider: Ollama request failed: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+2026-03-22 17:53:09,785 [ERROR] llm.provider_manager: Provider 'ollama' error: Failed to connect to Ollama at http://127.0.0.1:11434: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+2026-03-22 17:53:09,785 [WARNING] llm.provider_manager: Provider 'ollama' failed. Cooling down for 30s
+2026-03-22 17:53:09,785 [ERROR] ai_director: Chat error: All LLM providers failed: gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 47.211620853s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '47s'}]}}; ollama: Failed to connect to Ollama at http://127.0.0.1:11434: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\bot.py", line 120, in on_message
+    response = await self.engine.chat(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 249, in chat
+    response = await self.llm.chat(message, history, system_context=context)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 209, in chat
+    return await self.call("chat", message, conversation_history, system_context, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 194, in call
+    raise AllProvidersFailedError(errors)
+llm.provider_manager.AllProvidersFailedError: All LLM providers failed: gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 47.211620853s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '47s'}]}}; ollama: Failed to connect to Ollama at http://127.0.0.1:11434: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+2026-03-22 17:54:17,229 [INFO] core.queue_manager: Job 7d53f2aa6a53 queued (position: 1)
+2026-03-22 17:54:17,230 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 17:54:18,194 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 60.0s (failures: 2)
+2026-03-22 17:54:18,204 [ERROR] llm.ollama_provider: Ollama request failed: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+2026-03-22 17:54:18,206 [ERROR] llm.provider_manager: Provider 'ollama' error: Failed to connect to Ollama at http://127.0.0.1:11434: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+2026-03-22 17:54:18,206 [WARNING] llm.provider_manager: Provider 'ollama' failed. Cooling down for 60s
+2026-03-22 17:54:18,206 [WARNING] engine: All LLMs failed intent analysis: All LLM providers failed: gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 38.784733074s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '38s'}]}}; ollama: Failed to connect to Ollama at http://127.0.0.1:11434: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'. Using default plan.
+2026-03-22 17:54:18,207 [INFO] engine: Plan: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=1.0
+2026-03-22 17:54:18,207 [INFO] llm.provider_manager: All providers on cooldown. Waiting 60s for 'gemini'...
+2026-03-22 17:55:18,201 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:55:18,201 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:55:18,219 [INFO] core.comfyui_client: Workflow queued: 7cdda893-b542-4b7c-a814-668d72d58c04
+2026-03-22 17:55:21,272 [WARNING] engine: Generation attempt 1 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:55:21,272 [INFO] engine: 🔧 Auto-recovery: Model failed to load (meta tensor error). Retrying with fp8_e4m3fn weight dtype.
+2026-03-22 17:55:22,440 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:55:22,441 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:55:22,452 [INFO] core.comfyui_client: Workflow queued: c6ea3fc5-2645-4b7c-91d0-44573e103e86
+2026-03-22 17:55:22,505 [WARNING] engine: Generation attempt 2 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:55:22,506 [INFO] engine: 🔧 Auto-recovery: Model still failing. Switching to a different model. Using 'Juggernaut-XL_v9_RunDiffusion.safetensors'.
+2026-03-22 17:55:22,965 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 17:55:22,966 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:55:22,979 [INFO] core.comfyui_client: Workflow queued: a178e9d7-77e3-44cd-831b-67246e953ed0
+2026-03-22 17:55:23,037 [WARNING] engine: Generation attempt 3 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 17:55:23,037 [INFO] engine: 🔧 Auto-recovery: Persistent model loading failure. Falling back to SDXL.
+2026-03-22 17:55:23,037 [INFO] core.error_recovery: Recovery: falling back to SDXL (DreamShaperXL_Lightning)
+2026-03-22 17:55:23,455 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=realistic
+2026-03-22 17:55:23,455 [INFO] core.workflow_builder: Workflow built with 7 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 17:55:23,462 [INFO] core.comfyui_client: Workflow queued: 880999f8-6ad5-4f69-b1cc-85b93c95009a
+2026-03-22 17:55:34,018 [WARNING] core.quality_analyzer: Unknown LLM provider ProviderManager for QualityAnalyzer. Returning default score.
+2026-03-22 17:55:34,020 [INFO] core.pipeline: Quality Score: 8.0 (Faces: 8.0, Artifacts: 2.0)
+2026-03-22 17:55:34,020 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 17:55:34,022 [INFO] core.queue_manager: Job 7d53f2aa6a53 completed in 76.8s
+2026-03-22 18:05:58,244 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 18:05:58,245 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 18:05:58,245 [INFO] engine: AI Director Engine stopped
+2026-03-22 18:06:03,097 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 18:06:03,097 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 18:06:03,101 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 18:06:04,205 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 18:06:04,208 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 18:06:04,210 [INFO] engine: Starting AI Director Engine...
+2026-03-22 18:06:05,087 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 18:06:05,672 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 18:06:05,672 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 18:06:05,672 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 18:06:05,672 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 18:06:05,673 [INFO] engine: LLM providers ready: gemini
+2026-03-22 18:06:05,673 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 18:06:06,816 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 18:06:06,817 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 18:06:06,818 [INFO] core.queue_manager: Queue manager started
+2026-03-22 18:06:06,932 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 18:06:06,932 [INFO] engine: AI Director Engine ready!
+2026-03-22 18:06:07,541 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 18:06:10,620 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 18:06:10,621 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 18:06:10,621 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 18:06:10,621 [INFO] ai_director:   Guilds: 1
+2026-03-22 18:06:10,621 [INFO] ai_director:   LLM: gemini
+2026-03-22 18:06:10,621 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 18:16:28,754 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 18:16:29,791 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 60.0s (failures: 1)
+2026-03-22 18:16:29,802 [ERROR] llm.ollama_provider: Ollama request failed: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+2026-03-22 18:16:29,802 [ERROR] llm.provider_manager: Provider 'ollama' error: Failed to connect to Ollama at http://127.0.0.1:11434: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+2026-03-22 18:16:29,802 [WARNING] llm.provider_manager: Provider 'ollama' failed. Cooling down for 30s
+2026-03-22 18:16:29,803 [ERROR] engine: Plan draft failed: All LLM providers failed: gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 27.189044255s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '27s'}]}}; ollama: Failed to connect to Ollama at http://127.0.0.1:11434: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\engine.py", line 137, in submit_generation
+    plan = await self.llm.analyze_intent(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 200, in analyze_intent
+    return await self.call("analyze_intent", prompt, available_models, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 194, in call
+    raise AllProvidersFailedError(errors)
+llm.provider_manager.AllProvidersFailedError: All LLM providers failed: gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 27.189044255s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '27s'}]}}; ollama: Failed to connect to Ollama at http://127.0.0.1:11434: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+2026-03-22 18:19:14,007 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 18:19:15,062 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 60.0s (failures: 2)
+2026-03-22 18:19:15,071 [ERROR] llm.ollama_provider: Ollama request failed: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+2026-03-22 18:19:15,072 [ERROR] llm.provider_manager: Provider 'ollama' error: Failed to connect to Ollama at http://127.0.0.1:11434: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+2026-03-22 18:19:15,072 [WARNING] llm.provider_manager: Provider 'ollama' failed. Cooling down for 60s
+2026-03-22 18:19:15,072 [ERROR] engine: Plan draft failed: All LLM providers failed: gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 41.895099185s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '41s'}]}}; ollama: Failed to connect to Ollama at http://127.0.0.1:11434: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\engine.py", line 137, in submit_generation
+    plan = await self.llm.analyze_intent(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 200, in analyze_intent
+    return await self.call("analyze_intent", prompt, available_models, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 194, in call
+    raise AllProvidersFailedError(errors)
+llm.provider_manager.AllProvidersFailedError: All LLM providers failed: gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 41.895099185s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '41s'}]}}; ollama: Failed to connect to Ollama at http://127.0.0.1:11434: 404, message='Not Found', url='http://127.0.0.1:11434/api/chat'
+2026-03-22 18:19:28,191 [INFO] llm.provider_manager: All providers on cooldown. Waiting 47s for 'gemini'...
+2026-03-22 18:20:15,074 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 18:20:16,147 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 60.0s (failures: 3)
+2026-03-22 18:20:16,147 [ERROR] engine: Plan draft failed: All LLM providers failed: gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 40.84552077s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '40s'}]}}
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\engine.py", line 137, in submit_generation
+    plan = await self.llm.analyze_intent(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 200, in analyze_intent
+    return await self.call("analyze_intent", prompt, available_models, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 194, in call
+    raise AllProvidersFailedError(errors)
+llm.provider_manager.AllProvidersFailedError: All LLM providers failed: gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 40.84552077s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '40s'}]}}
+2026-03-22 18:20:51,371 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 18:20:51,371 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 18:20:51,371 [INFO] engine: AI Director Engine stopped
+2026-03-22 18:33:52,237 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 18:33:52,238 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 18:33:52,241 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 18:33:53,158 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 18:33:53,161 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 18:33:53,162 [INFO] engine: Starting AI Director Engine...
+2026-03-22 18:33:53,998 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 18:33:54,649 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 18:33:54,649 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 18:33:54,649 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 18:33:54,649 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 18:33:54,649 [INFO] engine: LLM providers ready: gemini
+2026-03-22 18:33:54,650 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 18:33:54,726 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 18:33:54,726 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 18:33:54,727 [INFO] core.queue_manager: Queue manager started
+2026-03-22 18:33:54,736 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 18:33:54,736 [INFO] engine: AI Director Engine ready!
+2026-03-22 18:33:55,363 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 18:33:58,211 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 18:33:58,212 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 18:33:58,212 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 18:33:58,212 [INFO] ai_director:   Guilds: 1
+2026-03-22 18:33:58,213 [INFO] ai_director:   LLM: gemini
+2026-03-22 18:33:58,213 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 18:34:08,527 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 18:34:09,513 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 47.444728461s (failures: 1)
+2026-03-22 18:34:56,898 [INFO] engine: Dropped IPAdapter as model z_image_turbo_bf16.safetensors is flux
+2026-03-22 18:35:18,073 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 18:35:19,084 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 37.896836562s (failures: 2)
+2026-03-22 18:35:25,124 [INFO] core.queue_manager: Job e4c1ef31-5e06-43ac-9cd5-beec9b7a7ec3 queued (position: 1)
+2026-03-22 18:35:25,125 [INFO] engine: Plan Executing: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=7.0
+2026-03-22 18:35:25,126 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 18:35:25,127 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 18:35:25,127 [INFO] core.workflow_builder: Workflow built with 11 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 18:35:25,189 [INFO] core.comfyui_client: Workflow queued: 64b521d1-ec4a-42e9-ab84-f1458e222d2d
+2026-03-22 18:35:32,810 [WARNING] engine: Generation attempt 1 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 18:35:32,811 [INFO] engine: 🔧 Auto-recovery: Model failed to load (meta tensor error). Retrying with fp8_e4m3fn weight dtype.
+2026-03-22 18:35:33,344 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 18:35:33,344 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 18:35:33,345 [INFO] core.workflow_builder: Workflow built with 11 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 18:35:33,358 [INFO] core.comfyui_client: Workflow queued: e4f281d2-3720-4671-9ca2-ef7ebfd71eed
+2026-03-22 18:35:34,199 [WARNING] engine: Generation attempt 2 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 18:35:34,199 [INFO] engine: 🔧 Auto-recovery: Model still failing. Switching to a different model. Using 'Juggernaut-XL_v9_RunDiffusion.safetensors'.
+2026-03-22 18:35:34,619 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 18:35:34,620 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 18:35:34,620 [INFO] core.workflow_builder: Workflow built with 11 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 18:35:34,630 [INFO] core.comfyui_client: Workflow queued: cb114858-9776-4ac7-b50a-2b23b85894f1
+2026-03-22 18:36:04,159 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 18:36:04,956 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 52.017476644s (failures: 3)
+2026-03-22 18:38:14,366 [INFO] ai_director: Received mention chat text: hello
+2026-03-22 18:38:14,890 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 18:38:15,962 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 41.077944781s (failures: 4)
+2026-03-22 18:39:21,089 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 18:39:22,090 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 34.891241496s (failures: 5)
+2026-03-22 18:39:24,236 [INFO] engine: Dropped IPAdapter as model flux-2-klein-9b-fp8.safetensors is flux
+2026-03-22 18:39:41,203 [INFO] core.queue_manager: Job 2250125b-3f97-4a7c-9dcd-78512262ad7e queued (position: 1)
+2026-03-22 18:40:35,045 [WARNING] engine: Generation attempt 3 failed: Generation timed out after 300s
+2026-03-22 18:40:35,047 [INFO] engine: 🔧 Auto-recovery: Generation timed out. Reducing steps and resolution.
+2026-03-22 18:40:35,048 [INFO] core.error_recovery: Recovery: resolution reduced to 768×768
+2026-03-22 18:40:35,048 [INFO] core.error_recovery: Recovery: steps reduced to 15
+2026-03-22 18:40:35,665 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 18:40:35,666 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 18:40:35,666 [INFO] core.workflow_builder: Workflow built with 11 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 18:40:35,678 [INFO] core.comfyui_client: Workflow queued: dcaefbac-5535-45ab-9896-00e6d8b14c65
+2026-03-22 18:40:36,028 [WARNING] engine: Generation attempt 4 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 18:40:36,029 [ERROR] core.queue_manager: Job e4c1ef31-5e06-43ac-9cd5-beec9b7a7ec3 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 470, in _process_job
+    result_images = await self._execute_with_recovery(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 503, in _execute_with_recovery
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 71, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 190, in _run_workflow
+    output_data = await self.engine.comfyui.wait_for_result(prompt_id)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 113, in wait_for_result
+    raise RuntimeError(
+RuntimeError: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 18:40:36,484 [INFO] engine: Plan Executing: arch=flux, model=flux-2-klein-9b-fp8.safetensors, steps=30, cfg=7.0
+2026-03-22 18:40:36,484 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=dont use any loras
+2026-03-22 18:40:36,484 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 18:40:36,484 [INFO] core.workflow_builder: Workflow built with 11 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 18:40:36,493 [INFO] core.comfyui_client: Workflow queued: 2890aa02-ea54-41af-aea2-cd5ef5244136
+2026-03-22 18:40:37,300 [WARNING] engine: Generation attempt 1 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 18:40:37,301 [INFO] engine: 🔧 Auto-recovery: Model failed to load (meta tensor error). Retrying with fp8_e4m3fn weight dtype.
+2026-03-22 18:40:37,720 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=dont use any loras
+2026-03-22 18:40:37,721 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 18:40:37,721 [INFO] core.workflow_builder: Workflow built with 11 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 18:40:37,732 [INFO] core.comfyui_client: Workflow queued: c2900789-c5d4-4027-8276-ba892b815fd0
+2026-03-22 18:40:38,549 [WARNING] engine: Generation attempt 2 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 18:40:38,549 [INFO] engine: 🔧 Auto-recovery: Model still failing. Switching to a different model. Using 'Juggernaut-XL_v9_RunDiffusion.safetensors'.
+2026-03-22 18:40:38,963 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=dont use any loras
+2026-03-22 18:40:38,963 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 18:40:38,964 [INFO] core.workflow_builder: Workflow built with 11 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 18:40:38,980 [INFO] core.comfyui_client: Workflow queued: cca52728-378e-4eb8-91d8-2790296af048
+2026-03-22 18:40:39,075 [WARNING] engine: Generation attempt 3 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 18:40:39,077 [INFO] engine: 🔧 Auto-recovery: Persistent model loading failure. Falling back to SDXL.
+2026-03-22 18:40:39,077 [INFO] core.error_recovery: Recovery: falling back to SDXL (DreamShaperXL_Lightning)
+2026-03-22 18:40:39,530 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=dont use any loras
+2026-03-22 18:40:39,531 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 18:40:39,531 [INFO] core.workflow_builder: Workflow built with 8 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 18:40:39,541 [INFO] core.comfyui_client: Workflow queued: e9ef272f-68a1-4437-a5bb-3ad8003b9bcb
+2026-03-22 18:40:59,946 [WARNING] core.quality_analyzer: Unknown LLM provider ProviderManager for QualityAnalyzer. Returning default score.
+2026-03-22 18:40:59,947 [INFO] core.pipeline: Quality Score: 8.0 (Faces: 8.0, Artifacts: 2.0)
+2026-03-22 18:40:59,947 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 18:40:59,947 [INFO] core.queue_manager: Job 2250125b-3f97-4a7c-9dcd-78512262ad7e completed in 23.5s
+2026-03-22 19:25:32,402 [ERROR] discord.client: Attempting a reconnect in 1.70s
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1532, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1148, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1179, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1076, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 779, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 734, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 642, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1538, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-03-22 19:25:34,395 [ERROR] discord.client: Attempting a reconnect in 1.01s
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1532, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1148, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1179, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1076, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 779, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 734, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 642, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1538, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-03-22 19:25:35,434 [ERROR] discord.client: Attempting a reconnect in 3.44s
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1532, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1148, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1179, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1076, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 779, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 734, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 642, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1538, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-03-22 19:25:38,883 [ERROR] discord.client: Attempting a reconnect in 10.83s
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1532, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1148, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1179, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 728, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 392, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 571, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1076, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 779, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 734, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 642, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1538, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+2026-03-22 19:25:39,789 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 19:25:39,790 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 19:25:39,790 [INFO] engine: AI Director Engine stopped

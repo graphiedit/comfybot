@@ -180,38 +180,37 @@ class WorkflowBuilder:
         """
         Create Flux-architecture workflow.
         
-        Flux uses separate loaders:
-          - UNETLoader for the diffusion model
-          - DualCLIPLoader for two CLIP models (t5xxl + clip_l)
-          - VAELoader for the VAE
-        
-        Flux also uses FluxGuidance node for CFG-like guidance.
+        Uses the model's workflow_profile from the registry to determine
+        the correct CLIP loader, CLIP models, VAE, latent type, and guidance.
         """
         seed = plan.seed if plan.seed != -1 else int(time.time() * 1000) % 1000000000
         
         unet_name = plan.checkpoint
         if not unet_name:
-            unet_name = "flux2_dev_fp8mixed"  # Default Flux model
+            unet_name = "flux2_dev_fp8mixed.safetensors"  # Default Flux model
         
-        # Detect CLIP and VAE from registry or use defaults
-        clip_name1 = "t5xxl_fp8_e4m3fn.safetensors"
-        clip_name2 = "clip_l.safetensors"
-        vae_name = "ae.safetensors"
-        
+        # Get workflow profile for this specific model
+        profile = {}
         if self.registry:
-            clips = self.registry.get_clip_models_for_arch("flux")
-            if clips and len(clips) >= 2:
-                clip_name1 = clips[0]
-                clip_name2 = clips[1]
-            vae = self.registry.get_vae_for_arch("flux")
-            if vae:
-                vae_name = vae
+            profile = self.registry.get_workflow_profile(unet_name)
+        
+        # Read profile settings with sensible defaults
+        clip_name1 = profile.get("clip_name1", "qwen_2.5_vl_7b_fp8_scaled.safetensors")
+        clip_name2 = profile.get("clip_name2", "qwen_3_4b.safetensors")
+        vae_name = profile.get("vae", "flux2-vae.safetensors")
+        clip_type = profile.get("clip_type", "flux")
+        latent_type = profile.get("latent_type", "EmptySD3LatentImage")
+        use_guidance = profile.get("use_guidance_node", True)
+        unet_name = plan.checkpoint
+        
+        # Determine weight dtype (overridable by plan)
+        weight_dtype = plan.weight_dtype if plan.weight_dtype != "default" else profile.get("weight_dtype", "default")
         
         workflow = {
             "unet_loader": {
                 "inputs": {
                     "unet_name": unet_name,
-                    "weight_dtype": "default",
+                    "weight_dtype": weight_dtype,
                 },
                 "class_type": "UNETLoader",
             },
@@ -219,7 +218,7 @@ class WorkflowBuilder:
                 "inputs": {
                     "clip_name1": clip_name1,
                     "clip_name2": clip_name2,
-                    "type": "flux",
+                    "type": clip_type,
                 },
                 "class_type": "DualCLIPLoader",
             },
@@ -243,50 +242,60 @@ class WorkflowBuilder:
                 },
                 "class_type": "CLIPTextEncode",
             },
-            "flux_guidance": {
-                "inputs": {
-                    "guidance": max(plan.cfg, 3.5),  # Flux guidance (different from CFG)
-                    "conditioning": ["positive_prompt", 0],
-                },
-                "class_type": "FluxGuidance",
-            },
             "empty_latent": {
                 "inputs": {
                     "width": plan.width,
                     "height": plan.height,
                     "batch_size": 1,
                 },
-                "class_type": "EmptySD3LatentImage",
+                "class_type": latent_type,
             },
-            "sampler": {
+        }
+        
+        # Determine positive conditioning source
+        positive_source = ["positive_prompt", 0]
+        
+        # Add FluxGuidance node if profile says to use it
+        if use_guidance:
+            workflow["flux_guidance"] = {
                 "inputs": {
-                    "seed": seed,
-                    "steps": plan.steps,
-                    "cfg": 1.0,  # Flux uses guidance node instead of CFG
-                    "sampler_name": plan.sampler,
-                    "scheduler": plan.scheduler,
-                    "denoise": plan.denoise,
-                    "model": ["unet_loader", 0],
-                    "positive": ["flux_guidance", 0],
-                    "negative": ["negative_prompt", 0],
-                    "latent_image": ["empty_latent", 0],
+                    "guidance": plan.guidance if plan.guidance != 3.5 else max(plan.cfg, 3.5),
+                    "conditioning": ["positive_prompt", 0],
                 },
-                "class_type": "KSampler",
+                "class_type": "FluxGuidance",
+            }
+            positive_source = ["flux_guidance", 0]
+        
+        workflow["sampler"] = {
+            "inputs": {
+                "seed": seed,
+                "steps": plan.steps,
+                "cfg": 1.0,  # Flux uses guidance node instead of CFG
+                "sampler_name": plan.sampler,
+                "scheduler": plan.scheduler,
+                "denoise": plan.denoise,
+                "model": ["unet_loader", 0],
+                "positive": positive_source,
+                "negative": ["negative_prompt", 0],
+                "latent_image": ["empty_latent", 0],
             },
-            "vae_decode": {
-                "inputs": {
-                    "samples": ["sampler", 0],
-                    "vae": ["vae_loader", 0],
-                },
-                "class_type": "VAEDecode",
+            "class_type": "KSampler",
+        }
+        
+        workflow["vae_decode"] = {
+            "inputs": {
+                "samples": ["sampler", 0],
+                "vae": ["vae_loader", 0],
             },
-            "save_image": {
-                "inputs": {
-                    "filename_prefix": "AI_Director_Flux",
-                    "images": ["vae_decode", 0],
-                },
-                "class_type": "SaveImage",
+            "class_type": "VAEDecode",
+        }
+        
+        workflow["save_image"] = {
+            "inputs": {
+                "filename_prefix": "AI_Director_Flux",
+                "images": ["vae_decode", 0],
             },
+            "class_type": "SaveImage",
         }
         
         return workflow
@@ -298,8 +307,8 @@ class WorkflowBuilder:
         """
         Create Hunyuan-architecture workflow.
         
-        Similar to Flux but may use different clip loading.
-        Falls back to a UNET-based approach.
+        Uses the model's workflow_profile from the registry for CLIP/VAE config.
+        Falls back to CheckpointLoaderSimple if the model is a full checkpoint.
         """
         seed = plan.seed if plan.seed != -1 else int(time.time() * 1000) % 1000000000
         
@@ -310,25 +319,37 @@ class WorkflowBuilder:
         # Hunyuan can also use CheckpointLoaderSimple in some cases
         # For UNET-only models, we use UNETLoader
         if self.registry and self.registry.is_diffusion_model(unet_name):
+            # Get workflow profile for this specific model
+            profile = self.registry.get_workflow_profile(unet_name)
+            
+            clip_name1 = profile.get("clip_name1", "qwen_2.5_vl_7b_fp8_scaled.safetensors")
+            clip_name2 = profile.get("clip_name2", "qwen_3_4b.safetensors")
+            vae_name = profile.get("vae", "ae.safetensors")
+            clip_type = profile.get("clip_type", "hunyuan_video")
+            latent_type = profile.get("latent_type", "EmptyLatentImage")
+            
+            # Determine weight dtype (overridable by plan)
+            weight_dtype = plan.weight_dtype if plan.weight_dtype != "default" else profile.get("weight_dtype", "default")
+            
             # UNET-only path
             workflow = {
                 "unet_loader": {
                     "inputs": {
                         "unet_name": unet_name,
-                        "weight_dtype": "default",
+                        "weight_dtype": weight_dtype,
                     },
                     "class_type": "UNETLoader",
                 },
                 "clip_loader": {
                     "inputs": {
-                        "clip_name1": "t5xxl_fp8_e4m3fn.safetensors",
-                        "clip_name2": "clip_l.safetensors",
-                        "type": "hunyuan_video",
+                        "clip_name1": clip_name1,
+                        "clip_name2": clip_name2,
+                        "type": clip_type,
                     },
                     "class_type": "DualCLIPLoader",
                 },
                 "vae_loader": {
-                    "inputs": {"vae_name": "ae.safetensors"},
+                    "inputs": {"vae_name": vae_name},
                     "class_type": "VAELoader",
                 },
                 "positive_prompt": {
@@ -351,7 +372,7 @@ class WorkflowBuilder:
                         "height": plan.height,
                         "batch_size": 1,
                     },
-                    "class_type": "EmptyLatentImage",
+                    "class_type": latent_type,
                 },
                 "sampler": {
                     "inputs": {
@@ -383,12 +404,13 @@ class WorkflowBuilder:
                     "class_type": "SaveImage",
                 },
             }
+            return workflow
         else:
             # Fallback to CheckpointLoaderSimple
             workflow = self._create_sdxl_workflow(plan)
+            workflow["base_model"]["inputs"]["ckpt_name"] = unet_name
             workflow["save_image"]["inputs"]["filename_prefix"] = "AI_Director_Hunyuan"
-        
-        return workflow
+            return workflow
 
     # ------------------------------------------------------------------
     # Modular Add-Ons (ControlNet, IP-Adapter, LoRA)

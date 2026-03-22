@@ -7,9 +7,12 @@ To add a new provider, subclass LLMProvider and register it.
 import abc
 import logging
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, List
 
 logger = logging.getLogger(__name__)
+
+# Re-export for convenience
+from llm.provider_manager import RateLimitError, AllProvidersFailedError  # noqa: F401
 
 
 @dataclass
@@ -22,9 +25,21 @@ class StyleAnalysis:
 
 
 @dataclass
+class PlanReview:
+    """Result of reviewing a generation plan for completeness."""
+    is_complete: bool = True
+    needs_clarification: bool = False
+    question: str = ""                         # Question to ask the user
+    suggestions: List[str] = field(default_factory=list)  # Non-blocking tips
+    warnings: List[str] = field(default_factory=list)     # Issues to flag
+    confidence: float = 0.9                     # How confident the AI is
+
+
+@dataclass
 class GenerationPlan:
     """Structured output from intent analysis — describes HOW to generate."""
     action: str = "generate"                    # generate | upscale | edit | vary
+    workflow_template: str = ""                 # If a user workflow template was chosen
     style_category: str = "realistic"           # realistic | anime | cinematic | fantasy | etc
     checkpoint: str = ""                        # which model to use (empty = auto)
     model_arch: str = "sdxl"                    # sdxl | flux | hunyuan (determines workflow type)
@@ -44,6 +59,10 @@ class GenerationPlan:
     width: int = 1024
     height: int = 1024
     seed: int = -1
+    denoise: float = 1.0
+    weight_dtype: str = "default"               # Corrected by ErrorDiagnosticAgent if needed
+    guidance: float = 3.5                      # Flux guidance
+    force_sdxl: bool = False                   # Flag to force SDXL fallback
     denoise: float = 1.0
     # User overrides tracking
     user_overrides: dict = field(default_factory=dict)
@@ -120,6 +139,32 @@ class LLMProvider(abc.ABC):
         """
         ...
 
+    async def check_plan_completeness(
+        self,
+        plan: GenerationPlan,
+        available_models: dict,
+    ) -> PlanReview:
+        """
+        Review a generation plan for completeness and quality.
+        Returns suggestions, warnings, or clarification questions.
+        Default implementation — override for smarter behavior.
+        """
+        review = PlanReview()
+        
+        # Basic checks any provider can do
+        if not plan.enhanced_prompt and not plan.user_overrides.get("action") == "dream":
+            review.is_complete = False
+            review.needs_clarification = True
+            review.question = "Your prompt seems very short. Could you describe what you'd like in more detail?"
+        
+        if plan.width > 2048 or plan.height > 2048:
+            review.warnings.append(f"Resolution {plan.width}×{plan.height} is very high and may cause OOM.")
+        
+        if plan.steps > 50:
+            review.suggestions.append(f"Using {plan.steps} steps — this will be slow. 20-30 is often sufficient.")
+        
+        return review
+
 
 # --- Provider Registry ---
 _PROVIDERS = {}
@@ -133,31 +178,59 @@ def register_provider(name: str):
     return decorator
 
 
-def create_llm_provider(config: dict) -> LLMProvider:
-    """
-    Factory function — creates the right LLM provider based on config.
-    
-    Config should have:
-        llm:
-          provider: "ollama"  # or "gemini", "openai"
-          ollama: { ... }
-          gemini: { ... }
-    """
-    provider_name = config.get("llm", {}).get("provider", "ollama")
-    
-    # Import providers to trigger registration
-    from . import ollama_provider  # noqa: F401
+def _import_providers():
+    """Import all provider modules to trigger registration."""
+    try:
+        from . import ollama_provider  # noqa: F401
+    except ImportError as e:
+        logger.warning(f"Could not import Ollama provider: {e}")
     try:
         from . import gemini_provider  # noqa: F401
-    except ImportError:
-        pass
+    except ImportError as e:
+        logger.warning(f"Could not import Gemini provider: {e}")
+
+
+def create_single_provider(name: str, provider_config: dict) -> LLMProvider:
+    """
+    Create a single LLM provider by name.
+    Used internally by ProviderManager.
+    """
+    _import_providers()
+    
+    # Normalize name
+    provider_name = name.split("_")[0] if "_" in name else name  # e.g. "gemini_backup" → "gemini"
     
     if provider_name not in _PROVIDERS:
         available = list(_PROVIDERS.keys())
-        raise ValueError(
-            f"Unknown LLM provider '{provider_name}'. Available: {available}"
-        )
+        raise ValueError(f"Unknown LLM provider '{provider_name}'. Available: {available}")
     
-    provider_config = config.get("llm", {}).get(provider_name, {})
-    logger.info(f"Creating LLM provider: {provider_name}")
+    logger.info(f"Creating LLM provider: {name} (type={provider_name})")
     return _PROVIDERS[provider_name](provider_config)
+
+
+def create_llm_provider(config: dict):
+    """
+    Factory function — creates an LLM ProviderManager with failover.
+    
+    If config has multiple providers, creates a ProviderManager.
+    If config has a single provider, still wraps it in a ProviderManager
+    for consistent interface.
+    
+    Config supports both legacy and new format:
+    
+    Legacy:
+        llm:
+          provider: "ollama"
+          ollama: { ... }
+    
+    New (multi-provider):
+        llm:
+          providers:
+            - name: gemini
+              api_key: ...
+              priority: 1
+            - name: ollama
+              priority: 2
+    """
+    from llm.provider_manager import ProviderManager
+    return ProviderManager(config)

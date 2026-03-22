@@ -117,6 +117,40 @@ def detect_architecture(filename: str) -> dict:
     return None  # Standard SDXL
 
 
+# ---------------------------------------------------------------------------
+# Default workflow profile — used when a model has no explicit profile.
+# These define HOW to wire up the ComfyUI workflow for a given architecture.
+# ---------------------------------------------------------------------------
+DEFAULT_WORKFLOW_PROFILES = {
+    "flux": {
+        "clip_loader": "DualCLIPLoader",
+        "clip_type": "flux",
+        "clip_name1": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+        "clip_name2": "qwen_3_4b.safetensors",
+        "vae": "flux2-vae.safetensors",
+        "latent_type": "EmptySD3LatentImage",
+        "use_guidance_node": True,
+        "weight_dtype": "default",
+    },
+    "hunyuan": {
+        "clip_loader": "DualCLIPLoader",
+        "clip_type": "hunyuan_video",
+        "clip_name1": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+        "clip_name2": "qwen_3_4b.safetensors",
+        "vae": "ae.safetensors",
+        "latent_type": "EmptyLatentImage",
+        "use_guidance_node": False,
+        "weight_dtype": "default",
+    },
+    "sdxl": {
+        # SDXL uses CheckpointLoaderSimple — CLIP/VAE are baked in.
+        "clip_loader": None,
+        "vae": None,
+        "latent_type": "EmptyLatentImage",
+        "use_guidance_node": False,
+    },
+}
+
 # Default catalog data embedded in code
 DEFAULT_MODEL_CATALOG = {
     "checkpoints": [
@@ -144,7 +178,7 @@ DEFAULT_MODEL_CATALOG = {
     ],
     "diffusion_models": [
         {
-            "filename": "flux2_dev_fp8mixed",
+            "filename": "flux2_dev_fp8mixed.safetensors",
             "display_name": "Flux.1 Dev (fp8)",
             "styles": ["general", "artistic", "creative", "realistic"],
             "quality": 9,
@@ -153,9 +187,40 @@ DEFAULT_MODEL_CATALOG = {
             "default_steps": 20,
             "default_sampler": "euler",
             "default_scheduler": "simple",
+            "workflow_profile": {
+                "clip_loader": "DualCLIPLoader",
+                "clip_type": "flux",
+                "clip_name1": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+                "clip_name2": "qwen_3_4b.safetensors",
+                "vae": "flux2-vae.safetensors",
+                "latent_type": "EmptySD3LatentImage",
+                "use_guidance_node": True,
+                "weight_dtype": "fp8_e4m3fn",
+            },
         },
         {
-            "filename": "z_image_turbo_bf16",
+            "filename": "flux-2-klein-9b-fp8.safetensors",
+            "display_name": "Flux.2 Klein 9B (fp8)",
+            "styles": ["general", "artistic", "creative"],
+            "quality": 8,
+            "arch": "flux",
+            "default_cfg": 1.0,
+            "default_steps": 20,
+            "default_sampler": "euler",
+            "default_scheduler": "simple",
+            "workflow_profile": {
+                "clip_loader": "DualCLIPLoader",
+                "clip_type": "flux",
+                "clip_name1": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+                "clip_name2": "qwen_3_4b.safetensors",
+                "vae": "flux2-vae.safetensors",
+                "latent_type": "EmptySD3LatentImage",
+                "use_guidance_node": True,
+                "weight_dtype": "fp8_e4m3fn",
+            },
+        },
+        {
+            "filename": "z_image_turbo_bf16.safetensors",
             "display_name": "Z-Image Turbo",
             "styles": ["general", "fast", "turbo"],
             "quality": 7,
@@ -164,9 +229,19 @@ DEFAULT_MODEL_CATALOG = {
             "default_steps": 4,
             "default_sampler": "euler",
             "default_scheduler": "simple",
+            "workflow_profile": {
+                "clip_loader": "DualCLIPLoader",
+                "clip_type": "flux",
+                "clip_name1": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+                "clip_name2": "qwen_3_4b.safetensors",
+                "vae": "flux2-vae.safetensors",
+                "latent_type": "EmptySD3LatentImage",
+                "use_guidance_node": True,
+                "weight_dtype": "fp8_e4m3fn",
+            },
         },
         {
-            "filename": "z_image_bf16",
+            "filename": "z_image_bf16.safetensors",
             "display_name": "Z-Image",
             "styles": ["general", "artistic"],
             "quality": 8,
@@ -175,6 +250,37 @@ DEFAULT_MODEL_CATALOG = {
             "default_steps": 20,
             "default_sampler": "euler",
             "default_scheduler": "simple",
+            "workflow_profile": {
+                "clip_loader": "DualCLIPLoader",
+                "clip_type": "flux",
+                "clip_name1": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+                "clip_name2": "qwen_3_4b.safetensors",
+                "vae": "flux2-vae.safetensors",
+                "latent_type": "EmptySD3LatentImage",
+                "use_guidance_node": True,
+                "weight_dtype": "default",
+            },
+        },
+        {
+            "filename": "qwen_image_edit_2509_fp8_e4m3fn.safetensors",
+            "display_name": "Qwen Image Edit",
+            "styles": ["editing", "general"],
+            "quality": 7,
+            "arch": "flux",
+            "default_cfg": 1.0,
+            "default_steps": 20,
+            "default_sampler": "euler",
+            "default_scheduler": "simple",
+            "workflow_profile": {
+                "clip_loader": "DualCLIPLoader",
+                "clip_type": "flux",
+                "clip_name1": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+                "clip_name2": "qwen_3_4b.safetensors",
+                "vae": "qwen_image_vae.safetensors",
+                "latent_type": "EmptySD3LatentImage",
+                "use_guidance_node": True,
+                "weight_dtype": "default",
+            },
         },
         {
             "filename": "hunyuan_3d_v2.1.safetensors",
@@ -186,6 +292,16 @@ DEFAULT_MODEL_CATALOG = {
             "default_steps": 30,
             "default_sampler": "dpmpp_2m",
             "default_scheduler": "normal",
+            "workflow_profile": {
+                "clip_loader": "DualCLIPLoader",
+                "clip_type": "hunyuan_video",
+                "clip_name1": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+                "clip_name2": "qwen_3_4b.safetensors",
+                "vae": "ae.safetensors",
+                "latent_type": "EmptyLatentImage",
+                "use_guidance_node": False,
+                "weight_dtype": "default",
+            },
         },
     ],
 }
@@ -193,27 +309,51 @@ DEFAULT_MODEL_CATALOG = {
 DEFAULT_LORA_CATALOG = {
     "loras": [
         {
-            "id": "neon_cyberpunk",
-            "filename": "cyberpunk_neon_v1.safetensors",
-            "keywords": ["cyberpunk", "neon", "futuristic city", "synthwave"],
-            "trigger_words": ["cybrpnk style"],
+            "id": "bhairavi_devi",
+            "filename": "Bhairavi_Devi_Hindu_Art.safetensors",
+            "keywords": ["hindu", "devi", "bhairavi", "indian art", "deity", "mythology"],
+            "trigger_words": ["bhairavi devi"],
             "default_weight": 0.8,
-            "compatible_models": ["sdxl"],
-        },
-        {
-            "id": "anime_ghibli",
-            "filename": "studio_ghibli_style.safetensors",
-            "keywords": ["anime", "ghibli", "miyazaki", "cel shaded"],
-            "trigger_words": ["ghibli style"],
-            "default_weight": 1.0,
-            "compatible_models": ["sdxl"],
+            "compatible_models": ["flux", "sdxl"],
         },
         {
             "id": "flux_turbo",
-            "filename": "Flux-2-Turbo-LoRA_comfyui.safetensors",
+            "filename": "Flux_2-Turbo-LoRA_comfyui.safetensors",
             "keywords": ["speed", "turbo", "fast"],
             "trigger_words": [],
             "default_weight": 1.0,
+            "compatible_models": ["flux"],
+        },
+        {
+            "id": "qwen_image_lightning",
+            "filename": "Qwen-Image-2512-Lightning-4steps-V1.0-fp32.safetensors",
+            "keywords": ["speed", "lightning", "fast", "qwen"],
+            "trigger_words": [],
+            "default_weight": 1.0,
+            "compatible_models": ["flux"],
+        },
+        {
+            "id": "qwen_edit_lightning",
+            "filename": "Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors",
+            "keywords": ["speed", "lightning", "fast", "edit", "qwen"],
+            "trigger_words": [],
+            "default_weight": 1.0,
+            "compatible_models": ["flux"],
+        },
+        {
+            "id": "indian_miniature",
+            "filename": "indian_miniature_manuscript.safetensors",
+            "keywords": ["indian", "miniature", "manuscript", "traditional", "painting"],
+            "trigger_words": ["indian miniature"],
+            "default_weight": 0.8,
+            "compatible_models": ["flux", "sdxl"],
+        },
+        {
+            "id": "pixel_art_z",
+            "filename": "pixel_art_style_z_image_turbo.safetensors",
+            "keywords": ["pixel art", "retro", "8bit", "game"],
+            "trigger_words": ["pixel art style"],
+            "default_weight": 0.8,
             "compatible_models": ["flux"],
         },
     ]
@@ -418,6 +558,33 @@ class ModelRegistry:
         
         return {}
 
+    def get_workflow_profile(self, model_name: str) -> dict:
+        """
+        Get the workflow profile for a model — defines how to wire up CLIP, VAE,
+        latent nodes, and guidance for this specific model.
+
+        Lookup order:
+        1. Explicit 'workflow_profile' in the model catalog entry
+        2. Architecture default from DEFAULT_WORKFLOW_PROFILES
+        3. Hardcoded fallback
+        """
+        # Check catalog for explicit profiles
+        for dm in self._model_catalog.get("diffusion_models", []):
+            if dm["filename"] == model_name and "workflow_profile" in dm:
+                return dm["workflow_profile"]
+
+        for ckpt in self._model_catalog.get("checkpoints", []):
+            if ckpt["filename"] == model_name and "workflow_profile" in ckpt:
+                return ckpt["workflow_profile"]
+
+        # Fall back to arch-level default
+        arch = self.get_model_arch(model_name)
+        if arch in DEFAULT_WORKFLOW_PROFILES:
+            return DEFAULT_WORKFLOW_PROFILES[arch].copy()
+
+        # Ultimate fallback
+        return DEFAULT_WORKFLOW_PROFILES.get("sdxl", {}).copy()
+
     def is_diffusion_model(self, model_name: str) -> bool:
         """Check if a model is a diffusion model (UNET-only, needs separate CLIP/VAE)."""
         if model_name in self._diffusion_models:
@@ -425,35 +592,36 @@ class ModelRegistry:
         arch = self.get_model_arch(model_name)
         return arch in ("flux", "hunyuan")
 
-    def get_clip_models_for_arch(self, arch: str) -> list:
-        """Get the CLIP models appropriate for a model architecture."""
-        if arch == "flux":
-            # Flux needs t5xxl + clip_l
-            t5 = None
-            clip_l = None
-            for cm in self._clip_models:
-                cm_lower = cm.lower()
-                if "t5" in cm_lower:
-                    t5 = cm
-                elif "clip_l" in cm_lower:
-                    clip_l = cm
-            return [t5 or "t5xxl_fp8_e4m3fn.safetensors", clip_l or "clip_l.safetensors"]
-        
-        if arch == "hunyuan":
-            # Hunyuan may use different CLIP setup
-            return []
-        
+    def get_clip_models_for_arch(self, arch: str, model_name: str = "") -> list:
+        """Get the CLIP models appropriate for a model (profile-aware)."""
+        # Try model-specific profile first
+        if model_name:
+            profile = self.get_workflow_profile(model_name)
+            if profile.get("clip_name1") and profile.get("clip_name2"):
+                return [profile["clip_name1"], profile["clip_name2"]]
+
+        # Fall back to arch-level defaults
+        arch_profile = DEFAULT_WORKFLOW_PROFILES.get(arch, {})
+        if arch_profile.get("clip_name1") and arch_profile.get("clip_name2"):
+            return [arch_profile["clip_name1"], arch_profile["clip_name2"]]
+
         return []  # SDXL uses the checkpoint's built-in CLIP
 
-    def get_vae_for_arch(self, arch: str) -> str:
-        """Get the VAE model appropriate for a model architecture."""
-        if arch == "flux":
-            for v in self._vae_models:
-                if "ae" in v.lower() and "safetensors" in v.lower():
-                    return v
-            return "ae.safetensors"
-        
+    def get_vae_for_arch(self, arch: str, model_name: str = "") -> str:
+        """Get the VAE model appropriate for a model (profile-aware)."""
+        # Try model-specific profile first
+        if model_name:
+            profile = self.get_workflow_profile(model_name)
+            if profile.get("vae"):
+                return profile["vae"]
+
+        # Fall back to arch-level defaults
+        arch_profile = DEFAULT_WORKFLOW_PROFILES.get(arch, {})
+        if arch_profile.get("vae"):
+            return arch_profile["vae"]
+
         return ""  # SDXL uses the checkpoint's built-in VAE
+
 
     def get_available_models_for_llm(self) -> dict:
         """
@@ -509,7 +677,14 @@ class ModelRegistry:
         
         for lora_file in self._loras:
             if lora_file in catalog_loras:
-                loras.append(catalog_loras[lora_file])
+                entry = catalog_loras[lora_file].copy()
+                # Categorize based on keywords
+                keywords = [k.lower() for k in entry.get("keywords", [])]
+                if any(k in keywords for k in ["style", "art", "painting", "illustration", "anime"]):
+                    entry["category"] = "Style LoRA"
+                else:
+                    entry["category"] = "Subject/Character LoRA"
+                loras.append(entry)
             else:
                 loras.append({
                     "filename": lora_file,
@@ -517,6 +692,7 @@ class ModelRegistry:
                     "trigger_words": [],
                     "default_weight": 0.8,
                     "compatible_models": ["sdxl"],
+                    "category": "Unknown",
                 })
         
         if not loras:
@@ -562,25 +738,35 @@ class ModelRegistry:
         }
 
     def get_best_checkpoint(self, style_category: str) -> Optional[str]:
-        """Get the best checkpoint for a given style category."""
+        """Get the best checkpoint or diffusion model for a given style category."""
         catalog_ckpts = self._model_catalog.get("checkpoints", [])
+        catalog_dms = self._model_catalog.get("diffusion_models", [])
         
-        # Score each checkpoint by style match
+        # Combine all models for scoring
+        all_models = catalog_ckpts + catalog_dms
+        
+        # Score each model by style match
         best = None
         best_score = -1
         
-        for ckpt in catalog_ckpts:
-            if ckpt["filename"] in self._checkpoints or not self._checkpoints:
-                if style_category in ckpt.get("styles", []):
-                    score = ckpt.get("quality", 5)
+        for model in all_models:
+            # Check if model is actually available
+            filename = model["filename"]
+            is_available = not self._loaded or filename in self._checkpoints or filename in self._diffusion_models
+            
+            if is_available:
+                if style_category in model.get("styles", []):
+                    score = model.get("quality", 5)
                     if score > best_score:
-                        best = ckpt["filename"]
+                        best = filename
                         best_score = score
         
-        if not best and self._checkpoints:
+        if not best and self._diffusion_models:
+            best = self._diffusion_models[0]
+        elif not best and self._checkpoints:
             best = self._checkpoints[0]
-        elif not best and catalog_ckpts:
-            best = catalog_ckpts[0]["filename"]
+        elif not best and all_models:
+            best = all_models[0]["filename"]
         
         return best
 
@@ -676,17 +862,52 @@ class ModelRegistry:
         """Get default settings for a specific checkpoint."""
         return self.get_model_defaults(checkpoint)
 
+    def resolve_checkpoint(self, filename: str) -> Optional[str]:
+        """
+        Resolve a partial filename to its exact filename in the registry.
+        E.g. "z_image_turbo_bf16" -> "z_image_turbo_bf16.safetensors"
+        """
+        if not self._checkpoints and not self._diffusion_models:
+            return filename  # Trust it if API not loaded
+            
+        exact = filename in self._checkpoints or filename in self._diffusion_models
+        if exact:
+            return filename
+            
+        # Try substring match (case insensitive)
+        query = filename.lower()
+        if not query.endswith(".safetensors"):
+            query += ".safetensors"
+            
+        for dm in self._diffusion_models:
+            if dm.lower() == query or filename.lower() in dm.lower():
+                return dm
+                
+        for ckpt in self._checkpoints:
+            if ckpt.lower() == query or filename.lower() in ckpt.lower():
+                return ckpt
+                
+        return None
+
     def validate_checkpoint(self, filename: str) -> bool:
         """Check if a checkpoint actually exists in ComfyUI."""
-        if not self._checkpoints and not self._diffusion_models:
-            return True  # Can't validate without API
-        return filename in self._checkpoints or filename in self._diffusion_models
+        return self.resolve_checkpoint(filename) is not None
 
     def validate_lora(self, filename: str) -> bool:
         """Check if a LoRA actually exists in ComfyUI."""
         if not self._loras:
             return True
         return filename in self._loras
+
+    def get_lora_compatibility(self, lora_name: str) -> list:
+        """Get the base models compatible with this LoRA."""
+        # Check catalog
+        for lora in self._lora_catalog.get("loras", []):
+            if lora["filename"] == lora_name:
+                return lora.get("compatible_models", ["sdxl"])
+        
+        # Default for unknown LoRAs
+        return ["sdxl"]
 
     def has_ipadapter_support(self) -> bool:
         """Check if IP-Adapter nodes and models are available."""

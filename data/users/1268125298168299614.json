@@ -1,0 +1,14 @@
+{
+  "user_id": "1268125298168299614",
+  "preferred_styles": {
+    "artistic": 3,
+    "lineless model digital semirealistic illustration artwork": 1
+  },
+  "preferred_models": {
+    "DreamShaperXL_Lightning.safetensors": 4
+  },
+  "favorite_prompts": [],
+  "generation_count": 4,
+  "last_used_preset": "",
+  "custom_defaults": {}
+}

@@ -163,3 +163,49 @@ class StyleSelectView(View):
         async def callback(interaction: discord.Interaction):
             await self.on_select(interaction, style)
         return callback
+
+
+class PlanApprovalView(View):
+    """
+    Buttons for the pre-generation interactive loop.
+    Allows user to approve, reroll, or cancel an AI-generated plan.
+    """
+
+    def __init__(
+        self,
+        on_approve: Callable,
+        on_reroll: Callable,
+        on_cancel: Callable,
+        timeout: float = 600,
+    ):
+        super().__init__(timeout=timeout)
+        self.on_approve = on_approve
+        self.on_reroll = on_reroll
+        self.on_cancel = on_cancel
+
+    @button(label="🚀 Generate Now", style=discord.ButtonStyle.success, custom_id="plan_approve")
+    async def approve_button(self, interaction: discord.Interaction, btn: Button):
+        self._disable_all()
+        await interaction.response.edit_message(view=self)
+        await self.on_approve(interaction)
+
+    @button(label="🔄 Reroll Plan", style=discord.ButtonStyle.secondary, custom_id="plan_reroll")
+    async def reroll_button(self, interaction: discord.Interaction, btn: Button):
+        self._disable_all()
+        await interaction.response.edit_message(view=self)
+        await self.on_reroll(interaction)
+
+    @button(label="❌ Cancel", style=discord.ButtonStyle.danger, custom_id="plan_cancel")
+    async def cancel_button(self, interaction: discord.Interaction, btn: Button):
+        self._disable_all()
+        await interaction.response.edit_message(view=self)
+        await self.on_cancel(interaction)
+
+    def _disable_all(self):
+        for item in self.children:
+            if isinstance(item, Button):
+                item.disabled = True
+
+    async def on_timeout(self):
+        self._disable_all()
+

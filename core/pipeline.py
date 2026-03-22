@@ -63,7 +63,15 @@ class GenerationPipeline:
         if status_callback:
             await status_callback(JobStatus.BUILDING)
             
-        workflow = self.engine.builder.build(plan, reference_image, pose_image)
+        workflow = None
+        if plan.workflow_template and hasattr(self.engine, "workflow_manager"):
+            workflow, success = self.engine.workflow_manager.build_from_template(plan)
+            if not success:
+                logger.warning(f"Failed to build from template {plan.workflow_template}, falling back to dynamic builder.")
+                workflow = None
+
+        if workflow is None:
+            workflow = self.engine.builder.build(plan, reference_image, pose_image)
         
         if status_callback:
             await status_callback(JobStatus.GENERATING)

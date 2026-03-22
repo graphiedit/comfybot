@@ -176,23 +176,19 @@ class GeminiProvider(LLMProvider):
         if conversation_history:
             history = self._convert_history(conversation_history[-6:])
         
-        try:
-            # For latest google-genai, the AsyncClient is available via client.aio
-            chat = self.client.aio.chats.create(
-                model=self.model_name,
-                config=types.GenerateContentConfig(
-                    system_instruction=INTENT_SYSTEM_PROMPT,
-                    temperature=0.3,
-                    response_mime_type="application/json",
-                ),
-                history=history,
-            )
-            
-            response = await chat.send_message(user_msg)
-            plan_dict = self._parse_plan_json(response.text)
-        except Exception as e:
-            logger.error(f"Gemini intent analysis failed: {e}")
-            plan_dict = {}
+        # For latest google-genai, the AsyncClient is available via client.aio
+        chat = self.client.aio.chats.create(
+            model=self.model_name,
+            config=types.GenerateContentConfig(
+                system_instruction=INTENT_SYSTEM_PROMPT,
+                temperature=0.3,
+                response_mime_type="application/json",
+            ),
+            history=history,
+        )
+        
+        response = await chat.send_message(user_msg)
+        plan_dict = self._parse_plan_json(response.text)
         
         if not plan_dict:
             # Fallback — use basic defaults with enhanced prompt
@@ -245,53 +241,45 @@ class GeminiProvider(LLMProvider):
         if lora_trigger_words:
             user_content += f"LoRA Trigger Words (MUST include exactly): {', '.join(lora_trigger_words)}\n"
         
-        try:
-            response = await self.client.aio.models.generate_content(
-                model=self.model_name,
-                contents=user_content,
-                config=types.GenerateContentConfig(
-                    system_instruction=ENHANCE_SYSTEM_PROMPT,
-                    temperature=0.7,
-                )
+        response = await self.client.aio.models.generate_content(
+            model=self.model_name,
+            contents=user_content,
+            config=types.GenerateContentConfig(
+                system_instruction=ENHANCE_SYSTEM_PROMPT,
+                temperature=0.7,
             )
-            return response.text.strip()
-        except Exception as e:
-            logger.warning(f"Prompt enhancement failed: {e}")
-            return prompt
+        )
+        return response.text.strip()
 
     async def analyze_image(self, image_path: str) -> StyleAnalysis:
         self._check_configured()
         
-        try:
-            # Use the File API from the genai client
-            # But the new client allows uploading file
-            image_file = self.client.files.upload(file=image_path)
-            
-            response = await self.client.aio.models.generate_content(
-                model=self.model_name,
-                contents=[
-                    image_file, 
-                    VISION_ANALYSIS_PROMPT
-                ]
-            )
-            
-            result = response.text
-            analysis = StyleAnalysis(raw=result)
-            
-            for line in result.split("\n"):
-                line = line.strip()
-                if line.upper().startswith("STYLE:"):
-                    analysis.style = line.split(":", 1)[1].strip()
-                elif line.upper().startswith("KEYWORDS:"):
-                    analysis.keywords = line.split(":", 1)[1].strip()
-                elif line.upper().startswith("LORA_SEARCH:"):
-                    terms = line.split(":", 1)[1].strip()
-                    analysis.lora_search = [t.strip() for t in terms.split(",")]
-            
-            return analysis
-        except Exception as e:
-            logger.warning(f"Vision analysis failed: {e}")
-            return StyleAnalysis()
+        # Use the File API from the genai client
+        # But the new client allows uploading file
+        image_file = self.client.files.upload(file=image_path)
+        
+        response = await self.client.aio.models.generate_content(
+            model=self.model_name,
+            contents=[
+                image_file, 
+                VISION_ANALYSIS_PROMPT
+            ]
+        )
+        
+        result = response.text
+        analysis = StyleAnalysis(raw=result)
+        
+        for line in result.split("\n"):
+            line = line.strip()
+            if line.upper().startswith("STYLE:"):
+                analysis.style = line.split(":", 1)[1].strip()
+            elif line.upper().startswith("KEYWORDS:"):
+                analysis.keywords = line.split(":", 1)[1].strip()
+            elif line.upper().startswith("LORA_SEARCH:"):
+                terms = line.split(":", 1)[1].strip()
+                analysis.lora_search = [t.strip() for t in terms.split(",")]
+        
+        return analysis
 
     async def chat(
         self,
@@ -305,21 +293,17 @@ class GeminiProvider(LLMProvider):
         if conversation_history:
             history = self._convert_history(conversation_history[-10:])
             
-        try:
-            chat = self.client.aio.chats.create(
-                model=self.model_name,
-                config=types.GenerateContentConfig(
-                    system_instruction=system_context or CHAT_SYSTEM_PROMPT,
-                    temperature=0.8,
-                ),
-                history=history,
-            )
-            
-            response = await chat.send_message(message)
-            return response.text.strip()
-        except Exception as e:
-            logger.error(f"Chat failed: {e}")
-            return "Sorry, I'm having trouble connecting to my Gemini brain. Please try again!"
+        chat = self.client.aio.chats.create(
+            model=self.model_name,
+            config=types.GenerateContentConfig(
+                system_instruction=system_context or CHAT_SYSTEM_PROMPT,
+                temperature=0.8,
+            ),
+            history=history,
+        )
+        
+        response = await chat.send_message(message)
+        return response.text.strip()
 
     async def refine_plan(
         self,
@@ -339,24 +323,21 @@ class GeminiProvider(LLMProvider):
             f"{models_str}"
         )
         
-        try:
-            response = await self.client.aio.models.generate_content(
-                model=self.model_name,
-                contents=user_msg,
-                config=types.GenerateContentConfig(
-                    system_instruction=REFINE_SYSTEM_PROMPT,
-                    temperature=0.3,
-                    response_mime_type="application/json",
-                )
+        response = await self.client.aio.models.generate_content(
+            model=self.model_name,
+            contents=user_msg,
+            config=types.GenerateContentConfig(
+                system_instruction=REFINE_SYSTEM_PROMPT,
+                temperature=0.3,
+                response_mime_type="application/json",
             )
-            refined = self._parse_plan_json(response.text)
-            
-            if refined:
-                # Update only the fields that changed
-                for key, value in refined.items():
-                    if hasattr(plan, key):
-                        setattr(plan, key, value)
-        except Exception as e:
-            logger.error(f"Plan refinement failed: {e}")
+        )
+        refined = self._parse_plan_json(response.text)
+        
+        if refined:
+            # Update only the fields that changed
+            for key, value in refined.items():
+                if hasattr(plan, key):
+                    setattr(plan, key, value)
             
         return plan

@@ -36,6 +36,7 @@ IMPORTANT: There are TWO types of models:
 You MUST output ONLY valid JSON with this exact structure:
 {
     "action": "generate",
+    "workflow_template": "",
     "style_category": "realistic",
     "checkpoint": "model_filename",
     "model_arch": "sdxl",
@@ -59,6 +60,7 @@ You MUST output ONLY valid JSON with this exact structure:
 Rules:
 - ONLY use models/LoRAs that appear in the available_models list. Never invent filenames.
 - Pick the best model for the style. You can choose from BOTH checkpoints AND diffusion_models lists.
+- WORKFLOW TEMPLATES: If the prompt strongly matches an "AVAILABLE WORKFLOW TEMPLATE" provided in the context, set "workflow_template" to its name. Otherwise, leave it empty (""). If a template is chosen, it supersedes model architecture choices.
 - "model_arch" MUST match the model type:
   - SDXL checkpoints → "sdxl"
   - Flux models → "flux"
@@ -68,9 +70,13 @@ Rules:
   - Flux Dev: cfg 1.0, steps 20, sampler euler, scheduler simple
   - Flux Turbo/Schnell/Lightning: cfg 1.0, steps 4, sampler euler, scheduler simple
   - Hunyuan: cfg 1.0, steps 30, sampler dpmpp_2m, scheduler normal
-- Only add LoRAs if they match the prompt AND are compatible with the chosen model architecture.
-- LoRA "compatible_models" tells you which architectures it works with. NEVER pair a LoRA with an incompatible model.
-- Flux LoRAs are compatible with Flux models only. SDXL LoRAs are compatible with SDXL models only.
+- LORA USAGE (EXTREMELY IMPORTANT):
+  - ONLY add LoRAs if they match the specific artistic style requested.
+  - DO NOT use "Style LoRAs" (e.g., Hindu Art, Miniature, Pixel Art) for general subjects (like "Indian girl", "man in a suit") unless the user explicitly asks for that SPECIFIC style.
+  - If the user wants a realistic photo, DO NOT use a style LoRA.
+  - LoRAs MUST be compatible with the chosen "model_arch". Check the "compatible_models" field for each LoRA.
+  - Flux LoRAs work ONLY with Flux models. SDXL LoRAs work ONLY with SDXL models.
+  - Never pair a LoRA with an incompatible model.
 - If user attached an image, consider IP-Adapter (SDXL only) for style reference.
 - ControlNet currently works with SDXL models only.
 - enhanced_prompt should be detailed (50-80 words) with lighting, camera, mood, medium details.
@@ -316,11 +322,7 @@ class OllamaProvider(LLMProvider):
             {"role": "user", "content": user_content},
         ]
         
-        try:
-            return await self._chat(messages, temperature=0.7)
-        except Exception as e:
-            logger.warning(f"Prompt enhancement failed: {e}")
-            return prompt
+        return await self._chat(messages, temperature=0.7)
 
     async def analyze_image(self, image_path: str) -> StyleAnalysis:
         """Analyze an image using Ollama vision model."""
@@ -335,24 +337,20 @@ class OllamaProvider(LLMProvider):
             }
         ]
         
-        try:
-            result = await self._chat(messages, model=self.vision_model)
-            
-            analysis = StyleAnalysis(raw=result)
-            for line in result.split("\n"):
-                line = line.strip()
-                if line.upper().startswith("STYLE:"):
-                    analysis.style = line.split(":", 1)[1].strip()
-                elif line.upper().startswith("KEYWORDS:"):
-                    analysis.keywords = line.split(":", 1)[1].strip()
-                elif line.upper().startswith("LORA_SEARCH:"):
-                    terms = line.split(":", 1)[1].strip()
-                    analysis.lora_search = [t.strip() for t in terms.split(",")]
-            
-            return analysis
-        except Exception as e:
-            logger.warning(f"Vision analysis failed: {e}")
-            return StyleAnalysis()
+        result = await self._chat(messages, model=self.vision_model)
+        
+        analysis = StyleAnalysis(raw=result)
+        for line in result.split("\n"):
+            line = line.strip()
+            if line.upper().startswith("STYLE:"):
+                analysis.style = line.split(":", 1)[1].strip()
+            elif line.upper().startswith("KEYWORDS:"):
+                analysis.keywords = line.split(":", 1)[1].strip()
+            elif line.upper().startswith("LORA_SEARCH:"):
+                terms = line.split(":", 1)[1].strip()
+                analysis.lora_search = [t.strip() for t in terms.split(",")]
+        
+        return analysis
 
     async def chat(
         self,
@@ -371,11 +369,7 @@ class OllamaProvider(LLMProvider):
         
         messages.append({"role": "user", "content": message})
         
-        try:
-            return await self._chat(messages, temperature=0.8)
-        except Exception as e:
-            logger.error(f"Chat failed: {e}")
-            return "Sorry, I'm having trouble connecting to my AI brain. Please try again!"
+        return await self._chat(messages, temperature=0.8)
 
     async def refine_plan(
         self,

@@ -195,3 +195,44 @@ def create_quality_report_embed(score: QualityScore) -> discord.Embed:
         embed.add_field(name="Detected Issues", value="\n".join([f"• {i}" for i in score.issues]), inline=True)
         
     return embed
+
+
+def create_plan_approval_embed(plan, review=None) -> discord.Embed:
+    """Create an embed showing the drafted GenerationPlan for user approval."""
+    embed = discord.Embed(
+        title="📋 Generation Plan Review",
+        description="I've drafted a plan based on your prompt. Please review the choices below.",
+        color=COLOR_INFO,
+    )
+    
+    prompt_display = plan.enhanced_prompt[:250] + ("..." if len(plan.enhanced_prompt) > 250 else "")
+    embed.add_field(name="✨ Enhanced Prompt", value=f"```{prompt_display}```", inline=False)
+    
+    details = []
+    details.append(f"**Model:** `{plan.checkpoint}` ({plan.model_arch})")
+    
+    # Structural configs
+    if plan.use_ipadapter:
+        details.append("👤 **Face Fix:** Enabled (IP-Adapter)")
+    if plan.use_controlnet:
+        details.append("🦾 **Pose Match:** Enabled (ControlNet)")
+        
+    if plan.loras:
+        lora_str = ", ".join(l.get("name", "Unknown").replace(".safetensors", "") for l in plan.loras)
+        details.append(f"**LoRAs:** {lora_str}")
+        
+    embed.add_field(name="⚙️ Configuration", value="\n".join(details), inline=False)
+    
+    # Review warnings or suggestions
+    if review:
+        if review.warnings:
+            warn_str = "\n".join(f"⚠️ {w}" for w in review.warnings)
+            embed.add_field(name="⚠️ Important Warnings", value=warn_str, inline=False)
+        
+        if review.suggestions:
+            sugg_str = "\n".join(f"💡 {s}" for s in review.suggestions[:2])
+            embed.add_field(name="💡 Suggestions", value=sugg_str, inline=False)
+            
+    embed.set_footer(text="Click '🚀 Generate Now' to proceed!")
+    return embed
+
