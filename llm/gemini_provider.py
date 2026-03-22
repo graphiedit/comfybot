@@ -154,7 +154,7 @@ class GeminiProvider(LLMProvider):
         gemini_history = []
         for msg in history:
             role = "user" if msg["role"] == "user" else "model"
-            gemini_history.append(types.Content(role=role, parts=[types.Part.from_text(msg["content"])]))
+            gemini_history.append(types.Content(role=role, parts=[types.Part.from_text(text=msg["content"])]))
         return gemini_history
 
     async def analyze_intent(

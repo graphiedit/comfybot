@@ -1,0 +1,36 @@
+- default_cfg: 7.0
+  default_model: Juggernaut-XL_v9_RunDiffusion.safetensors
+  default_steps: 35
+  description: Dramatic, movie-like quality with strong lighting
+  display_name: "\U0001F3AC Cinematic"
+  name: cinematic
+  negative_modifiers: cartoon, illustration, 3d render, low quality, bad lighting
+  prompt_modifiers: cinematic lighting, anamorph lens, 8k uhd, photorealistic, dramatic
+    movie still, highly detailed
+  recommended_loras: []
+- default_cfg: 6.5
+  default_model: ''
+  default_steps: 25
+  description: High quality 2D anime style
+  display_name: "\U0001F38C Anime"
+  name: anime
+  negative_modifiers: realistic, 3d, photo, worst quality, low quality
+  prompt_modifiers: masterpiece, best quality, ultra-detailed, anime style, 2d illustration,
+    vibrant colors
+  recommended_loras: []
+- default_cfg: 6.0
+  default_model: Juggernaut-XL_v9_RunDiffusion.safetensors
+  default_steps: 30
+  description: Extremely realistic photography
+  display_name: "\U0001F4F8 Photorealistic"
+  name: photorealistic
+  negative_modifiers: (deformed iris, deformed pupils, semi-realistic, cgi, 3d, render,
+    sketch, cartoon, drawing, anime:1.4), text, close up, cropped, out of frame, worst
+    quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra
+    fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed,
+    blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured,
+    gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra
+    legs, fused fingers, too many fingers, long neck
+  prompt_modifiers: raw photo, 8k uhd, dslr, soft lighting, high quality, film grain,
+    Fujifilm XT4
+  recommended_loras: []

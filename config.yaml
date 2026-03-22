@@ -4,7 +4,7 @@
 
 # Discord Bot
 discord:
-  token: "MTQ4NTA0Nzk3NjUzNDYxMDA4MA.GjxB35.utVzpTIPEy_bfHLTG8dJfezUQAQm1omRNSNtlc"
+  token: "MTQ4NTA0Nzk3NjUzNDYxMDA4MA.Gm2uDq.jOooWkVA-K7Pjrj2O9zcSvry3FCgJd0XClBww0"
 
 # ComfyUI Server
 comfyui:
@@ -21,7 +21,7 @@ llm:
     vision_model: "llava"     # Vision model for image analysis
   
   gemini:
-    api_key: "AIzaSyCuBssbJcOovINF4p8p05bMW9hhKBJpys8"               # Add your Gemini API key here
+    api_key: "AIzaSyDCJyXFZkG6oEHNGXXlNs0u483Zr4-mGmo"               # Add your Gemini API key here
     model: "gemini-2.5-flash"
 
 # Model directories

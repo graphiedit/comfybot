@@ -106,22 +106,28 @@ class AIDirectorBot(commands.Bot):
         if self.user and self.user.mentioned_in(message):
             # Remove mention from message
             clean_content = message.content.replace(f"<@{self.user.id}>", "").strip()
-            clean_content = message.content.replace(f"<@!{self.user.id}>", "").strip()
+            clean_content = clean_content.replace(f"<@!{self.user.id}>", "").strip()
             
-            if clean_content:
-                async with message.channel.typing():
-                    try:
-                        response = await self.engine.chat(
-                            user_id=str(message.author.id),
-                            message=clean_content,
-                        )
-                        
-                        from discord_ui.embeds import create_chat_embed
-                        embed = create_chat_embed(response)
-                        await message.reply(embed=embed)
-                    except Exception as e:
-                        logger.error(f"Chat error: {e}", exc_info=True)
-                        await message.reply(f"❌ Sorry, I ran into an error: {str(e)[:200]}")
+            # If nothing left, just return
+            if not clean_content:
+                await self.process_commands(message)
+                return
+                
+            logger.info(f"Received mention chat text: {clean_content}")
+            
+            async with message.channel.typing():
+                try:
+                    response = await self.engine.chat(
+                        user_id=str(message.author.id),
+                        message=clean_content,
+                    )
+                    
+                    from discord_ui.embeds import create_chat_embed
+                    embed = create_chat_embed(response)
+                    await message.reply(embed=embed)
+                except Exception as e:
+                    logger.error(f"Chat error: {e}", exc_info=True)
+                    await message.reply(f"❌ Sorry, I ran into an error: {str(e)[:200]}")
         
         await self.process_commands(message)
 

@@ -93,9 +93,15 @@ def detect_architecture(filename: str) -> dict:
     if "lightning" in name_lower:
         return MODEL_ARCHITECTURES["lightning"].copy()
     
+    if "z_image" in name_lower or "z-image" in name_lower:
+        info = MODEL_ARCHITECTURES["flux"].copy()
+        if "turbo" in name_lower:
+            info["default_steps"] = 4
+        return info
+        
     if "turbo" in name_lower:
         return MODEL_ARCHITECTURES["turbo"].copy()
-    
+        
     # Check for Qwen image models (these are diffusion_models too)
     if "qwen" in name_lower and "image" in name_lower:
         info = MODEL_ARCHITECTURES["flux"].copy()

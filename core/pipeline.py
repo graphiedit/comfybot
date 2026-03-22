@@ -12,7 +12,7 @@ from enum import Enum
 from typing import List, Dict, Any, Optional
 
 from llm.base import GenerationPlan
-from core.quality_analyzer import QualityAnalyzer
+from core.quality_analyzer import QualityAnalyzer, QualityScore
 from core.queue_manager import JobStatus
 
 logger = logging.getLogger(__name__)
