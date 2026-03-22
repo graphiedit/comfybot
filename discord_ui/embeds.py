@@ -1,253 +1,209 @@
 """
-Discord Rich Embeds — beautiful, informative message formatting.
-
-Creates progress indicators, generation results with metadata,
-and error states with helpful messages.
+Discord Embeds — rich visual messages for the bot.
 """
 import discord
-from typing import Optional
-
-from core.queue_manager import Job, JobStatus
-from core.quality_analyzer import QualityScore
-
-# Color palette
-COLOR_PRIMARY = 0x7C3AED     # Purple — main brand
-COLOR_SUCCESS = 0x10B981     # Green — completed
-COLOR_WARNING = 0xF59E0B     # Amber — warnings
-COLOR_ERROR = 0xEF4444       # Red — errors
-COLOR_INFO = 0x3B82F6        # Blue — info
-COLOR_GENERATING = 0x8B5CF6  # Light purple — in progress
+from typing import Dict, Any, Optional
 
 
-def create_progress_embed(job: Job, queue_position: int = 0) -> discord.Embed:
-    """Create a progress embed showing generation status."""
-    status_map = {
-        JobStatus.QUEUED: ("⏳ In Queue", f"Position: #{queue_position}", COLOR_INFO),
-        JobStatus.ANALYZING: ("🧠 Analyzing Prompt", "AI Director is understanding your request...", COLOR_GENERATING),
-        JobStatus.BUILDING: ("🔧 Building Pipeline", "Constructing the optimal workflow...", COLOR_GENERATING),
-        JobStatus.GENERATING: ("🎨 Generating Image", "ComfyUI is creating your masterpiece...", COLOR_GENERATING),
-        JobStatus.UPSCALING: ("⬆️ Upscaling", "Enhancing resolution...", COLOR_GENERATING),
-    }
-    
-    title, desc, color = status_map.get(
-        job.status,
-        ("⚙️ Processing", "Working on it...", COLOR_INFO),
-    )
-    
-    embed = discord.Embed(title=title, description=desc, color=color)
-    embed.set_footer(text=f"Job: {job.id}")
-    
-    if job.prompt:
-        prompt_display = job.prompt[:100] + ("..." if len(job.prompt) > 100 else "")
-        embed.add_field(name="Prompt", value=f"```{prompt_display}```", inline=False)
-    
-    return embed
+# ═══════════════════════════════════════════════════════════════
+# Generation Flow Embeds
+# ═══════════════════════════════════════════════════════════════
 
-
-def create_generation_embed(
-    job: Job,
-    plan_metadata: dict = None,
-) -> discord.Embed:
-    """Create a rich result embed showing what was generated and how."""
-    elapsed = job.completed_at - job.started_at if job.completed_at else 0
-    
+def create_generating_embed(prompt: str, workflow_name: str = "") -> discord.Embed:
+    """Status embed while generating."""
     embed = discord.Embed(
-        title="✨ Generation Complete",
-        color=COLOR_SUCCESS,
+        title="🎨 Generating...",
+        description=f"**Prompt:** {prompt[:200]}",
+        color=0xf59e0b,
     )
-    
-    if job.prompt:
-        prompt_display = job.prompt[:200] + ("..." if len(job.prompt) > 200 else "")
-        embed.add_field(name="📝 Prompt", value=prompt_display, inline=False)
-    
-    if plan_metadata:
-        # Show what the AI chose
-        details = []
-        if plan_metadata.get("checkpoint"):
-            model_name = plan_metadata["checkpoint"].replace(".safetensors", "")
-            details.append(f"**Model**: {model_name}")
-        if plan_metadata.get("style_category"):
-            details.append(f"**Style**: {plan_metadata['style_category']}")
-        if plan_metadata.get("loras"):
-            lora_names = [l.get("name", "?").replace(".safetensors", "") for l in plan_metadata["loras"]]
-            details.append(f"**LoRAs**: {', '.join(lora_names)}")
-        if plan_metadata.get("use_controlnet"):
-            details.append(f"**ControlNet**: {plan_metadata.get('controlnet_type', 'enabled')}")
-        if plan_metadata.get("use_ipadapter"):
-            details.append(f"**IP-Adapter**: weight {plan_metadata.get('ipadapter_weight', 0.6)}")
-        
-        if details:
-            embed.add_field(name="🤖 AI Decisions", value="\n".join(details), inline=True)
-        
-        # Technical details
-        tech = []
-        if plan_metadata.get("steps"):
-            tech.append(f"Steps: {plan_metadata['steps']}")
-        if plan_metadata.get("cfg"):
-            tech.append(f"CFG: {plan_metadata['cfg']}")
-        if plan_metadata.get("sampler"):
-            tech.append(f"Sampler: {plan_metadata['sampler']}")
-        if plan_metadata.get("seed"):
-            tech.append(f"Seed: {plan_metadata['seed']}")
-        
-        if tech:
-            embed.add_field(name="⚙️ Settings", value="\n".join(tech), inline=True)
-    
-    if plan_metadata and plan_metadata.get("reasoning"):
-        embed.add_field(
-            name="💡 AI Reasoning",
-            value=plan_metadata["reasoning"][:200],
-            inline=False,
-        )
-    
-    embed.set_footer(text=f"⏱️ {elapsed:.1f}s | Job: {job.id}")
-    
+    if workflow_name:
+        embed.add_field(name="Workflow", value=workflow_name, inline=True)
+    embed.set_footer(text="This may take a moment...")
     return embed
 
 
-def create_error_embed(error: str, job: Optional[Job] = None) -> discord.Embed:
-    """Create an error embed with helpful information."""
+def create_result_embed(prompt: str, workflow: str = "", seed: int = 0) -> discord.Embed:
+    """Embed for a successfully generated image."""
+    embed = discord.Embed(
+        title="✨ Image Generated",
+        color=0x22c55e,
+    )
+    embed.add_field(name="Prompt", value=prompt[:1024], inline=False)
+    if workflow:
+        embed.add_field(name="Workflow", value=workflow, inline=True)
+    if seed:
+        embed.add_field(name="Seed", value=str(seed), inline=True)
+    return embed
+
+
+def create_error_embed(error_message: str) -> discord.Embed:
+    """Error embed."""
     embed = discord.Embed(
         title="❌ Generation Failed",
-        description=error[:500],
-        color=COLOR_ERROR,
+        description=error_message[:2000],
+        color=0xef4444,
     )
-    
-    # Add helpful troubleshooting
-    if "connect" in error.lower() or "timed out" in error.lower():
-        embed.add_field(
-            name="💡 Tip",
-            value="Make sure ComfyUI is running at the configured URL.",
-            inline=False,
-        )
-    elif "checkpoint" in error.lower() or "model" in error.lower():
-        embed.add_field(
-            name="💡 Tip",
-            value="The requested model may not be installed. Check your ComfyUI models folder.",
-            inline=False,
-        )
-    elif "ollama" in error.lower():
-        embed.add_field(
-            name="💡 Tip",
-            value="Make sure Ollama is running (`ollama serve`).",
-            inline=False,
-        )
-    
-    if job:
-        embed.set_footer(text=f"Job: {job.id}")
-    
+    embed.set_footer(text="Try a different prompt or use /help")
     return embed
 
 
-def create_queue_embed(queue_size: int, active_count: int) -> discord.Embed:
-    """Create a queue status embed."""
-    if active_count == 0 and queue_size == 0:
-        desc = "🟢 No active jobs — ready to generate!"
+# ═══════════════════════════════════════════════════════════════
+# Chat & Agentic Embeds
+# ═══════════════════════════════════════════════════════════════
+
+def create_chat_embed(message: str, user_id: str = "") -> discord.Embed:
+    """Embed for AI chat responses."""
+    embed = discord.Embed(
+        description=message[:4096],
+        color=0x8b5cf6,
+    )
+    embed.set_author(name="AI Director", icon_url=None)
+    return embed
+
+
+def create_plan_review_embed(plan, profile=None) -> discord.Embed:
+    """Embed showing the generation plan for user review before generating."""
+    embed = discord.Embed(
+        title="📋 Generation Plan — Review & Confirm",
+        description="Here's what I'm about to generate. Confirm or edit before I start!",
+        color=0x6366f1,
+    )
+
+    embed.add_field(name="✍️ Enhanced Prompt", value=plan.enhanced_prompt[:1024], inline=False)
+    embed.add_field(name="🔧 Workflow", value=plan.workflow_template or "auto-select", inline=True)
+    embed.add_field(name="📐 Dimensions", value=f"{plan.width}×{plan.height}", inline=True)
+
+    if plan.reasoning:
+        embed.add_field(name="💭 Reasoning", value=plan.reasoning[:256], inline=False)
+
+    if profile:
+        caps = ", ".join(sorted(profile.capabilities)) if profile.capabilities else "general"
+        embed.add_field(name="⚡ Capabilities", value=caps, inline=True)
+
+        if profile.requires_image:
+            imgs = ", ".join(img.purpose for img in profile.image_inputs)
+            embed.add_field(name="🖼️ Images Needed", value=f"{profile.min_images} ({imgs})", inline=True)
+
+    if plan.images:
+        embed.add_field(name="📎 Attached Images", value=f"{len(plan.images)} uploaded", inline=True)
+    elif plan.needs_image:
+        embed.add_field(name="⚠️ Images Required", value="This workflow needs images — attach them!", inline=False)
+
+    embed.set_footer(text="Click ✅ Generate to proceed, or ✏️ Edit to modify")
+    return embed
+
+
+# ═══════════════════════════════════════════════════════════════
+# Workflow & Info Embeds
+# ═══════════════════════════════════════════════════════════════
+
+def create_workflow_list_embed(
+    workflow_descs: Dict[str, str],
+    profiles: Optional[Dict[str, Any]] = None,
+) -> discord.Embed:
+    """List available workflows with enriched metadata."""
+    embed = discord.Embed(
+        title="🔧 Available Workflows",
+        description=f"{len(workflow_descs)} workflow(s) loaded",
+        color=0x3b82f6,
+    )
+
+    for name, desc in workflow_descs.items():
+        value_parts = [desc[:150]]
+
+        if profiles and name in profiles:
+            p = profiles[name]
+            caps = p.get("capabilities", [])
+            if caps:
+                value_parts.append(f"**Caps:** {', '.join(caps[:5])}")
+            if p.get("requires_image"):
+                value_parts.append(f"**Images:** {p.get('min_images', '?')} required")
+            arch = p.get("architecture", "unknown")
+            if arch != "unknown":
+                value_parts.append(f"**Arch:** {arch}")
+
+        embed.add_field(name=f"📄 {name}", value="\n".join(value_parts), inline=False)
+
+    embed.set_footer(text="Use /generate workflow:<name> to use a specific workflow")
+    return embed
+
+
+def create_help_embed() -> discord.Embed:
+    """Help embed with usage instructions."""
+    embed = discord.Embed(
+        title="🎨 AI Director — Help",
+        description="I'm your AI creative assistant! Here's how to use me:",
+        color=0x8b5cf6,
+    )
+
+    embed.add_field(
+        name="💬 Chat with me",
+        value="@mention me to chat! I can discuss art, help refine ideas, and generate images from conversation.",
+        inline=False,
+    )
+    embed.add_field(
+        name="🖼️ Generate Images",
+        value=(
+            "`/generate <prompt>` — Generate an image from a text prompt\n"
+            "`/generate <prompt> image:<file>` — Generate with a reference image\n"
+            "`/generate <prompt> workflow:<name>` — Use a specific workflow"
+        ),
+        inline=False,
+    )
+    embed.add_field(
+        name="📋 Other Commands",
+        value=(
+            "`/workflows` — List available generation workflows\n"
+            "`/queue` — Check generation queue status\n"
+            "`/status` — Check bot and system status\n"
+            "`/upload_workflow` — Upload a new workflow (admin only)"
+        ),
+        inline=False,
+    )
+    embed.add_field(
+        name="🖼️ Image Buttons",
+        value="After generation, use:\n🔄 Retry | 🎲 Vary | ↔️ Wide | ↕️ Tall | 🗑️ Delete",
+        inline=False,
+    )
+
+    embed.set_footer(text="Tip: Attach images to chat messages for image editing/style transfer!")
+    return embed
+
+
+# ═══════════════════════════════════════════════════════════════
+# System Embeds
+# ═══════════════════════════════════════════════════════════════
+
+def create_queue_embed(position: int = 0, total: int = 0) -> discord.Embed:
+    """Queue status embed."""
+    if total == 0:
+        embed = discord.Embed(
+            title="📊 Queue Status",
+            description="No jobs in queue — ready to generate!",
+            color=0x22c55e,
+        )
     else:
-        desc = f"🔵 {active_count} generating, {queue_size} waiting"
-    
-    embed = discord.Embed(
-        title="📊 Queue Status",
-        description=desc,
-        color=COLOR_INFO,
-    )
+        embed = discord.Embed(
+            title="📊 Queue Status",
+            description=f"**{total}** job(s) in queue",
+            color=0xf59e0b,
+        )
+        if position > 0:
+            embed.add_field(name="Your Position", value=f"#{position}", inline=True)
     return embed
 
 
-def create_chat_embed(response: str) -> discord.Embed:
-    """Create a chat response embed."""
+def create_status_embed(llm_name: str, workflow_count: int, config: dict = None) -> discord.Embed:
+    """System status embed."""
     embed = discord.Embed(
-        description=response,
-        color=COLOR_PRIMARY,
+        title="🤖 System Status",
+        color=0x3b82f6,
     )
-    embed.set_author(name="🎨 AI Director")
+
+    embed.add_field(name="LLM Provider", value=llm_name, inline=True)
+    embed.add_field(name="Workflows Loaded", value=str(workflow_count), inline=True)
+
+    comfyui_url = config.get("comfyui", {}).get("url", "unknown") if config else "unknown"
+    embed.add_field(name="ComfyUI Server", value=comfyui_url, inline=True)
+
     return embed
-
-
-def create_quality_report_embed(score: QualityScore) -> discord.Embed:
-    """Display the results of the LLM quality analysis."""
-    
-    color = COLOR_SUCCESS if score.overall >= 7.0 else (COLOR_WARNING if score.overall >= 5.0 else COLOR_ERROR)
-    
-    embed = discord.Embed(
-        title="🔍 Quality Analysis Report",
-        description=f"**Overall Score:** {score.overall}/10",
-        color=color
-    )
-    
-    # Detailed scores
-    details = []
-    if score.faces is not None:
-        details.append(f"**Faces:** {score.faces}/10")
-    if score.hands is not None:
-        details.append(f"**Hands:** {score.hands}/10")
-    if score.composition is not None:
-        details.append(f"**Composition:** {score.composition}/10")
-    if score.sharpness is not None:
-        details.append(f"**Sharpness:** {score.sharpness}/10")
-    if score.artifacts is not None:
-        details.append(f"**Artifacts:** {score.artifacts}/10 (higher is better)")
-        
-    embed.add_field(name="Detailed Scores", value="\n".join(details), inline=True)
-    
-    # Issues
-    if score.issues:
-        embed.add_field(name="Detected Issues", value="\n".join([f"• {i}" for i in score.issues]), inline=True)
-        
-    return embed
-
-
-def create_plan_approval_embed(plan, review=None) -> discord.Embed:
-    """Create an embed showing the drafted GenerationPlan for user approval."""
-    embed = discord.Embed(
-        title="📋 Generation Plan Review",
-        description="I've drafted a plan based on your prompt. Please review the choices below.",
-        color=COLOR_INFO,
-    )
-    
-    prompt_display = plan.enhanced_prompt[:250] + ("..." if len(plan.enhanced_prompt) > 250 else "")
-    embed.add_field(name="✨ Enhanced Prompt", value=f"```{prompt_display}```", inline=False)
-    
-    details = []
-    details.append(f"**Model:** `{plan.checkpoint}` ({plan.model_arch})")
-    
-    # Structural configs
-    if plan.use_ipadapter:
-        details.append("👤 **Face Fix:** Enabled (IP-Adapter)")
-    if plan.use_controlnet:
-        details.append("🦾 **Pose Match:** Enabled (ControlNet)")
-        
-    if plan.loras:
-        lora_str = ", ".join(l.get("name", "Unknown").replace(".safetensors", "") for l in plan.loras)
-        details.append(f"**LoRAs:** {lora_str}")
-        
-    embed.add_field(name="⚙️ Configuration", value="\n".join(details), inline=False)
-    
-    # Review warnings or suggestions
-    if review:
-        if review.warnings:
-            warn_str = "\n".join(f"⚠️ {w}" for w in review.warnings)
-            embed.add_field(name="⚠️ Important Warnings", value=warn_str, inline=False)
-        
-        if review.suggestions:
-            sugg_str = "\n".join(f"💡 {s}" for s in review.suggestions[:2])
-            embed.add_field(name="💡 Suggestions", value=sugg_str, inline=False)
-            
-    embed.set_footer(text="Click '🚀 Generate Now' to proceed!")
-    return embed
-
-def create_workflows_list_embed(templates: dict) -> discord.Embed:
-    """Create a nice list of available workflow templates."""
-    embed = discord.Embed(
-        title="📜 Available Workflow Templates",
-        description="These workflows are available for use via the AI Director.",
-        color=COLOR_INFO,
-    )
-    
-    for name, info in templates.items():
-        desc = info.get("description", "No description provided.")
-        embed.add_field(name=f"🔹 {name}", value=desc, inline=False)
-        
-    embed.set_footer(text="Use /generate workflow: [name] or just chat with the bot!")
-    return embed
-

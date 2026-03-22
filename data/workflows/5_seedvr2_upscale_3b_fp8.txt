@@ -1,0 +1,1 @@
+The ComfyUI workflow named "5_seedvr2_upscale_3b_fp8" is intended for processing input images with unknown architecture and capabilities including image scaling up by 300% (upscale) using FP8 method. It requires one image as an input.

@@ -44,7 +44,8 @@ def test_error_agent():
     print(f"Fixes: {strategy2.fixes}")
     assert strategy2.error_type == ErrorType.META_TENSOR
     assert strategy2.fixes[0]["action"] == "change_weight_dtype"
-    assert strategy2.fixes[0]["new_value"] == "fp16"
+    assert strategy2.fixes[0]["new_value"] == "fp8_e4m3fn"
+
     
     # 3. Test OOM error
     error3 = "RuntimeError: CUDA out of memory. Tried to allocate..."

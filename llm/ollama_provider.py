@@ -1,398 +1,336 @@
 """
-Ollama LLM Provider — local AI models via Ollama.
+Ollama LLM Provider — local AI brain via Ollama.
 
-Supports text models (qwen2.5:7b, llama3.1, etc.) and vision models (llava).
+Optimized for small models (qwen2.5:1.5b). Uses extremely structured
+prompts to get reliable JSON output from limited-capacity models.
 """
 import json
-import base64
+import re
+import random
 import logging
-from typing import Optional
+from typing import Optional, List, Dict
 
 import aiohttp
 
-from .base import (
-    LLMProvider,
-    GenerationPlan,
-    StyleAnalysis,
-    register_provider,
-)
+from llm.base import LLMProvider, GenerationPlan, ChatResponse
 
 logger = logging.getLogger(__name__)
 
-# System prompt for intent analysis — tells the LLM to output structured JSON
-INTENT_SYSTEM_PROMPT = """You are an AI Director for an advanced image generation system using ComfyUI.
 
-Your job: analyze the user's prompt and decide the BEST generation strategy.
+# ═══════════════════════════════════════════════════════════════
+# SYSTEM PROMPTS — Carefully tuned for small models
+# ═══════════════════════════════════════════════════════════════
 
-You will receive:
-1. The user's prompt
-2. A list of available models, LoRAs, and PRE-BUILT WORKFLOW TEMPLATES.
-3. Historical Workflow Performance Scores (if available)
+INTENT_SYSTEM_PROMPT = """You are an AI image generation assistant. Your job is to:
+1. Pick the BEST workflow template for the user's request
+2. Write a detailed image generation prompt
+3. Determine if the user needs to provide images
 
-IMPORTANT:
-- Focus first and foremost on selecting the right WORKFLOW TEMPLATE.
-- We no longer dynamically build graphs node-by-node. You MUST select a workflow template.
+AVAILABLE WORKFLOW TEMPLATES (with capabilities):
+{workflow_list}
 
-You MUST output ONLY valid JSON with this exact structure:
-{
-    "action": "generate",
-    "workflow_template": "name_of_template_here",
-    "style_category": "realistic",
-    "checkpoint": "model_filename",
-    "model_arch": "sdxl",
-    "loras": [{"name": "filename.safetensors", "weight": 0.8}],
-    "enhanced_prompt": "detailed prompt here...",
-    "negative_prompt": "worst quality, low quality...",
-    "steps": 30,
-    "cfg": 7.0,
-    "sampler": "dpmpp_2m_sde",
-    "scheduler": "karras",
-    "width": 1024,
-    "height": 1024,
-    "reasoning": "Brief explanation, specifically why you picked this workflow template."
-}
+RULES:
+- You MUST pick a workflow_template from the list above
+- Pick the template whose capabilities and description best match the request
+- If the user wants to EDIT an image, pick a workflow with 'image_edit' capability
+- If the user has NO image attached, pick a workflow that does NOT require image input
+- If a workflow requires images and the user hasn't provided any, set "needs_image" to true
+- Write an enhanced_prompt with 40-80 words: include subject, style, lighting, colors, camera angle, mood
+- If user wants a specific size, set width and height (default 1024x1024)
+- For landscape: width=1344, height=768. For portrait: width=768, height=1344
 
-Rules:
-- ONLY use models/LoRAs/Templates that appear in the available lists. Never invent filenames.
-- WORKFLOW TEMPLATES (CRITICAL): You MUST choose `workflow_template` from the "AVAILABLE WORKFLOW TEMPLATES" list. 
-- Look at the "Historical Workflow Performance Scores" when choosing a template if provided. If a template has a high score for this type of request, prefer it. Occasionally you can experiment with others to find better results.
-- "model_arch" MUST match the model type (sdxl, flux, hunyuan).
-- ARCHITECTURE-SPECIFIC SETTINGS (very important):
-  - SDXL: cfg 6-8, steps 25-40, sampler dpmpp_2m_sde, scheduler karras
-  - Flux Dev: cfg 1.0, steps 20, sampler euler, scheduler simple
-  - Flux Turbo/Schnell/Lightning: cfg 1.0, steps 4, sampler euler, scheduler simple
-  - Hunyuan: cfg 1.0, steps 30, sampler dpmpp_2m, scheduler normal
-- LORA USAGE (EXTREMELY IMPORTANT):
-  - ONLY add LoRAs if they match the specific artistic style requested.
-  - LoRAs MUST be compatible with the chosen "model_arch".
-- enhanced_prompt should be detailed (50-80 words) with lighting, camera, mood, medium details.
-- Output ONLY the JSON. No explanations, no markdown."""
+OUTPUT FORMAT — respond with ONLY this JSON, nothing else:
+{{"workflow_template": "template_name", "enhanced_prompt": "detailed prompt...", "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, text, watermark", "width": 1024, "height": 1024, "needs_image": false, "reasoning": "why you picked this template"}}"""
 
-ENHANCE_SYSTEM_PROMPT = """You are an expert Stable Diffusion prompt engineer.
-The user will provide a basic prompt, and optionally art style info, visual keywords, and LoRA trigger words.
-Your task is to rewrite the prompt into a detailed, high-quality Stable Diffusion XL prompt.
-Focus on lighting, camera angles, medium, mood, and high quality descriptors.
-If LoRA trigger words are provided, you MUST include them exactly as given.
-If art style info is provided, match the style closely in your output.
-Do NOT include conversational text. Output ONLY the final prompt.
-Keep it under 70 words."""
+CHAT_SYSTEM_PROMPT = """You are a creative AI art assistant called the AI Director. You help artists create amazing images.
 
-VISION_ANALYSIS_PROMPT = """Analyze this image for an AI image generation system.
-Provide a concise response with exactly these sections:
-STYLE: (art style in 5-10 words, e.g. 'ethereal Indian oil painting with golden tones')
-KEYWORDS: (comma-separated list of 10-15 visual keywords for style matching)
-LORA_SEARCH: (2-3 short search terms to find matching LoRA models)
-Do NOT include any other text."""
+YOUR IDENTITY:
+- You are friendly, enthusiastic, and knowledgeable about art and image generation
+- You run on a local AI system connected to ComfyUI
+- You can generate images directly from conversation
+- You understand art styles, composition, lighting, and photography
 
-CHAT_SYSTEM_PROMPT = """You are a friendly AI art assistant. You help users create amazing images using Stable Diffusion workflows.
-You can discuss art styles, help refine prompts, explain what workflows/models/LoRAs do, and suggest improvements.
+AVAILABLE WORKFLOWS (with capabilities and image requirements):
+{workflow_list}
 
-AUTONOMOUS GENERATION:
-If a user asks you to create or generate an image, and you have enough information, you should trigger a generation by including the tag `<generate>image description</generate>` at the end of your message. 
-The text inside the tag should be a descriptive prompt for the image.
-Example: "Sure! I'll create a majestic lion for you. <generate>a majestic lion sitting on a rock, sunset, 8k, highly detailed</generate>"
+CAPABILITIES:
+- Generate images from text descriptions
+- Edit or restyle existing images (when user provides an image)
+- Discuss art techniques, styles, and composition
+- Help users refine their creative ideas
+- Suggest improvements to prompts
 
-CRITICAL RULES FOR GENERATION:
-- Do NOT use the `<generate>` tag if the user's request is vague or missing key details (like style, vibe, subject matter).
-- If the request is vague, ask 1 or 2 clarifying questions to strengthen the prompt BEFORE generating.
-- Keep responses under 150 words."""
+HOW TO GENERATE IMAGES:
+When a user asks you to create/generate/make an image, and you have enough detail:
+1. End your message with: <generate>detailed image prompt here</generate>
+2. The prompt inside <generate> tags should be 40-80 words with style, lighting, mood details
+3. Also specify the workflow if relevant: <workflow>template_name</workflow>
 
-REFINE_SYSTEM_PROMPT = """You are an AI Director refining an image generation plan based on user feedback.
+IMPORTANT AGENTIC BEHAVIOR:
+- If the request is vague, ask 1-2 quick questions to get better results (style? mood? aspect ratio?)
+- If a workflow needs an image input and user hasn't provided one, ask them to attach an image
+- Proactively suggest improvements: "Want me to try this in landscape format?" or "I can also try a different style"
+- After generating, ask if they want variations or adjustments
+- Use <questions>your questions here</questions> tags when asking follow-up questions
 
-You have an existing generation plan (JSON) and the user wants changes.
-Apply the user's feedback to modify the plan, keeping everything else the same.
-Only change what the user asks for. Output the complete updated JSON plan.
+CONVERSATION RULES:
+- Keep responses under 120 words
+- Be warm and encouraging
+- Use emoji occasionally 🎨 ✨ 🖌️
+- If user shares an idea, help them develop it
+- Never refuse a creative request — help make it work
+- Don't be overly technical unless asked"""
 
-Rules:
-- ONLY use models/LoRAs from the available_models list
-- Respect model-LoRA compatibility
-- Output ONLY valid JSON, no other text"""
+ENHANCE_SYSTEM_PROMPT = """You are an expert prompt engineer for AI image generation.
+Rewrite the user's image prompt to be more detailed and vivid for Stable Diffusion / Flux image generation.
+Add specific details about: lighting, camera angle, mood, medium, art style, color palette.
+Keep the enhanced prompt between 40-80 words. Output ONLY the enhanced prompt, nothing else.
+If LoRA trigger words are provided, include them EXACTLY as-is in the enhanced prompt."""
+
+VISION_ANALYSIS_PROMPT = """Analyze this image and describe:
+STYLE: The art style (e.g., photorealistic, anime, oil painting, digital art, etc.)
+KEYWORDS: Key visual elements as comma-separated keywords
+LORA_SEARCH: Suggest 2-3 search terms for finding similar LoRAs
+
+Format your response exactly as:
+STYLE: <style description>
+KEYWORDS: <keyword1, keyword2, ...>
+LORA_SEARCH: <term1, term2, term3>"""
+
+REFINE_SYSTEM_PROMPT = """You are an AI image generation planner. The user wants to modify their generation plan.
+You will receive the current plan as JSON and user feedback.
+Apply the user's requested changes to the plan and return the COMPLETE updated plan as JSON.
+Only modify the fields the user explicitly asks to change. Keep everything else the same.
+Return ONLY valid JSON, nothing else."""
 
 
-@register_provider("ollama")
+ENHANCE_PROMPT = """Rewrite this image prompt to be more detailed and vivid for AI image generation.
+Add: lighting, camera angle, mood, medium, style details.
+Keep it under 70 words. Output ONLY the enhanced prompt, nothing else.
+
+Original: {prompt}"""
+
+
 class OllamaProvider(LLMProvider):
-    """Local LLM via Ollama HTTP API."""
+    """Local LLM via Ollama HTTP API — optimized for small models."""
 
     def __init__(self, config: dict):
         super().__init__(config)
         self.base_url = config.get("url", "http://127.0.0.1:11434")
-        self.model = config.get("model", "llama3.2:3b")  # Best lightweight model for 6GB VRAM
+        self.model = config.get("model", "qwen2.5:1.5b")
         self.vision_model = config.get("vision_model", "llava")
+        logger.info(f"Ollama provider: {self.base_url} model={self.model}")
 
-    async def _chat(
+    async def _call_ollama(
         self,
-        messages: list,
+        prompt: str,
+        system: str = "",
         model: str = None,
         temperature: float = 0.7,
+        max_tokens: int = 500,
     ) -> str:
-        """Send a chat request to Ollama."""
+        """Make a raw call to Ollama API."""
         model = model or self.model
+        
         payload = {
             "model": model,
-            "messages": messages,
+            "prompt": prompt,
+            "system": system,
             "stream": False,
-            "options": {"temperature": temperature},
+            "options": {
+                "temperature": temperature,
+                "num_predict": max_tokens,
+            },
         }
-        
+
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.post(
-                    f"{self.base_url}/api/chat",
+                    f"{self.base_url}/api/generate",
                     json=payload,
                     timeout=aiohttp.ClientTimeout(total=120),
                 ) as resp:
-                    resp.raise_for_status()
+                    if resp.status != 200:
+                        error = await resp.text()
+                        raise RuntimeError(f"Ollama error {resp.status}: {error[:200]}")
                     data = await resp.json()
-                    return data["message"]["content"].strip()
+                    return data.get("response", "").strip()
         except aiohttp.ClientError as e:
-            logger.error(f"Ollama request failed: {e}")
-            raise ConnectionError(f"Failed to connect to Ollama at {self.base_url}: {e}")
+            raise RuntimeError(f"Cannot connect to Ollama at {self.base_url}: {e}")
 
-    def _format_available_models(self, available_models: dict) -> str:
-        """Format available models dict into a readable string for the LLM."""
+    def _format_workflow_list(self, workflows: Dict[str, str]) -> str:
+        """Format workflows into a clear list for the LLM."""
+        if not workflows:
+            return "No workflows available."
+        
         lines = []
-        
-        if available_models.get("checkpoints"):
-            lines.append("AVAILABLE CHECKPOINTS:")
-            for ckpt in available_models["checkpoints"]:
-                meta = ""
-                if isinstance(ckpt, dict):
-                    meta = f" (styles: {', '.join(ckpt.get('styles', []))})"
-                    lines.append(f"  - {ckpt['filename']}{meta}")
-                else:
-                    lines.append(f"  - {ckpt}")
-        
-        if available_models.get("diffusion_models"):
-            lines.append("\nAVAILABLE DIFFUSION MODELS (Flux, Hunyuan, etc.):")
-            for dm in available_models["diffusion_models"]:
-                meta = ""
-                arch = ""
-                if isinstance(dm, dict):
-                    if dm.get("arch"):
-                        arch = f" [{dm['arch'].upper()}]"
-                    if dm.get("styles"):
-                        meta = f" (styles: {', '.join(dm['styles'])})"
-                    lines.append(f"  - {dm['filename']}{arch}{meta}")
-                else:
-                    lines.append(f"  - {dm}")
-        
-        if available_models.get("loras"):
-            lines.append("\nAVAILABLE LORAS:")
-            for lora in available_models["loras"]:
-                if isinstance(lora, dict):
-                    compat = ""
-                    if lora.get("compatible_models"):
-                        compat = f" [compatible with: {', '.join(lora['compatible_models'])}]"
-                    keywords = ", ".join(lora.get("keywords", []))
-                    triggers = ", ".join(lora.get("trigger_words", []))
-                    lines.append(
-                        f"  - {lora['filename']} (keywords: {keywords})"
-                        f" (triggers: {triggers}){compat}"
-                    )
-                else:
-                    lines.append(f"  - {lora}")
-        
-        if available_models.get("controlnets"):
-            lines.append("\nAVAILABLE CONTROLNETS:")
-            for cn in available_models["controlnets"]:
-                if isinstance(cn, dict):
-                    lines.append(f"  - {cn['filename']} (type: {cn.get('type', 'unknown')})")
-                else:
-                    lines.append(f"  - {cn}")
-        
-        if available_models.get("ipadapters"):
-            lines.append("\nAVAILABLE IP-ADAPTERS:")
-            for ipa in available_models["ipadapters"]:
-                if isinstance(ipa, dict):
-                    lines.append(f"  - {ipa['filename']} (type: {ipa.get('type', 'standard')})")
-                else:
-                    lines.append(f"  - {ipa}")
-        
+        for name, description in workflows.items():
+            lines.append(f"- {name}: {description}")
         return "\n".join(lines)
 
-    def _parse_plan_json(self, text: str) -> dict:
-        """Extract JSON from LLM response, handling markdown code blocks."""
-        # Try to find JSON in code blocks first
-        if "```json" in text:
-            text = text.split("```json")[1].split("```")[0]
-        elif "```" in text:
-            text = text.split("```")[1].split("```")[0]
-        
-        # Clean up common issues
-        text = text.strip()
-        
+    def _parse_json_response(self, text: str) -> dict:
+        """Extract JSON from LLM response — handles messy outputs."""
+        # Try direct parse first
         try:
             return json.loads(text)
         except json.JSONDecodeError:
-            # Try to find any JSON object in the text
-            start = text.find("{")
-            end = text.rfind("}") + 1
-            if start >= 0 and end > start:
-                try:
-                    return json.loads(text[start:end])
-                except json.JSONDecodeError:
-                    pass
-            logger.warning(f"Failed to parse LLM JSON output: {text[:200]}")
-            return {}
+            pass
+        
+        # Try to find JSON in the text
+        # Look for { ... } blocks
+        brace_depth = 0
+        start = -1
+        for i, ch in enumerate(text):
+            if ch == '{':
+                if brace_depth == 0:
+                    start = i
+                brace_depth += 1
+            elif ch == '}':
+                brace_depth -= 1
+                if brace_depth == 0 and start >= 0:
+                    try:
+                        return json.loads(text[start:i+1])
+                    except json.JSONDecodeError:
+                        start = -1
+        
+        # Try removing markdown code fences
+        cleaned = re.sub(r'```json\s*', '', text)
+        cleaned = re.sub(r'```\s*', '', cleaned)
+        try:
+            return json.loads(cleaned.strip())
+        except json.JSONDecodeError:
+            pass
+        
+        logger.warning(f"Could not parse JSON from LLM response: {text[:200]}")
+        return {}
 
     async def analyze_intent(
         self,
         prompt: str,
-        available_models: dict,
-        conversation_history: list = None,
-        has_reference_image: bool = False,
+        workflows: Dict[str, str],
+        user_history: Optional[List[str]] = None,
     ) -> GenerationPlan:
-        """Analyze user prompt and build a generation plan."""
-        models_str = self._format_available_models(available_models)
+        """Analyze user intent and pick the best workflow."""
+        workflow_list = self._format_workflow_list(workflows)
+        system = INTENT_SYSTEM_PROMPT.format(workflow_list=workflow_list)
         
-        user_msg = f"User Prompt: {prompt}\n\n"
-        user_msg += f"Reference Image Attached: {'Yes' if has_reference_image else 'No'}\n\n"
-        user_msg += f"{models_str}"
+        # Add context about what they've generated before
+        context = ""
+        if user_history:
+            recent = user_history[-3:]
+            context = f"\nUser's recent prompts: {', '.join(recent)}\n"
         
-        messages = [
-            {"role": "system", "content": INTENT_SYSTEM_PROMPT},
-        ]
+        user_prompt = f"{context}User request: {prompt}"
         
-        # Add conversation history for multi-turn context
-        if conversation_history:
-            for msg in conversation_history[-6:]:  # Last 6 messages max
-                messages.append(msg)
-        
-        messages.append({"role": "user", "content": user_msg})
-        
-        response = await self._chat(messages, temperature=0.3)
-        plan_dict = self._parse_plan_json(response)
-        
-        if not plan_dict:
-            # Fallback — use basic defaults with enhanced prompt
-            logger.warning("Intent analysis returned no valid JSON, using defaults")
-            enhanced = await self.enhance_prompt(prompt)
-            return GenerationPlan(
-                enhanced_prompt=enhanced,
-                reasoning="Fallback: could not parse AI analysis, using safe defaults",
-            )
-        
-        # Build GenerationPlan from parsed JSON
-        plan = GenerationPlan(
-            action=plan_dict.get("action", "generate"),
-            style_category=plan_dict.get("style_category", "realistic"),
-            checkpoint=plan_dict.get("checkpoint", ""),
-            model_arch=plan_dict.get("model_arch", "sdxl"),
-            loras=plan_dict.get("loras", []),
-            use_controlnet=plan_dict.get("use_controlnet", False),
-            controlnet_type=plan_dict.get("controlnet_type", ""),
-            controlnet_strength=plan_dict.get("controlnet_strength", 1.0),
-            use_ipadapter=plan_dict.get("use_ipadapter", False),
-            ipadapter_weight=plan_dict.get("ipadapter_weight", 0.6),
-            enhanced_prompt=plan_dict.get("enhanced_prompt", prompt),
-            negative_prompt=plan_dict.get("negative_prompt", GenerationPlan.negative_prompt),
-            steps=plan_dict.get("steps", 30),
-            cfg=plan_dict.get("cfg", 7.0),
-            sampler=plan_dict.get("sampler", "dpmpp_2m_sde"),
-            scheduler=plan_dict.get("scheduler", "karras"),
-            width=plan_dict.get("width", 1024),
-            height=plan_dict.get("height", 1024),
-            reasoning=plan_dict.get("reasoning", ""),
+        response = await self._call_ollama(
+            prompt=user_prompt,
+            system=system,
+            temperature=0.4,  # Lower temp for more reliable JSON
+            max_tokens=400,
         )
         
-        return plan
+        data = self._parse_json_response(response)
+        
+        if not data:
+            # Fallback: use first available workflow with the raw prompt
+            logger.warning("LLM returned no valid JSON, using fallback")
+            fallback_template = next(iter(workflows), "")
+            return GenerationPlan(
+                workflow_template=fallback_template,
+                enhanced_prompt=prompt,
+                reasoning="Fallback: could not parse AI response",
+            )
+        
+        # Validate workflow_template exists
+        template = data.get("workflow_template", "")
+        if template not in workflows:
+            # Find closest match
+            template_lower = template.lower()
+            for wf_name in workflows:
+                if template_lower in wf_name.lower() or wf_name.lower() in template_lower:
+                    template = wf_name
+                    break
+            else:
+                # Just use first available
+                template = next(iter(workflows), "")
+                logger.warning(f"LLM picked unknown template '{data.get('workflow_template')}', using {template}")
+        
+        return GenerationPlan(
+            workflow_template=template,
+            enhanced_prompt=data.get("enhanced_prompt", prompt),
+            negative_prompt=data.get("negative_prompt", "worst quality, low quality, bad anatomy, bad hands, text, watermark"),
+            width=int(data.get("width", 1024)),
+            height=int(data.get("height", 1024)),
+            reasoning=data.get("reasoning", ""),
+        )
 
-    async def enhance_prompt(
-        self,
-        prompt: str,
-        style_info: Optional[str] = None,
-        lora_trigger_words: list = None,
-    ) -> str:
-        """Enhance a basic prompt into a detailed SD prompt."""
-        user_content = f"Original Prompt: {prompt}\n"
-        if style_info:
-            user_content += f"Art Style: {style_info}\n"
-        if lora_trigger_words:
-            user_content += f"LoRA Trigger Words (MUST include exactly): {', '.join(lora_trigger_words)}\n"
+    async def enhance_prompt(self, prompt: str, style_hints: str = "") -> str:
+        """Enhance a basic prompt into a detailed generation prompt."""
+        user_msg = ENHANCE_PROMPT.format(prompt=prompt)
+        if style_hints:
+            user_msg += f"\nStyle hints: {style_hints}"
         
-        messages = [
-            {"role": "system", "content": ENHANCE_SYSTEM_PROMPT},
-            {"role": "user", "content": user_content},
-        ]
+        response = await self._call_ollama(
+            prompt=user_msg,
+            temperature=0.8,
+            max_tokens=150,
+        )
         
-        return await self._chat(messages, temperature=0.7)
-
-    async def analyze_image(self, image_path: str) -> StyleAnalysis:
-        """Analyze an image using Ollama vision model."""
-        with open(image_path, "rb") as f:
-            image_b64 = base64.b64encode(f.read()).decode("utf-8")
-        
-        messages = [
-            {
-                "role": "user",
-                "content": VISION_ANALYSIS_PROMPT,
-                "images": [image_b64],
-            }
-        ]
-        
-        result = await self._chat(messages, model=self.vision_model)
-        
-        analysis = StyleAnalysis(raw=result)
-        for line in result.split("\n"):
-            line = line.strip()
-            if line.upper().startswith("STYLE:"):
-                analysis.style = line.split(":", 1)[1].strip()
-            elif line.upper().startswith("KEYWORDS:"):
-                analysis.keywords = line.split(":", 1)[1].strip()
-            elif line.upper().startswith("LORA_SEARCH:"):
-                terms = line.split(":", 1)[1].strip()
-                analysis.lora_search = [t.strip() for t in terms.split(",")]
-        
-        return analysis
+        # Clean up — remove quotes if the model wrapped it
+        response = response.strip('"\'')
+        return response if response else prompt
 
     async def chat(
         self,
         message: str,
-        conversation_history: list = None,
-        system_context: str = None,
-    ) -> str:
-        """General conversational chat."""
-        messages = [
-            {"role": "system", "content": system_context or CHAT_SYSTEM_PROMPT},
-        ]
+        conversation_history: List[Dict[str, str]],
+        workflows: Dict[str, str],
+    ) -> ChatResponse:
+        """Have a conversation. May trigger image generation."""
+        workflow_list = self._format_workflow_list(workflows)
+        system = CHAT_SYSTEM_PROMPT.format(workflow_list=workflow_list)
         
-        if conversation_history:
-            for msg in conversation_history[-10:]:
-                messages.append(msg)
+        # Build conversation context
+        context_parts = []
+        for entry in conversation_history[-6:]:  # Last 6 messages
+            role = entry.get("role", "user")
+            content = entry.get("content", "")
+            context_parts.append(f"{role}: {content}")
         
-        messages.append({"role": "user", "content": message})
+        if context_parts:
+            full_prompt = "\n".join(context_parts) + f"\nuser: {message}\nassistant:"
+        else:
+            full_prompt = f"user: {message}\nassistant:"
         
-        return await self._chat(messages, temperature=0.8)
-
-    async def refine_plan(
-        self,
-        plan: GenerationPlan,
-        user_feedback: str,
-        available_models: dict,
-    ) -> GenerationPlan:
-        """Refine an existing plan based on user feedback."""
-        import dataclasses
-        plan_dict = dataclasses.asdict(plan)
-        models_str = self._format_available_models(available_models)
-        
-        user_msg = (
-            f"Current plan:\n```json\n{json.dumps(plan_dict, indent=2)}\n```\n\n"
-            f"User feedback: {user_feedback}\n\n"
-            f"{models_str}"
+        response = await self._call_ollama(
+            prompt=full_prompt,
+            system=system,
+            temperature=0.8,
+            max_tokens=300,
         )
         
-        messages = [
-            {"role": "system", "content": REFINE_SYSTEM_PROMPT},
-            {"role": "user", "content": user_msg},
-        ]
+        # Check if the AI wants to generate an image
+        generate_match = re.search(r'<generate>(.*?)</generate>', response, re.DOTALL)
+        workflow_match = re.search(r'<workflow>(.*?)</workflow>', response, re.DOTALL)
+        questions_match = re.search(r'<questions>(.*?)</questions>', response, re.DOTALL)
         
-        response = await self._chat(messages, temperature=0.3)
-        refined = self._parse_plan_json(response)
+        # Clean the tags from the displayed message
+        clean_message = re.sub(r'<generate>.*?</generate>', '', response, flags=re.DOTALL)
+        clean_message = re.sub(r'<workflow>.*?</workflow>', '', clean_message, flags=re.DOTALL)
+        clean_message = re.sub(r'<questions>.*?</questions>', '', clean_message, flags=re.DOTALL)
+        clean_message = clean_message.strip()
         
-        if refined:
-            # Update only the fields that changed
-            for key, value in refined.items():
-                if hasattr(plan, key):
-                    setattr(plan, key, value)
+        result = ChatResponse(message=clean_message)
         
-        return plan
+        if generate_match:
+            result.should_generate = True
+            result.generation_prompt = generate_match.group(1).strip()
+            if workflow_match:
+                result.workflow_hint = workflow_match.group(1).strip()
+        
+        if questions_match:
+            q_text = questions_match.group(1).strip()
+            result.questions = [q.strip() for q in q_text.split('\n') if q.strip()]
+        
+        return result
+

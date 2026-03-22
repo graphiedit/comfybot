@@ -13,7 +13,7 @@ from google.genai import types
 from .base import (
     LLMProvider,
     GenerationPlan,
-    StyleAnalysis,
+    ChatResponse,
     register_provider,
 )
 
@@ -119,6 +119,10 @@ class GeminiProvider(LLMProvider):
                 else:
                     lines.append(f"  - {ipa}")
         
+        if available_models.get("workflow_templates"):
+            lines.append("\nAVAILABLE WORKFLOW TEMPLATES (You MUST choose one of these):")
+            lines.append(available_models["workflow_templates"])
+            
         return "\n".join(lines)
 
     def _parse_plan_json(self, text: str) -> dict:
@@ -205,6 +209,7 @@ class GeminiProvider(LLMProvider):
         # Build GenerationPlan from parsed JSON
         plan = GenerationPlan(
             action=plan_dict.get("action", "generate"),
+            workflow_template=plan_dict.get("workflow_template", ""),
             style_category=plan_dict.get("style_category", "realistic"),
             checkpoint=plan_dict.get("checkpoint", ""),
             model_arch=plan_dict.get("model_arch", "sdxl"),
@@ -251,11 +256,10 @@ class GeminiProvider(LLMProvider):
         )
         return response.text.strip()
 
-    async def analyze_image(self, image_path: str) -> StyleAnalysis:
+    async def analyze_image(self, image_path: str) -> dict:
         self._check_configured()
         
         # Use the File API from the genai client
-        # But the new client allows uploading file
         image_file = self.client.files.upload(file=image_path)
         
         response = await self.client.aio.models.generate_content(
@@ -267,17 +271,17 @@ class GeminiProvider(LLMProvider):
         )
         
         result = response.text
-        analysis = StyleAnalysis(raw=result)
+        analysis = {"raw": result, "style": "", "keywords": "", "lora_search": []}
         
         for line in result.split("\n"):
             line = line.strip()
             if line.upper().startswith("STYLE:"):
-                analysis.style = line.split(":", 1)[1].strip()
+                analysis["style"] = line.split(":", 1)[1].strip()
             elif line.upper().startswith("KEYWORDS:"):
-                analysis.keywords = line.split(":", 1)[1].strip()
+                analysis["keywords"] = line.split(":", 1)[1].strip()
             elif line.upper().startswith("LORA_SEARCH:"):
                 terms = line.split(":", 1)[1].strip()
-                analysis.lora_search = [t.strip() for t in terms.split(",")]
+                analysis["lora_search"] = [t.strip() for t in terms.split(",")]
         
         return analysis
 
@@ -286,24 +290,61 @@ class GeminiProvider(LLMProvider):
         message: str,
         conversation_history: Optional[List[Dict[str, Any]]] = None,
         system_context: Optional[str] = None,
-    ) -> str:
+        workflows: Optional[dict] = None,
+    ) -> ChatResponse:
         self._check_configured()
+        
+        import re
+        
+        # Format workflow list for system context
+        workflow_list = ""
+        if workflows:
+            workflow_list = "\n".join(f"- {name}: {desc}" for name, desc in workflows.items())
+        
+        system = CHAT_SYSTEM_PROMPT.format(workflow_list=workflow_list or "None loaded")
+        if system_context:
+            system += f"\n\n{system_context}"
         
         history = None
         if conversation_history:
             history = self._convert_history(conversation_history[-10:])
             
-        chat = self.client.aio.chats.create(
+        chat_session = self.client.aio.chats.create(
             model=self.model_name,
             config=types.GenerateContentConfig(
-                system_instruction=system_context or CHAT_SYSTEM_PROMPT,
+                system_instruction=system,
                 temperature=0.8,
             ),
             history=history,
         )
         
-        response = await chat.send_message(message)
-        return response.text.strip()
+        response = await chat_session.send_message(message)
+        text = response.text.strip()
+        
+        # Parse generation trigger
+        generate_match = re.search(r'<generate>(.*?)</generate>', text, re.DOTALL)
+        workflow_match = re.search(r'<workflow>(.*?)</workflow>', text, re.DOTALL)
+        questions_match = re.search(r'<questions>(.*?)</questions>', text, re.DOTALL)
+        
+        # Clean tags from display text
+        clean = re.sub(r'<generate>.*?</generate>', '', text, flags=re.DOTALL)
+        clean = re.sub(r'<workflow>.*?</workflow>', '', clean, flags=re.DOTALL)
+        clean = re.sub(r'<questions>.*?</questions>', '', clean, flags=re.DOTALL)
+        clean = clean.strip()
+        
+        result = ChatResponse(message=clean)
+        
+        if generate_match:
+            result.should_generate = True
+            result.generation_prompt = generate_match.group(1).strip()
+            if workflow_match:
+                result.workflow_hint = workflow_match.group(1).strip()
+        
+        if questions_match:
+            q_text = questions_match.group(1).strip()
+            result.questions = [q.strip() for q in q_text.split('\n') if q.strip()]
+        
+        return result
 
     async def refine_plan(
         self,

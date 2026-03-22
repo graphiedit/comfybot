@@ -1,0 +1,218 @@
+{
+  "76": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "bold_outfit_woman.jpeg",
+      "upload": "image"
+    }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Flux2-Klein",
+      "images": [
+        "65",
+        0
+      ]
+    }
+  },
+  "61": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler"
+    }
+  },
+  "64": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "73",
+        0
+      ],
+      "guider": [
+        "63",
+        0
+      ],
+      "sampler": [
+        "61",
+        0
+      ],
+      "sigmas": [
+        "62",
+        0
+      ],
+      "latent_image": [
+        "66",
+        0
+      ]
+    }
+  },
+  "65": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "64",
+        0
+      ],
+      "vae": [
+        "72",
+        0
+      ]
+    }
+  },
+  "73": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 378352775
+    }
+  },
+  "70": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux-2-klein-9b-fp8.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "71": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "mistral_3_small_flux2_bf16.safetensors",
+      "type": "flux2",
+      "device": "default"
+    }
+  },
+  "72": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    }
+  },
+  "66": {
+    "class_type": "EmptyFlux2LatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "80": {
+    "class_type": "ImageScaleToTotalPixels",
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "megapixels": 1,
+      "resolution_steps": 1,
+      "image": [
+        "76",
+        0
+      ]
+    }
+  },
+  "63": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "70",
+        0
+      ],
+      "positive": [
+        "77",
+        0
+      ],
+      "negative": [
+        "100",
+        0
+      ]
+    }
+  },
+  "62": {
+    "class_type": "Flux2Scheduler",
+    "inputs": {
+      "steps": 4,
+      "shift_start": 1024,
+      "shift_end": 1024,
+      "width": [
+        "99",
+        0
+      ],
+      "height": [
+        "99",
+        1
+      ]
+    }
+  },
+  "74": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "test",
+      "clip": [
+        "71",
+        0
+      ]
+    }
+  },
+  "82": {
+    "class_type": "ConditioningZeroOut",
+    "inputs": {
+      "conditioning": [
+        "74",
+        0
+      ]
+    }
+  },
+  "99": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "80",
+        0
+      ]
+    }
+  },
+  "100": {
+    "class_type": "ReferenceLatent",
+    "inputs": {
+      "latent": [
+        "78",
+        0
+      ],
+      "conditioning": [
+        "82",
+        0
+      ]
+    }
+  },
+  "78": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "80",
+        0
+      ],
+      "vae": [
+        "72",
+        0
+      ]
+    }
+  },
+  "77": {
+    "class_type": "ReferenceLatent",
+    "inputs": {
+      "latent": [
+        "78",
+        0
+      ],
+      "conditioning": [
+        "74",
+        0
+      ]
+    }
+  },
+  "121": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "handbag_white.png",
+      "upload": "image"
+    }
+  }
+}

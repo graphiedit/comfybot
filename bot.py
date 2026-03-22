@@ -1,173 +1,156 @@
 """
-AI Director Bot — Discord bot entry point.
+ComfyBot — Discord bot for AI image generation via ComfyUI.
 
-Starts the Discord bot, initializes the AI Director engine,
-registers slash commands, and handles the bot lifecycle.
+Supports:
+- @mention for conversational AI with auto-generation triggers
+- /generate for direct image generation (with optional image attachments)
+- /workflows to list available workflows with capabilities
+- /queue to check generation queue status
+- /status to check system health
+- /upload_workflow for admins to add new workflows
+- /help for usage information
 """
 import asyncio
+import io
 import logging
-import sys
-from pathlib import Path
-
+import random
+import traceback
+import yaml
 import discord
 from discord.ext import commands
-import yaml
 
 from engine import AIDirectorEngine
 from discord_ui.commands import setup_commands
+from discord_ui.embeds import (
+    create_generating_embed, create_result_embed, create_error_embed,
+    create_chat_embed, create_plan_review_embed,
+)
+from discord_ui.buttons import ImageActionView, PlanReviewView
 
-# --- Logging Setup ---
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    handlers=[
-        logging.StreamHandler(sys.stdout),
-        logging.FileHandler("bot.log", encoding="utf-8"),
-    ],
+    format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
 )
-logger = logging.getLogger("ai_director")
-
-# Reduce noisy loggers
-logging.getLogger("discord").setLevel(logging.WARNING)
-logging.getLogger("aiohttp").setLevel(logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 def load_config() -> dict:
-    """Load configuration from config.yaml."""
-    config_path = Path(__file__).parent / "config.yaml"
-    
-    if not config_path.exists():
-        logger.error(f"Config file not found: {config_path}")
-        logger.error("Please create config.yaml — see README.md for format")
-        sys.exit(1)
-    
-    with open(config_path, "r") as f:
-        config = yaml.safe_load(f)
-    
-    return config
+    with open("config.yaml", "r") as f:
+        return yaml.safe_load(f)
 
 
-class AIDirectorBot(commands.Bot):
-    """Discord bot with AI Director engine integration."""
-
-    def __init__(self, config: dict):
-        intents = discord.Intents.default()
-        intents.message_content = True
-        
-        super().__init__(
-            command_prefix="!",
-            intents=intents,
-            description="🎨 AI Director — Smart Image Generation",
-        )
-        
-        self.config = config
-        self.engine = AIDirectorEngine(config)
-
-    async def setup_hook(self):
-        """Called when the bot starts up — register commands and start engine."""
-        logger.info("Setting up AI Director Bot...")
-        
-        # Register slash commands
-        setup_commands(self)
-        
-        # Start the engine
-        await self.engine.start()
-        
-        # Sync commands with Discord
-        try:
-            synced = await self.tree.sync()
-            logger.info(f"Synced {len(synced)} slash commands")
-        except Exception as e:
-            logger.error(f"Failed to sync commands: {e}")
-
-    async def on_ready(self):
-        """Called when bot is fully connected to Discord."""
-        logger.info(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        logger.info(f"  🎨 AI Director Bot is ONLINE")
-        logger.info(f"  Bot: {self.user.name}#{self.user.discriminator}")
-        logger.info(f"  Guilds: {len(self.guilds)}")
-        logger.info(f"  LLM: {self.engine.llm.active_provider_name}")
-        logger.info(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        
-        # Set rich presence
-        await self.change_presence(
-            activity=discord.Activity(
-                type=discord.ActivityType.watching,
-                name="for /generate • AI Director",
-            )
-        )
-
-    async def on_message(self, message: discord.Message):
-        """Handle regular messages — enables conversational mode."""
-        if message.author.bot:
-            return
-        
-        # If the bot is mentioned, treat it as a chat
-        if self.user and self.user.mentioned_in(message):
-            # Remove mention from message
-            clean_content = message.content.replace(f"<@{self.user.id}>", "").strip()
-            clean_content = clean_content.replace(f"<@!{self.user.id}>", "").strip()
-            
-            # If nothing left, just return
-            if not clean_content:
-                await self.process_commands(message)
-                return
-                
-            logger.info(f"Received mention chat text: {clean_content}")
-            
-            async with message.channel.typing():
-                try:
-                    response = await self.engine.chat(
-                        user_id=str(message.author.id),
-                        message=clean_content,
-                        channel=message.channel,
-                    )
-                    
-                    from discord_ui.embeds import create_chat_embed
-                    embed = create_chat_embed(response)
-                    await message.reply(embed=embed)
-                except Exception as e:
-                    logger.error(f"Chat error: {e}", exc_info=True)
-                    await message.reply(f"❌ Sorry, I ran into an error: {str(e)[:200]}")
-        
-        await self.process_commands(message)
-
-    async def close(self):
-        """Clean shutdown."""
-        logger.info("Shutting down AI Director...")
-        await self.engine.stop()
-        await super().close()
+def create_bot() -> commands.Bot:
+    intents = discord.Intents.default()
+    intents.message_content = True
+    intents.messages = True
+    return commands.Bot(command_prefix="!", intents=intents)
 
 
-def main():
-    """Entry point."""
-    config = load_config()
-    
-    # Get Discord token
-    token = config.get("discord", {}).get("token", "")
-    
-    if not token or token == "YOUR_DISCORD_BOT_TOKEN":
-        logger.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        logger.error("  ❌ Discord bot token not configured!")
-        logger.error("")
-        logger.error("  Add your bot token to config.yaml:")
-        logger.error("    discord:")
-        logger.error("      token: 'YOUR_BOT_TOKEN_HERE'")
-        logger.error("")
-        logger.error("  Get a token at: https://discord.com/developers/applications")
-        logger.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        sys.exit(1)
-    
-    bot = AIDirectorBot(config)
-    
+# ═══════════════════════════════════════════════════════════════
+# Bot setup
+# ═══════════════════════════════════════════════════════════════
+
+config = load_config()
+bot = create_bot()
+engine = AIDirectorEngine(config)
+
+
+# ═══════════════════════════════════════════════════════════════
+# Event handlers
+# ═══════════════════════════════════════════════════════════════
+
+@bot.event
+async def on_ready():
+    logger.info(f"Bot logged in as {bot.user} (ID: {bot.user.id})")
+    setup_commands(bot, engine)
     try:
-        bot.run(token, log_handler=None)
-    except discord.LoginFailure:
-        logger.error("Invalid Discord token! Check your config.yaml")
-        sys.exit(1)
-    except KeyboardInterrupt:
-        logger.info("Bot stopped by user")
+        synced = await bot.tree.sync()
+        logger.info(f"Synced {len(synced)} application commands")
+    except Exception as e:
+        logger.error(f"Command sync failed: {e}")
 
+
+@bot.event
+async def on_message(message: discord.Message):
+    """Handle @mentions for conversational AI."""
+    if message.author.bot:
+        return
+
+    # Process commands first
+    await bot.process_commands(message)
+
+    # Check if bot was mentioned
+    if bot.user not in message.mentions:
+        return
+
+    # Clean the message (remove the mention)
+    clean_content = message.content
+    for mention in message.mentions:
+        clean_content = clean_content.replace(f"<@{mention.id}>", "").replace(f"<@!{mention.id}>", "")
+    clean_content = clean_content.strip()
+
+    if not clean_content:
+        await message.reply("Hey! 👋 I'm your AI art assistant. Tell me what you'd like to create, or use `/generate` for direct image generation!")
+        return
+
+    # Extract image attachments
+    images = await _extract_attachments(message)
+
+    async with message.channel.typing():
+        try:
+            response = await engine.chat(
+                message=clean_content,
+                user_id=str(message.author.id),
+                channel=message.channel,
+                images=images if images else None,
+            )
+
+            # Build the reply
+            reply_content = response.message
+
+            # Add follow-up question formatting
+            if response.questions:
+                reply_content += "\n\n"
+                for i, q in enumerate(response.questions, 1):
+                    reply_content += f"**{i}.** {q}\n"
+
+            # If the AI needs an image
+            if response.needs_image:
+                reply_content += "\n\n📎 *Attach an image to your next message and I'll use it!*"
+
+            embed = create_chat_embed(reply_content, str(message.author.id))
+
+            if response.should_generate:
+                embed.set_footer(text="🎨 Generating your image...")
+
+            await message.reply(embed=embed)
+
+        except Exception as e:
+            logger.error(f"Chat error: {e}", exc_info=True)
+            await message.reply("❌ Something went wrong. Try again or use `/generate`!")
+
+
+async def _extract_attachments(message: discord.Message) -> list:
+    """Download image attachments from a Discord message."""
+    images = []
+    for attachment in message.attachments:
+        if any(attachment.filename.lower().endswith(ext) for ext in ('.png', '.jpg', '.jpeg', '.webp', '.gif')):
+            try:
+                img_bytes = await attachment.read()
+                images.append(img_bytes)
+                logger.info(f"Downloaded attachment: {attachment.filename} ({len(img_bytes)} bytes)")
+            except Exception as e:
+                logger.warning(f"Failed to download attachment {attachment.filename}: {e}")
+    return images
+
+
+# ═══════════════════════════════════════════════════════════════
+# Run the bot
+# ═══════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
-    main()
+    token = config.get("discord", {}).get("token", "")
+    if not token:
+        print("ERROR: No Discord token in config.yaml")
+        exit(1)
+    bot.run(token)

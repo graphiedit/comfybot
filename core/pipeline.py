@@ -68,10 +68,16 @@ class GenerationPipeline:
             workflow, success = self.engine.workflow_manager.build_from_template(plan, reference_image, pose_image)
             if not success:
                 logger.warning(f"Failed to build from template {plan.workflow_template}.")
-                # Fallback to first available template if requested one is missing
+                # Smarter fallback: try to find a general purpose one or one matching the arch
                 available = list(self.engine.workflow_manager.templates.keys())
                 if available:
                     fallback = available[0]
+                    # Prefer 'turbo' for speed or 'sdxl' for compatibility if first one looks like an edit template
+                    for opt in available:
+                        if "turbo" in opt.lower() or "sdxl" in opt.lower():
+                            fallback = opt
+                            break
+                    
                     logger.warning(f"Using fallback template: {fallback}")
                     plan.workflow_template = fallback
                     workflow, success = self.engine.workflow_manager.build_from_template(plan, reference_image, pose_image)

@@ -1,742 +1,411 @@
 """
-AI Director Engine — the central orchestrator.
+AI Director Engine — central orchestrator for the ComfyBot.
 
-Connects all components: LLM → Registry → WorkflowBuilder → ComfyUI → Discord.
-Handles the full lifecycle: analyze prompt → build workflow → generate → respond.
+Connects: LLM (with failover) → Workflow Manager (with analyzer) → 
+          ComfyUI Client (with image upload) → Error Recovery → Pipeline.
 
-Now fully agentic:
-  - Self-healing error recovery (auto-diagnoses and fixes ComfyUI errors)
-  - LLM provider failover (auto-switches on rate limits)
-  - Pre-generation intelligence (clarifications, suggestions)
-  - Post-generation quality review
+This is the beating heart of the agentic AI system.
 """
 import asyncio
-import dataclasses
-import io
 import logging
-import re
+import random
 import tempfile
 import os
-from pathlib import Path
-from typing import Optional, Dict, Any, List
+from typing import Optional, List, Dict, Any
 
-import discord
-
-from llm.base import create_llm_provider, GenerationPlan
-from registry.model_registry import ModelRegistry
+from llm.base import GenerationPlan, ChatResponse, create_llm_provider
 from core.comfyui_client import ComfyUIClient
-from core.queue_manager import QueueManager, Job, JobStatus
-from core.pipeline import GenerationPipeline
-from core.quality_analyzer import QualityScore
-from core.user_memory import UserMemory
-from core.image_analyzer import ImageAnalyzer
-from core.cache import MemoryCache
+from core.workflow_manager import WorkflowManager
 from core.error_recovery import ErrorDiagnosticAgent
-from registry.style_presets import StylePresetManager
-from discord_ui.embeds import (
-    create_progress_embed,
-    create_generation_embed,
-    create_error_embed,
-)
-from discord_ui.buttons import GenerationButtons
+from core.user_memory import UserMemory
 
 logger = logging.getLogger(__name__)
 
 
 class AIDirectorEngine:
     """
-    The AI Director — orchestrates intelligent image generation.
+    The AI Director — orchestrates the full agentic generation pipeline.
     
-    Connects LLM analysis, model selection, workflow building,
-    ComfyUI execution, and Discord responses into a seamless pipeline.
+    Flow:
+    1. User sends message/command
+    2. LLM analyzes intent → GenerationPlan
+    3. Upload any user images to ComfyUI
+    4. Build workflow from plan
+    5. Submit to ComfyUI → wait for result
+    6. On error → ErrorRecovery → auto-fix → retry
+    7. Return images to user
     """
 
     def __init__(self, config: dict):
         self.config = config
-        
-        # Initialize components
-        self.llm = create_llm_provider(config)  # Returns ProviderManager with failover
-        self.registry = ModelRegistry(config)
-        self.comfyui = ComfyUIClient(config)
-        
-        from core.workflow_manager import WorkflowManager
-        self.workflow_manager = WorkflowManager(config.get("data_dir", "data"))
-        
-        self.queue = QueueManager(max_concurrent=1)
-        
-        # Agentic capabilities
-        self.error_agent = ErrorDiagnosticAgent(registry=self.registry)
-        self.pipeline = GenerationPipeline(self, config)
+
+        # Core components
+        self.llm = create_llm_provider(config)
+        self.comfyui = ComfyUIClient(config.get("comfyui", {}))
+        self.workflow_manager = WorkflowManager()
+
+        self.error_agent = ErrorDiagnosticAgent()
         self.user_memory = UserMemory(config)
-        self.style_presets = StylePresetManager()
-        self.image_analyzer = ImageAnalyzer(self.llm)
-        self.cache = MemoryCache(
-            max_entries=config.get("cache", {}).get("max_entries", 100),
-            default_ttl=config.get("cache", {}).get("ttl_seconds", 3600)
-        )
-        
-        # Per-user conversation history for chat context
-        self._chat_history: dict[str, list] = {}
-        
-        # Job metadata storage (plan details for buttons)
-        self._job_metadata: dict[str, dict] = {}
-        self._job_interactions: dict[str, discord.Interaction] = {}
-        self._job_channels: dict[str, discord.abc.Messageable] = {}
 
-    async def start(self):
-        """Initialize all subsystems."""
-        logger.info("Starting AI Director Engine...")
-        
-        # Initialize LLM provider(s) with failover
-        await self.llm.initialize()
-        logger.info(f"LLM providers ready: {self.llm.active_provider_name}")
-        
-        # Load model registry
-        await self.registry.refresh()
-        
-        # Update error agent with fresh registry
-        self.error_agent.registry = self.registry
-        
-        # Start job queue
-        self.queue.set_processor(self._process_job)
-        await self.queue.start()
-        
-        # Check ComfyUI
-        alive = await self.comfyui.is_alive()
-        if alive:
-            logger.info("✅ ComfyUI is running and reachable")
-        else:
-            logger.warning("⚠️ ComfyUI is not reachable — generation will fail until it's started")
-        
-        logger.info("AI Director Engine ready!")
+        # Pipeline settings
+        pipeline_cfg = config.get("pipeline", {})
+        self.max_retries = pipeline_cfg.get("max_retries", 3)
 
-    async def stop(self):
-        """Shut down the engine."""
-        await self.queue.stop()
-        logger.info("AI Director Engine stopped")
+        # Conversation memory: channel_id -> [messages]
+        self.conversations: Dict[str, List[Dict[str, str]]] = {}
+        # Active generations: channel_id -> plan (for vary/retry)
+        self.active_generations: Dict[str, GenerationPlan] = {}
 
-    async def submit_generation(
-        self,
-        interaction: discord.Interaction,
-        prompt: str,
-        image_bytes: Optional[bytes] = None,
-        user_overrides: dict = None,
-    ):
-        """Submit an image generation request interactively."""
-        import uuid
-        job_id = str(uuid.uuid4())
-        
-        await interaction.followup.send("💭 AI Director is drafting the perfect generation plan...", ephemeral=True)
-        
-        overrides = user_overrides or {}
-        overrides["action"] = "generate"
-        if image_bytes:
-            overrides["has_image"] = True
-            
-        try:
-            available_models = self.registry.get_available_models_for_llm()
-            user_prefs = self.user_memory.get_preferences_for_llm(str(interaction.user.id))
-            available_templates = self.workflow_manager.get_available_templates_for_llm()
-            full_prompt = f"{prompt}\n\n[USER PREFERENCES Context]\n{user_prefs}\n{available_templates}"
-            
-            plan = await self.llm.analyze_intent(
-                prompt=full_prompt,
-                available_models=available_models,
-                has_reference_image=image_bytes is not None,
-            )
-            
-            if plan.style_category:
-                preset = self.style_presets.get_preset(plan.style_category)
-                if preset:
-                    plan = self.style_presets.apply_preset(plan, preset)
-            
-            for key, value in overrides.items():
-                if hasattr(plan, key) and key != "action":
-                    setattr(plan, key, value)
-                    
-            if plan.checkpoint:
-                resolved = self.registry.resolve_checkpoint(plan.checkpoint)
-                plan.checkpoint = resolved if resolved else (self.registry.get_best_checkpoint(plan.style_category) or "")
-            
-            if not plan.checkpoint:
-                plan.checkpoint = self.registry.get_best_checkpoint(plan.style_category) or self.config.get("defaults", {}).get("ckpt", "Juggernaut-XL_v9_RunDiffusion.safetensors")
-            
-            plan.model_arch = self.registry.get_model_arch(plan.checkpoint)
-            
-            # Interactive Conflict Resolution (Inverted)
-            if plan.model_arch != "sdxl" and plan.use_ipadapter:
-                plan.use_ipadapter = False
-                logger.info(f"Dropped IPAdapter as model {plan.checkpoint} is {plan.model_arch}")
-            if plan.model_arch != "sdxl" and plan.use_controlnet:
-                plan.use_controlnet = False
-                logger.info(f"Dropped ControlNet as model {plan.checkpoint} is {plan.model_arch}")
-            
-            # --- Interactive LoRA filtering (Compatibility Check) ---
-            final_loras = []
-            for lora in plan.loras:
-                lora_name = lora.get("name", "")
-                compat = self.registry.get_lora_compatibility(lora_name)
-                if plan.model_arch in compat:
-                    final_loras.append(lora)
-                else:
-                    logger.warning(f"In interactive flow, removing incompatible LoRA {lora_name} for model arch {plan.model_arch}")
-            plan.loras = final_loras
-                
-            review = await self.llm.check_plan_completeness(plan, available_models)
-            
-            if plan.model_arch != "sdxl" and image_bytes:
-                review.warnings.append(
-                    f"Requested non-SDXL model `{plan.model_arch}` ignores Face Fix / Pose Match. "
-                    "I have dropped these structural tools to let you test this model. If you want Face Fix, hit Reroll and ask for SDXL."
-                )
+        # Check if LLM needs async initialization (ProviderManager)
+        self._llm_initialized = False
 
-            from discord_ui.embeds import create_plan_approval_embed
-            from discord_ui.buttons import PlanApprovalView
-            
-            embed = create_plan_approval_embed(plan, review)
-            
-            async def on_approve(btn_interaction):
-                job = Job(
-                    user_id=str(interaction.user.id),
-                    guild_id=str(interaction.guild_id) if interaction.guild_id else "",
-                    channel_id=str(interaction.channel_id),
-                    prompt=prompt,
-                    metadata={
-                        "user_overrides": overrides,
-                        "has_image": image_bytes is not None,
-                        "image_bytes": image_bytes,
-                        "plan": plan, 
-                    },
-                )
-                job.id = job_id
-                self._job_interactions[job.id] = interaction
-                job.on_status_change = self._on_job_status_change
-                
-                await self.queue.submit(job)
-                progress_embed = create_progress_embed(job, self.queue.get_queue_size())
-                await btn_interaction.channel.send(f"<@{interaction.user.id}>", embed=progress_embed)
-                
-            async def on_reroll(btn_interaction):
-                import random
-                overrides["seed"] = random.randint(1, 1000000)
-                await btn_interaction.followup.send("🔄 Rerolling...", ephemeral=True)
-                await self.submit_generation(interaction, prompt, image_bytes, overrides)
-                
-            async def on_cancel(btn_interaction):
-                await btn_interaction.followup.send("❌ Cancelled.", ephemeral=True)
-                
-            view = PlanApprovalView(on_approve, on_reroll, on_cancel)
-            await interaction.followup.send(embed=embed, view=view)
-            
-        except Exception as e:
-            logger.error(f"Plan draft failed: {e}", exc_info=True)
-            from discord_ui.embeds import create_error_embed
-            err_emb = create_error_embed(f"Drafting plan failed: {str(e)}")
-            await interaction.followup.send(embed=err_emb)
-
-    async def submit_upscale(
-        self,
-        interaction: discord.Interaction,
-        image_bytes: bytes,
-        scale: int = 2,
-    ):
-        """Submit an upscale request."""
-        job = Job(
-            user_id=str(interaction.user.id),
-            guild_id=str(interaction.guild_id) if interaction.guild_id else "",
-            channel_id=str(interaction.channel_id),
-            prompt="upscale",
-            metadata={
-                "user_overrides": {"action": "upscale"},
-                "has_image": True,
-                "image_bytes": image_bytes,
-                "scale": scale,
-            },
-        )
-        
-        self._job_interactions[job.id] = interaction
-        job.on_status_change = self._on_job_status_change
-        
-        progress_embed = create_progress_embed(job, self.queue.get_queue_size() + 1)
-        await interaction.followup.send(embed=progress_embed)
-        
-        await self.queue.submit(job)
-
-    async def handle_button_action(
-        self,
-        interaction: discord.Interaction,
-        action: str,
-        job_id: str,
-    ):
-        """Handle post-generation button presses."""
-        original_meta = self._job_metadata.get(job_id, {})
-        
-        if action == "info":
-            # Show detailed info about the generation
-            info_lines = []
-            for key, value in original_meta.items():
-                if key not in ("image_bytes", "user_overrides"):
-                    info_lines.append(f"**{key}**: {value}")
-            info_text = "\n".join(info_lines) if info_lines else "No metadata available"
-            await interaction.response.send_message(info_text[:2000], ephemeral=True)
+    async def _ensure_llm_initialized(self):
+        """Initialize ProviderManager if we haven't already."""
+        if self._llm_initialized:
             return
+        # ProviderManager has an async initialize() method
+        if hasattr(self.llm, 'initialize'):
+            await self.llm.initialize()
+        self._llm_initialized = True
+
+    # ═══════════════════════════════════════════════════════════════
+    # IMAGE GENERATION — The main pipeline
+    # ═══════════════════════════════════════════════════════════════
+
+    async def generate(
+        self,
+        prompt: str,
+        user_id: str,
+        channel,
+        workflow_override: str = "",
+        images: Optional[List[bytes]] = None,
+        image_filenames: Optional[List[str]] = None,
+    ) -> List[bytes]:
+        """
+        Generate images from a text prompt.
         
-        await interaction.response.defer()
+        Args:
+            prompt: User's text prompt
+            user_id: Discord user ID for preferences
+            channel: Discord channel for status messages
+            workflow_override: Force a specific workflow template
+            images: Raw image bytes from Discord attachments
+            image_filenames: Already-named image files (for retry/vary)
         
-        if action == "retry":
-            # Same prompt, new seed
-            overrides = original_meta.get("user_overrides", {}).copy()
-            overrides["seed"] = -1
-            await self.submit_generation(
-                interaction=interaction,
-                prompt=original_meta.get("prompt", ""),
-                user_overrides=overrides,
+        Returns:
+            List of image bytes, or empty list on failure
+        """
+        await self._ensure_llm_initialized()
+
+        # Upload images to ComfyUI if provided
+        uploaded_images = list(image_filenames or [])
+        if images:
+            for i, img_data in enumerate(images):
+                try:
+                    filename = f"discord_upload_{user_id}_{i}.png"
+                    uploaded_name = await self.comfyui.upload_image_bytes(img_data, filename)
+                    uploaded_images.append(uploaded_name)
+                except Exception as e:
+                    logger.error(f"Failed to upload image {i}: {e}")
+
+        has_images = len(uploaded_images) > 0
+
+        # Step 1: AI Intent Analysis
+        user_prefs = self.user_memory.get_preferences_for_llm(user_id)
+        workflow_summaries = self.workflow_manager.get_workflow_summaries_for_llm()
+
+        try:
+            plan = await self.llm.analyze_intent(
+                prompt=f"{prompt}\n\n[User preferences: {user_prefs}]\n[Has attached images: {has_images}, count: {len(uploaded_images)}]",
+                workflows=self.workflow_manager.get_workflow_list(),
             )
-        
-        elif action == "upscale" and original_meta.get("result_images"):
-            # Upscale the first result image
-            await self.submit_upscale(
-                interaction=interaction,
-                image_bytes=original_meta["result_images"][0],
-            )
-        
-        elif action in ("vary_subtle", "vary_strong"):
-            denoise = 0.3 if action == "vary_subtle" else 0.7
-            overrides = original_meta.get("user_overrides", {}).copy()
-            overrides["denoise"] = denoise
-            overrides["seed"] = -1
-            await self.submit_generation(
-                interaction=interaction,
-                prompt=original_meta.get("prompt", ""),
-                image_bytes=original_meta.get("result_images", [None])[0],
-                user_overrides=overrides,
+        except Exception as e:
+            logger.error(f"LLM intent analysis failed: {e}")
+            # Fallback: use first text-to-image workflow
+            plan = GenerationPlan(
+                workflow_template=next(iter(self.workflow_manager.templates), ""),
+                enhanced_prompt=prompt,
+                reasoning=f"Fallback (LLM error): {e}",
             )
 
-    async def chat(self, user_id: str, message: str, channel: Optional[discord.abc.Messageable] = None) -> str:
-        """Chat with the AI Director."""
-        history = self._chat_history.setdefault(user_id, [])
+        # Apply workflow override if specified
+        if workflow_override:
+            plan.workflow_template = workflow_override
+
+        # Inject uploaded images into the plan
+        plan.images = uploaded_images
+
+        # Check if this workflow needs images but none were provided
+        profile = self.workflow_manager.get_profile(plan.workflow_template)
+        if profile and profile.requires_image and not uploaded_images:
+            plan.needs_image = True
+            logger.warning(f"Workflow '{plan.workflow_template}' requires images but none provided")
+
+        # Store for retry/vary
+        channel_id = str(getattr(channel, 'id', channel))
+        self.active_generations[channel_id] = plan
+
+        # Step 2: Build & Submit with Error Recovery
+        result_images = await self._execute_with_recovery(plan, channel)
+
+        # Step 3: Record to user memory
+        if result_images:
+            try:
+                self.user_memory.record_generation(user_id, plan)
+            except Exception as e:
+                logger.debug(f"Failed to record generation: {e}")
+
+        return result_images
+
+    async def _execute_with_recovery(self, plan: GenerationPlan, channel) -> List[bytes]:
+        """Execute generation with automatic error recovery and retry."""
+        last_error = None
+
+        for attempt in range(self.max_retries):
+            try:
+                # Build workflow
+                workflow, success = self.workflow_manager.build_workflow(plan)
+                if not success or not workflow:
+                    logger.error("Failed to build workflow")
+                    return []
+
+                # Submit to ComfyUI
+                prompt_id = await self.comfyui.queue_prompt(workflow)
+                if not prompt_id:
+                    logger.error("Failed to queue prompt")
+                    return []
+
+                # Wait for results
+                images = await self.comfyui.wait_for_result(prompt_id)
+                if images:
+                    return images
+                else:
+                    logger.warning(f"No images returned (attempt {attempt + 1})")
+
+            except Exception as e:
+                last_error = e
+                error_msg = str(e)
+                logger.warning(f"Generation attempt {attempt + 1} failed: {error_msg}")
+
+                if attempt < self.max_retries - 1:
+                    # Try error recovery
+                    try:
+                        strategy = self.error_agent.diagnose(error_msg, workflow, plan)
+                        if strategy.fixes:
+                            logger.info(f"Error recovery: {strategy.error_type}, applying {len(strategy.fixes)} fixes")
+
+                            # Apply fixes to the workflow
+                            workflow = self.error_agent.apply_fixes(workflow, strategy)
+
+                            # Apply fixes that affect the plan (e.g., reduce resolution)
+                            if strategy.reduce_resolution:
+                                plan.width = int(plan.width * 0.75)
+                                plan.height = int(plan.height * 0.75)
+                                logger.info(f"Reduced resolution to {plan.width}x{plan.height}")
+
+                            # Retry with fixed workflow
+                            try:
+                                prompt_id = await self.comfyui.queue_prompt(workflow)
+                                if prompt_id:
+                                    images = await self.comfyui.wait_for_result(prompt_id)
+                                    if images:
+                                        return images
+                            except Exception as retry_error:
+                                logger.warning(f"Retry after fix failed: {retry_error}")
+                                continue
+                        else:
+                            logger.info("No recovery strategy available")
+                    except Exception as recovery_error:
+                        logger.error(f"Error recovery itself failed: {recovery_error}")
+                        continue
+
+        logger.error(f"All {self.max_retries} generation attempts failed. Last error: {last_error}")
+        return []
+
+    # ═══════════════════════════════════════════════════════════════
+    # CHAT — Conversational AI with generation triggers
+    # ═══════════════════════════════════════════════════════════════
+
+    async def chat(
+        self,
+        message: str,
+        user_id: str,
+        channel,
+        images: Optional[List[bytes]] = None,
+    ) -> ChatResponse:
+        """
+        Handle a conversational message. May trigger image generation.
         
-        # Build system context with available models and templates
-        available = self.registry.get_available_models_for_llm()
-        available_templates = self.workflow_manager.get_available_templates_for_llm()
-        
-        ckpt_names = [c["filename"] if isinstance(c, dict) else c for c in available.get("checkpoints", [])]
-        dm_names = [d["filename"] if isinstance(d, dict) else d for d in available.get("diffusion_models", [])]
-        all_models = ckpt_names[:5] + dm_names[:5]
-        
-        context = (
-            "You are an AI art assistant for a Stable Diffusion image generation system.\n"
-            f"Available models: {', '.join(all_models)}\n"
-            f"{available_templates}\n"
-            "You can help users craft prompts, explain models/LoRAs, and suggest settings.\n"
-        )
-        
-        response = await self.llm.chat(message, history, system_context=context)
-        
-        # Check for autonomous generation tag: <generate>prompt</generate>
-        gen_match = re.search(r"<generate>(.*?)</generate>", response, re.DOTALL | re.IGNORECASE)
-        if gen_match and channel:
-            gen_prompt = gen_match.group(1).strip()
-            # Trigger generation in the background
-            asyncio.create_task(self.submit_generation_from_chat(channel, user_id, gen_prompt))
-            # Strip the tag from the response for the user
-            response = response.replace(gen_match.group(0), "").strip()
-            if not response:
-                response = f"Rocketing away to generate: **{gen_prompt}**"
-        
-        # Update conversation history
+        Args:
+            message: The user's message text
+            user_id: Discord user ID
+            channel: Discord channel object
+            images: Optional image attachments from the message
+        """
+        await self._ensure_llm_initialized()
+
+        channel_id = str(getattr(channel, 'id', channel))
+
+        # Get/create conversation history
+        if channel_id not in self.conversations:
+            self.conversations[channel_id] = []
+        history = self.conversations[channel_id]
+
+        # Add user message to history
         history.append({"role": "user", "content": message})
-        history.append({"role": "assistant", "content": response})
-        
+
+        # Build system context with user preferences and workflow info
+        user_prefs = self.user_memory.get_preferences_for_llm(user_id)
+        has_images = bool(images) and len(images) > 0
+        workflow_summaries = self.workflow_manager.get_workflow_summaries_for_llm()
+
+        system_context = (
+            f"User preferences: {user_prefs}\n"
+            f"User has attached {len(images) if images else 0} image(s) to this message.\n"
+            f"Available workflows:\n{workflow_summaries}"
+        )
+
+        try:
+            response = await self.llm.chat(
+                message=message,
+                conversation_history=history,
+                workflows=self.workflow_manager.get_workflow_list(),
+            )
+        except Exception as e:
+            logger.error(f"Chat failed: {e}")
+            response = ChatResponse(
+                message="I'm having trouble thinking right now. Try again, or use /generate directly! 🎨"
+            )
+
+        # Add AI response to history
+        history.append({"role": "assistant", "content": response.message})
+
         # Keep history manageable
         if len(history) > 20:
             history[:] = history[-20:]
-        
+
+        # If the AI wants to generate, trigger it
+        if response.should_generate:
+            gen_prompt = response.generation_prompt
+            workflow_hint = response.workflow_hint or ""
+
+            # Fire and forget — generate in background
+            asyncio.create_task(
+                self._generate_from_chat(
+                    prompt=gen_prompt,
+                    user_id=user_id,
+                    channel=channel,
+                    workflow_hint=workflow_hint,
+                    images=images,
+                )
+            )
+
         return response
 
-    async def submit_generation_from_chat(
+    async def _generate_from_chat(
         self,
-        channel: discord.abc.Messageable,
-        user_id: str,
         prompt: str,
+        user_id: str,
+        channel,
+        workflow_hint: str = "",
+        images: Optional[List[bytes]] = None,
     ):
-        """Submit generation triggered from a chat message (no interaction)."""
-        import uuid
-        job_id = str(uuid.uuid4())
-        
-        await channel.send(f"🎨 **AI Director Agent** is starting generation: *{prompt}*")
-        
+        """Generate images triggered from a chat conversation."""
         try:
-            available_models = self.registry.get_available_models_for_llm()
-            user_prefs = self.user_memory.get_preferences_for_llm(user_id)
-            available_templates = self.workflow_manager.get_available_templates_for_llm()
-            full_prompt = f"{prompt}\n\n[USER PREFERENCES Context]\n{user_prefs}\n{available_templates}"
-            
-            plan = await self.llm.analyze_intent(
-                prompt=full_prompt,
-                available_models=available_models,
-                has_reference_image=False,
-            )
-            
-            # Apply same logic as submit_generation
-            if plan.style_category:
-                preset = self.style_presets.get_preset(plan.style_category)
-                if preset:
-                    plan = self.style_presets.apply_preset(plan, preset)
-            
-            if plan.checkpoint:
-                resolved = self.registry.resolve_checkpoint(plan.checkpoint)
-                plan.checkpoint = resolved if resolved else (self.registry.get_best_checkpoint(plan.style_category) or "")
-            
-            if not plan.checkpoint:
-                plan.checkpoint = self.registry.get_best_checkpoint(plan.style_category) or self.config.get("defaults", {}).get("ckpt", "Juggernaut-XL_v9_RunDiffusion.safetensors")
-            
-            plan.model_arch = self.registry.get_model_arch(plan.checkpoint)
-            
-            # Compatibility filtering
-            final_loras = []
-            for lora in plan.loras:
-                lora_name = lora.get("name", "")
-                compat = self.registry.get_lora_compatibility(lora_name)
-                if plan.model_arch in compat:
-                    final_loras.append(lora)
-            plan.loras = final_loras
-
-            # Create the Job
-            job = Job(
-                user_id=user_id,
-                guild_id="", # Hard to get from channel easily without interaction sometimes, but we can try
-                channel_id=str(channel.id) if hasattr(channel, 'id') else "",
+            result = await self.generate(
                 prompt=prompt,
-                metadata={
-                    "plan": plan,
-                    "from_chat": True
-                },
+                user_id=user_id,
+                channel=channel,
+                workflow_override=workflow_hint,
+                images=images,
             )
-            job.id = job_id
-            self._job_channels[job.id] = channel
-            job.on_status_change = self._on_job_status_change
-            
-            await self.queue.submit(job)
-            
+
+            if result:
+                # Send images to channel
+                import discord
+                import io
+                for i, img_data in enumerate(result):
+                    file = discord.File(io.BytesIO(img_data), filename=f"generated_{i}.png")
+                    from discord_ui.embeds import create_result_embed
+                    from discord_ui.buttons import ImageActionView
+
+                    embed = create_result_embed(
+                        prompt=prompt,
+                        workflow="chat generation",
+                        seed=random.randint(0, 2**31),
+                    )
+                    view = ImageActionView(engine=self, prompt=prompt, user_id=user_id)
+                    await channel.send(file=file, embed=embed, view=view)
+            else:
+                await channel.send("❌ Generation failed — I couldn't produce the image. Try adjusting your prompt or use /generate directly.")
+
         except Exception as e:
             logger.error(f"Chat-triggered generation failed: {e}")
-            await channel.send(f"❌ Failed to start generation: {str(e)}")
-
-    async def _process_job(self, job: Job) -> list:
-        """
-        Process a single generation job through the full agentic pipeline.
-        
-        This is called by the QueueManager for each job.
-        Features:
-          - Self-healing error recovery with automatic retries
-          - Pre-generation intelligence (plan review)
-          - Post-generation quality review  
-        Returns a list of image bytes.
-        """
-        overrides = job.metadata.get("user_overrides", {})
-        action = overrides.get("action", "generate")
-        
-        # --- Step 1: Upload reference image if provided ---
-        reference_remote = None
-        pose_remote = None
-        
-        if job.metadata.get("image_bytes"):
-            job.status = JobStatus.BUILDING
-            await self._notify_discord(job)
-            
-            # Save to temp file and upload to ComfyUI
-            tmp_path = os.path.join(tempfile.gettempdir(), f"ai_director_{job.id}.png")
-            with open(tmp_path, "wb") as f:
-                f.write(job.metadata["image_bytes"])
-            
             try:
-                remote_name = await self.comfyui.upload_image(tmp_path)
-                
-                if action == "upscale":
-                    reference_remote = remote_name
-                else:
-                    # Let Image Analyzer decide the best tools for reference
-                    analysis = await self.image_analyzer.analyze(job.metadata["image_bytes"])
-                    logger.info(f"Image Analysis: {analysis.raw_response}")
-                    
-                    if "ipadapter" in analysis.recommended_tools or analysis.style_info:
-                        reference_remote = remote_name
-                        
-                    if "openpose" in analysis.recommended_tools and analysis.has_pose:
-                        pose_remote = remote_name
-                    elif "depth" in analysis.recommended_tools and analysis.has_depth:
-                        pose_remote = remote_name # Using depth as "pose" structurally
-            finally:
-                try:
-                    os.unlink(tmp_path)
-                except Exception:
-                    pass
-        
-        # --- Step 2: Analyze intent with LLM (if not provided interactively) ---
-        plan = job.metadata.get("plan")
-        
+                await channel.send(f"❌ Oops, something went wrong: {str(e)[:200]}")
+            except Exception:
+                pass
+
+    # ═══════════════════════════════════════════════════════════════
+    # ACTION HANDLERS — Retry, Vary, Upscale, etc.
+    # ═══════════════════════════════════════════════════════════════
+
+    async def retry_generation(self, channel, user_id: str) -> List[bytes]:
+        """Retry the last generation with a new seed."""
+        channel_id = str(getattr(channel, 'id', channel))
+        plan = self.active_generations.get(channel_id)
         if not plan:
-            job.status = JobStatus.ANALYZING
-            await self._notify_discord(job)
-            
-            available_models = self.registry.get_available_models_for_llm()
-            user_prefs = self.user_memory.get_preferences_for_llm(job.user_id)
-            
-            if action == "upscale":
-                plan = GenerationPlan(
-                    action="upscale",
-                    checkpoint=overrides.get("checkpoint", ""),
-                    enhanced_prompt="masterpiece, best quality, highres, 8k uhd, detailed",
-                    width=overrides.get("width", 1024),
-                    height=overrides.get("height", 1024),
-                )
-            else:
-                cache_key = self.cache.generate_prompt_key(job.prompt, overrides)
-                cached_plan_dict = self.cache.get(cache_key) if self.config.get("cache", {}).get("enabled", True) else None
-                
-                if cached_plan_dict:
-                    logger.info(f"Cache hit for prompt: {job.prompt}")
-                    plan = GenerationPlan(**cached_plan_dict)
-                else:
-                    full_prompt = f"{job.prompt}\n\n[USER PREFERENCES Context]\n{user_prefs}"
-                    try:
-                        plan = await self.llm.analyze_intent(
-                            prompt=full_prompt,
-                            available_models=available_models,
-                            has_reference_image=job.metadata.get("has_image", False),
-                        )
-                    except Exception as e:
-                        logger.warning(f"All LLMs failed intent analysis: {e}. Using default plan.")
-                        plan = GenerationPlan(
-                            enhanced_prompt=job.prompt,
-                            reasoning="Fallback: LLM brain unavailable, using defaults.",
-                            action="generate"
-                        )
-                    
-                    if plan.style_category:
-                        preset = self.style_presets.get_preset(plan.style_category)
-                        if preset:
-                            plan = self.style_presets.apply_preset(plan, preset)
-                    
-                    if self.config.get("cache", {}).get("enabled", True):
-                        self.cache.set(cache_key, dataclasses.asdict(plan))
-            
-            for key, value in overrides.items():
-                if hasattr(plan, key) and key != "action":
-                    setattr(plan, key, value)
-            
-            if plan.checkpoint:
-                resolved = self.registry.resolve_checkpoint(plan.checkpoint)
-                plan.checkpoint = resolved if resolved else (self.registry.get_best_checkpoint(plan.style_category) or "")
-            
-            validated_loras = []
-            for lora in plan.loras:
-                if self.registry.validate_lora(lora.get("name", "")):
-                    validated_loras.append(lora)
-            plan.loras = validated_loras
-            
-            if not plan.checkpoint:
-                plan.checkpoint = self.registry.get_best_checkpoint(plan.style_category) or self.config.get("defaults", {}).get("ckpt", "Juggernaut-XL_v9_RunDiffusion.safetensors")
-            
-            plan.model_arch = self.registry.get_model_arch(plan.checkpoint)
-            
-            # --- Last-mile LoRA filtering (Compatibility Check) ---
-            final_loras = []
-            for lora in validated_loras:
-                lora_name = lora.get("name", "")
-                compat = self.registry.get_lora_compatibility(lora_name)
-                if plan.model_arch in compat:
-                    final_loras.append(lora)
-                else:
-                    logger.warning(f"Removing incompatible LoRA {lora_name} for model arch {plan.model_arch}")
-            plan.loras = final_loras
-            
-            model_defaults = self.registry.get_model_defaults(plan.checkpoint)
-            if model_defaults:
-                if plan.model_arch in ("flux", "hunyuan"):
-                    if plan.cfg > 5.0: plan.cfg = model_defaults.get("cfg", 1.0)
-                    if plan.steps > 25 and model_defaults.get("default_steps", 30) < 10: plan.steps = model_defaults.get("steps", plan.steps)
-                    plan.sampler = model_defaults.get("sampler", plan.sampler)
-                    plan.scheduler = model_defaults.get("scheduler", plan.scheduler)
-            
-            # Legacy non-interactive conflict fallback (Inverted)
-            if plan.model_arch != "sdxl" and plan.use_ipadapter:
-                plan.use_ipadapter = False
-                logger.info(f"Dropped IPAdapter as model {plan.checkpoint} is {plan.model_arch}")
-            if plan.model_arch != "sdxl" and plan.use_controlnet:
-                plan.use_controlnet = False
-                logger.info(f"Dropped ControlNet as model {plan.checkpoint} is {plan.model_arch}")
+            return []
 
-        # At this point we definitely have a compiled plan
-        logger.info(f"Plan Executing: arch={plan.model_arch}, model={plan.checkpoint}, steps={plan.steps}, cfg={plan.cfg}")
-        
-        # --- Step 4: Build & Execute with Self-Healing ---
-        async def on_status_update(status):
-            job.status = status
-            await self._notify_discord(job)
-        
-        result_images = await self._execute_with_recovery(
-            job, plan, reference_remote, pose_remote, on_status_update
-        )
-        
-        if not result_images:
-            raise RuntimeError("Pipeline returned no images")
-            
-        # Record successful generation to user memory
-        if action not in ("upscale", "edit"):
-            self.user_memory.record_generation(job.user_id, plan)
-        
-        # Store metadata for button actions
-        plan_dict = dataclasses.asdict(plan)
-        plan_dict["prompt"] = job.prompt
-        plan_dict["result_images"] = result_images
-        self._job_metadata[job.id] = plan_dict
-        
-        # Clear error recovery history
-        self.error_agent.clear_history(job.id)
-        
-        return result_images
+        plan.seed = random.randint(0, 2**31)
+        return await self._execute_with_recovery(plan, channel)
 
-    async def _execute_with_recovery(
-        self, job, plan, reference_remote, pose_remote, status_callback, max_retries=3
-    ) -> list:
-        """
-        Execute the generation pipeline with automatic error recovery.
-        
-        If ComfyUI returns an error, the ErrorDiagnosticAgent diagnoses it
-        and applies fixes (different model, lower resolution, SDXL fallback, etc.).
-        """
-        for attempt in range(max_retries + 1):
-            try:
-                result_images = await self.pipeline.execute(
-                    job.id, plan, reference_remote, pose_remote, status_callback
-                )
-                return result_images
-                
-            except Exception as e:
-                error_msg = str(e)
-                logger.warning(f"Generation attempt {attempt + 1} failed: {error_msg[:200]}")
-                
-                if attempt >= max_retries:
-                    raise
-                
-                # --- Agentic Error Recovery ---
-                strategy = self.error_agent.diagnose(
-                    error_msg, {}, plan, job_id=job.id
-                )
-                
-                if not strategy.can_fix:
-                    logger.error(f"Error is not auto-fixable: {strategy.description}")
-                    raise
-                
-                # Record the attempt
-                self.error_agent.record_attempt(job.id, strategy)
-                
-                # Apply the fix
-                logger.info(f"🔧 Auto-recovery: {strategy.description}")
-                _, plan = self.error_agent.apply_fix(strategy, {}, plan)
-                
-                # If switched to SDXL, rebuild plan arch
-                if strategy.switch_to_sdxl:
-                    plan.model_arch = "sdxl"
-                    model_defaults = self.registry.get_model_defaults(plan.checkpoint)
-                    if model_defaults:
-                        plan.sampler = model_defaults.get("sampler", plan.sampler)
-                        plan.scheduler = model_defaults.get("scheduler", plan.scheduler)
-                
-                # Notify user about the recovery
-                interaction = self._job_interactions.get(job.id)
-                if interaction:
-                    try:
-                        await interaction.channel.send(
-                            f"⚠️ **Auto-Recovery:** {strategy.description}\n"
-                            f"Retrying... (attempt {attempt + 2}/{max_retries + 1})"
-                        )
-                    except Exception:
-                        pass
-                
-                # Update status
-                if status_callback:
-                    await status_callback(JobStatus.BUILDING)
-        
-        raise RuntimeError("All recovery attempts exhausted")
+    async def vary_generation(self, channel, user_id: str) -> List[bytes]:
+        """Generate a variation with slightly modified prompt."""
+        await self._ensure_llm_initialized()
 
-    async def _on_job_status_change(self, job: Job):
-        """Called whenever a job's status changes — updates Discord."""
-        await self._notify_discord(job)
+        channel_id = str(getattr(channel, 'id', channel))
+        plan = self.active_generations.get(channel_id)
+        if not plan:
+            return []
 
-    async def _notify_discord(self, job: Job):
-        """Send status updates and results to Discord."""
-        interaction = self._job_interactions.get(job.id)
-        channel = self._job_channels.get(job.id)
-        
-        if not interaction and not channel:
-            return
-        
-        dest = interaction.channel if interaction else channel
-        
         try:
-            if job.status == JobStatus.COMPLETE and job.result_images:
-                # Send result with image and buttons
-                plan_meta = self._job_metadata.get(job.id, {})
-                embed = create_generation_embed(job, plan_meta)
-                
-                # Create buttons
-                buttons = GenerationButtons(
-                    job_id=job.id,
-                    on_action=self.handle_button_action,
-                )
-                
-                # Send image as file
-                image_file = discord.File(
-                    io.BytesIO(job.result_images[0]),
-                    filename=f"generation_{job.id}.png",
-                )
-                embed.set_image(url=f"attachment://generation_{job.id}.png")
-                
-                await interaction.channel.send(
-                    embed=embed,
-                    file=image_file,
-                    view=buttons,
-                )
-                
-                # Clean up interaction reference
-                if job.id in self._job_interactions:
-                    del self._job_interactions[job.id]
-            
-            elif job.status == JobStatus.FAILED:
-                # Include recovery info in error message
-                error_msg = job.error
-                recovery_info = ""
-                retry_history = self.error_agent._retry_history.get(job.id, [])
-                if retry_history:
-                    recovery_info = "\n\n**Recovery attempts:**\n"
-                    for i, attempt in enumerate(retry_history):
-                        recovery_info += f"{i+1}. {attempt['description']}\n"
-                
-                embed = create_error_embed(error_msg + recovery_info, job)
-                
-                # Add LLM provider status if relevant
-                provider_status = self.llm.get_status_summary()
-                embed.add_field(
-                    name="🤖 LLM Status",
-                    value=provider_status[:200],
-                    inline=False
-                )
-                
-                await dest.send(embed=embed)
-                
-                # Clean up
-                self.error_agent.clear_history(job.id)
-                if job.id in self._job_interactions:
-                    del self._job_interactions[job.id]
-                if job.id in self._job_channels:
-                    del self._job_channels[job.id]
-            
-            else:
-                # Progress updates
-                logger.debug(f"Job {job.id}: {job.status.value}")
-        
+            new_prompt = await self.llm.enhance_prompt(
+                plan.enhanced_prompt,
+                style_hints="Create a variation — keep the same subject but change style, lighting, or composition slightly.",
+            )
+            plan.enhanced_prompt = new_prompt
         except Exception as e:
-            logger.error(f"Failed to notify Discord for job {job.id}: {e}")
+            logger.warning(f"Variation prompt enhancement failed: {e}")
+
+        plan.seed = random.randint(0, 2**31)
+        return await self._execute_with_recovery(plan, channel)
+
+    async def change_aspect(self, channel, user_id: str, direction: str = "wide") -> List[bytes]:
+        """Regenerate with different aspect ratio."""
+        channel_id = str(getattr(channel, 'id', channel))
+        plan = self.active_generations.get(channel_id)
+        if not plan:
+            return []
+
+        if direction == "wide":
+            plan.width = 1344
+            plan.height = 768
+        elif direction == "tall":
+            plan.width = 768
+            plan.height = 1344
+
+        plan.seed = random.randint(0, 2**31)
+        return await self._execute_with_recovery(plan, channel)
+
+    # ═══════════════════════════════════════════════════════════════
+    # UTILITIES
+    # ═══════════════════════════════════════════════════════════════
+
+    def get_workflows(self) -> Dict[str, str]:
+        """Get all available workflows."""
+        return self.workflow_manager.get_workflow_list()
+
+    def get_workflow_profiles(self) -> Dict[str, Any]:
+        """Get enriched workflow profiles."""
+        return self.workflow_manager.get_workflow_list_rich()

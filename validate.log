@@ -1,0 +1,5 @@
+❌ image_flux2_klein_image_edit_9b_distilled: FAILED
+  - ComfyUI rejected workflow (HTTP 400): {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"76": {"errors": [{"type": "custom_validation_failed", "message": "Custom validation failed for node", "details": "image - Invalid image file: bold_outfit_woman.jpeg", "extra_info": {"input_name": "image"}}], "dependent_outputs": ["9"], "class_type": "LoadImage"}}}
+✅ image_qwen_image_edit_2509: OK -> 2c5764b7-e7db-4990-8f4b-173703c0a9f6
+✅ image_z_image_turbo: OK -> ad2c4fd5-c619-4781-bfc4-8d09812a2dca
+✅ image_z_image_turbo_fun_union_controlnet: OK -> 57bb09b6-90f6-44c7-8d36-e5986e8cb9cf

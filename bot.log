@@ -2510,3 +2510,997 @@ aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gatewa
 2026-03-22 21:16:37,957 [INFO] ai_director: Shutting down AI Director...
 2026-03-22 21:16:37,957 [INFO] core.queue_manager: Queue manager stopped
 2026-03-22 21:16:37,958 [INFO] engine: AI Director Engine stopped
+2026-03-22 22:06:23,952 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 22:06:23,952 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 22:06:23,959 [INFO] core.workflow_manager: Loaded workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:06:23,961 [INFO] core.workflow_manager: Loaded workflow template: image_qwen_image_edit_2509
+2026-03-22 22:06:23,961 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo
+2026-03-22 22:06:23,962 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo_fun_union_controlnet
+2026-03-22 22:06:23,964 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 22:06:25,076 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 22:06:25,079 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 22:06:25,079 [INFO] engine: Starting AI Director Engine...
+2026-03-22 22:06:25,941 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 22:06:26,559 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 22:06:26,560 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 22:06:26,560 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 22:06:26,560 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 22:06:26,560 [INFO] engine: LLM providers ready: gemini
+2026-03-22 22:06:26,561 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 22:06:26,697 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 22:06:26,698 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 22:06:26,698 [INFO] core.queue_manager: Queue manager started
+2026-03-22 22:06:26,722 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 22:06:26,723 [INFO] engine: AI Director Engine ready!
+2026-03-22 22:06:27,702 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 22:06:30,605 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 22:06:30,605 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 22:06:30,605 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 22:06:30,605 [INFO] ai_director:   Guilds: 1
+2026-03-22 22:06:30,605 [INFO] ai_director:   LLM: gemini
+2026-03-22 22:06:30,606 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 22:07:00,491 [INFO] ai_director: Received mention chat text: hello
+2026-03-22 22:07:01,066 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 22:07:47,354 [INFO] ai_director: Received mention chat text: i want to create an image of lord krishna with flute
+2026-03-22 22:07:47,915 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 22:07:48,739 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 11.06164917s (failures: 1)
+2026-03-22 22:08:42,151 [ERROR] discord.app_commands.tree: Ignoring exception in command 'preferences'
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\discord_ui\commands.py", line 257, in prefs_cmd
+    top_styles = [f"{s} ({c})" for s, c in prefs.get_top_styles(3)]
+                                           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UserProfile' object has no attribute 'get_top_styles'. Did you mean: 'get_top_style'?
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'preferences' raised an exception: AttributeError: 'UserProfile' object has no attribute 'get_top_styles'
+2026-03-22 22:08:58,445 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 22:08:59,118 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 674.973449s (failures: 2)
+2026-03-22 22:09:01,964 [WARNING] engine: In interactive flow, removing incompatible LoRA Bhairavi_Devi_Hindu_Art.safetensors for model arch flux
+2026-03-22 22:09:08,198 [INFO] core.queue_manager: Job f55fdf19-5b50-4c18-a78a-8fbffeef6098 queued (position: 1)
+2026-03-22 22:09:08,198 [INFO] engine: Plan Executing: arch=flux, model=z_image_bf16.safetensors, steps=30, cfg=7.0
+2026-03-22 22:09:08,198 [WARNING] core.pipeline: Failed to build from template .
+2026-03-22 22:09:08,199 [WARNING] core.pipeline: Using fallback template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:09:08,202 [INFO] core.workflow_manager: Building from user workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:09:08,284 [WARNING] engine: Generation attempt 1 failed: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+2026-03-22 22:09:08,284 [INFO] core.error_recovery: Disabling SDXL fallback because custom template 'image_flux2_klein_image_edit_9b_distilled' is active.
+2026-03-22 22:09:08,284 [ERROR] engine: Error is not auto-fixable: Unknown error: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble (Template mode: SDXL fallback disabled)
+2026-03-22 22:09:08,284 [ERROR] core.queue_manager: Job f55fdf19-5b50-4c18-a78a-8fbffeef6098 failed: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 579, in _process_job
+    result_images = await self._execute_with_recovery(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 612, in _execute_with_recovery
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 87, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 215, in _run_workflow
+    prompt_id = await self.engine.comfyui.queue_prompt(workflow)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 51, in queue_prompt
+    raise RuntimeError(f"ComfyUI rejected workflow: {error_text}")
+RuntimeError: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+2026-03-22 22:15:13,336 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 22:15:13,336 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 22:15:13,336 [INFO] engine: AI Director Engine stopped
+2026-03-22 22:15:15,431 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 22:15:15,431 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 22:15:15,435 [INFO] core.workflow_manager: Loaded workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:15:15,436 [INFO] core.workflow_manager: Loaded workflow template: image_qwen_image_edit_2509
+2026-03-22 22:15:15,437 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo
+2026-03-22 22:15:15,437 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo_fun_union_controlnet
+2026-03-22 22:15:15,439 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 22:15:16,370 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 22:15:16,373 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 22:15:16,373 [INFO] engine: Starting AI Director Engine...
+2026-03-22 22:15:17,276 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 22:15:18,015 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 22:15:18,015 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 22:15:18,015 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 22:15:18,015 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 22:15:18,016 [INFO] engine: LLM providers ready: gemini
+2026-03-22 22:15:18,016 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 22:15:18,096 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 22:15:18,096 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 22:15:18,097 [INFO] core.queue_manager: Queue manager started
+2026-03-22 22:15:18,106 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 22:15:18,106 [INFO] engine: AI Director Engine ready!
+2026-03-22 22:15:18,594 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 22:15:23,104 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 22:15:23,105 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 22:15:23,105 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 22:15:23,105 [INFO] ai_director:   Guilds: 1
+2026-03-22 22:15:23,106 [INFO] ai_director:   LLM: gemini
+2026-03-22 22:15:23,107 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 22:16:09,417 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 22:16:10,126 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 49.69567585s (failures: 1)
+2026-03-22 22:18:11,000 [ERROR] llm.provider_manager: Provider 'ollama' call failed: 
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_reqrep.py", line 539, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\streams.py", line 680, in read
+    await self._waiter
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 161, in call
+    result = await method(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\ollama_provider.py", line 266, in analyze_intent
+    response = await self._chat(messages, temperature=0.3)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\ollama_provider.py", line 142, in _chat
+    async with session.post(
+               ^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1510, in __aenter__
+    self._resp: _RetType = await self._coro
+                           ^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 779, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 757, in _connect_and_send_request
+    await resp.start(conn)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_reqrep.py", line 534, in start
+    with self._timer:
+         ^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\helpers.py", line 713, in __exit__
+    raise asyncio.TimeoutError from exc_val
+TimeoutError
+2026-03-22 22:18:11,150 [WARNING] llm.provider_manager: Provider 'ollama' failed. Cooling down for 30s
+2026-03-22 22:18:11,150 [ERROR] engine: Plan draft failed: All LLM providers failed: gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 49.69567585s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '49s'}]}}; ollama: 
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\engine.py", line 142, in submit_generation
+    plan = await self.llm.analyze_intent(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 205, in analyze_intent
+    return await self.call("analyze_intent", prompt, available_models, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 199, in call
+    raise AllProvidersFailedError(errors)
+llm.provider_manager.AllProvidersFailedError: All LLM providers failed: gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 49.69567585s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '49s'}]}}; ollama: 
+2026-03-22 22:19:33,885 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 22:19:34,872 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 24.91214437s (failures: 2)
+2026-03-22 22:19:37,698 [WARNING] engine: In interactive flow, removing incompatible LoRA Bhairavi_Devi_Hindu_Art.safetensors for model arch flux
+2026-03-22 22:19:45,325 [INFO] core.queue_manager: Job a067b2b1-4134-40ac-a75c-bb9568252e0b queued (position: 1)
+2026-03-22 22:19:45,326 [INFO] engine: Plan Executing: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=7.0
+2026-03-22 22:19:45,329 [INFO] core.workflow_manager: Building from user workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:19:45,379 [WARNING] engine: Generation attempt 1 failed: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+2026-03-22 22:19:45,380 [INFO] core.error_recovery: Disabling SDXL fallback because custom template 'image_flux2_klein_image_edit_9b_distilled' is active.
+2026-03-22 22:19:45,380 [ERROR] engine: Error is not auto-fixable: Unknown error: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble (Template mode: SDXL fallback disabled)
+2026-03-22 22:19:45,380 [ERROR] core.queue_manager: Job a067b2b1-4134-40ac-a75c-bb9568252e0b failed: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 598, in _process_job
+    result_images = await self._execute_with_recovery(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 631, in _execute_with_recovery
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 93, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 221, in _run_workflow
+    prompt_id = await self.engine.comfyui.queue_prompt(workflow)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 51, in queue_prompt
+    raise RuntimeError(f"ComfyUI rejected workflow: {error_text}")
+RuntimeError: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+2026-03-22 22:20:15,126 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 22:20:15,610 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 44.175720407s (failures: 3)
+2026-03-22 22:20:17,975 [WARNING] engine: In interactive flow, removing incompatible LoRA Flux_2-Turbo-LoRA_comfyui.safetensors for model arch flux
+2026-03-22 22:20:27,146 [INFO] core.queue_manager: Job 3b26c4da-1e1a-494d-9c12-5ac3f64b7b75 queued (position: 1)
+2026-03-22 22:20:27,147 [INFO] engine: Plan Executing: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=7.0
+2026-03-22 22:20:27,153 [INFO] core.workflow_manager: Building from user workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:20:27,186 [WARNING] engine: Generation attempt 1 failed: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+2026-03-22 22:20:27,187 [INFO] core.error_recovery: Disabling SDXL fallback because custom template 'image_flux2_klein_image_edit_9b_distilled' is active.
+2026-03-22 22:20:27,187 [ERROR] engine: Error is not auto-fixable: Unknown error: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble (Template mode: SDXL fallback disabled)
+2026-03-22 22:20:27,187 [ERROR] core.queue_manager: Job 3b26c4da-1e1a-494d-9c12-5ac3f64b7b75 failed: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 598, in _process_job
+    result_images = await self._execute_with_recovery(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 631, in _execute_with_recovery
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 93, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 221, in _run_workflow
+    prompt_id = await self.engine.comfyui.queue_prompt(workflow)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 51, in queue_prompt
+    raise RuntimeError(f"ComfyUI rejected workflow: {error_text}")
+RuntimeError: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+2026-03-22 22:21:00,605 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 22:21:00,605 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 22:21:00,605 [INFO] engine: AI Director Engine stopped
+2026-03-22 22:21:02,434 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 22:21:02,434 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 22:21:02,437 [INFO] core.workflow_manager: Loaded workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:21:02,439 [INFO] core.workflow_manager: Loaded workflow template: image_qwen_image_edit_2509
+2026-03-22 22:21:02,440 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo
+2026-03-22 22:21:02,440 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo_fun_union_controlnet
+2026-03-22 22:21:02,442 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 22:21:03,354 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 22:21:03,358 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 22:21:03,358 [INFO] engine: Starting AI Director Engine...
+2026-03-22 22:21:04,223 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 22:21:04,223 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 1)
+2026-03-22 22:21:04,223 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 22:21:04,820 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 2)
+2026-03-22 22:21:04,820 [INFO] llm.provider_manager: Active LLM provider: ollama
+2026-03-22 22:21:04,820 [INFO] engine: LLM providers ready: ollama
+2026-03-22 22:21:04,820 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 22:21:04,923 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 22:21:04,924 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 22:21:04,924 [INFO] core.queue_manager: Queue manager started
+2026-03-22 22:21:04,935 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 22:21:04,936 [INFO] engine: AI Director Engine ready!
+2026-03-22 22:21:05,509 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 22:21:08,471 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 22:21:08,471 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 22:21:08,471 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 22:21:08,471 [INFO] ai_director:   Guilds: 1
+2026-03-22 22:21:08,472 [INFO] ai_director:   LLM: ollama
+2026-03-22 22:21:08,472 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 22:22:33,297 [INFO] ai_director: Received mention chat text: hello
+2026-03-22 22:23:21,987 [ERROR] llm.provider_manager: Provider 'ollama' call failed: 
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_reqrep.py", line 539, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\streams.py", line 680, in read
+    await self._waiter
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 161, in call
+    result = await method(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\ollama_provider.py", line 266, in analyze_intent
+    response = await self._chat(messages, temperature=0.3)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\ollama_provider.py", line 142, in _chat
+    async with session.post(
+               ^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1510, in __aenter__
+    self._resp: _RetType = await self._coro
+                           ^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 779, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 757, in _connect_and_send_request
+    await resp.start(conn)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_reqrep.py", line 534, in start
+    with self._timer:
+         ^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\helpers.py", line 713, in __exit__
+    raise asyncio.TimeoutError from exc_val
+TimeoutError
+2026-03-22 22:23:21,994 [WARNING] llm.provider_manager: Provider 'ollama' failed. Cooling down for 30s
+2026-03-22 22:23:21,996 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 22:23:22,694 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 37.119208618s (failures: 1)
+2026-03-22 22:23:22,696 [ERROR] engine: Plan draft failed: All LLM providers failed: ollama: ; gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 37.119208618s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '37s'}]}}
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\engine.py", line 142, in submit_generation
+    plan = await self.llm.analyze_intent(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 205, in analyze_intent
+    return await self.call("analyze_intent", prompt, available_models, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 199, in call
+    raise AllProvidersFailedError(errors)
+llm.provider_manager.AllProvidersFailedError: All LLM providers failed: ollama: ; gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 37.119208618s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '37s'}]}}
+2026-03-22 22:23:24,806 [WARNING] engine: In interactive flow, removing incompatible LoRA Bhairavi_Devi_Hindu_Art.safetensors for model arch flux
+2026-03-22 22:23:24,807 [INFO] llm.provider_manager: All providers on cooldown. Waiting 27s for 'ollama'...
+2026-03-22 22:23:45,398 [INFO] llm.provider_manager: All providers on cooldown. Waiting 7s for 'ollama'...
+2026-03-22 22:23:54,921 [WARNING] engine: In interactive flow, removing incompatible LoRA Flux_2-Turbo-LoRA_comfyui.safetensors for model arch flux
+2026-03-22 22:23:56,584 [INFO] core.queue_manager: Job ce8ee4c3-b7c9-4cb9-b24b-af856785c519 queued (position: 1)
+2026-03-22 22:23:56,587 [INFO] engine: Plan Executing: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=7.0
+2026-03-22 22:23:56,589 [INFO] core.workflow_manager: Building from user workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:23:56,616 [WARNING] engine: Generation attempt 1 failed: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+2026-03-22 22:23:56,616 [INFO] core.error_recovery: Disabling SDXL fallback because custom template 'image_flux2_klein_image_edit_9b_distilled' is active.
+2026-03-22 22:23:56,616 [ERROR] engine: Error is not auto-fixable: Unknown error: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble (Template mode: SDXL fallback disabled)
+2026-03-22 22:23:56,616 [ERROR] core.queue_manager: Job ce8ee4c3-b7c9-4cb9-b24b-af856785c519 failed: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 598, in _process_job
+    result_images = await self._execute_with_recovery(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 631, in _execute_with_recovery
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 93, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 221, in _run_workflow
+    prompt_id = await self.engine.comfyui.queue_prompt(workflow)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 51, in queue_prompt
+    raise RuntimeError(f"ComfyUI rejected workflow: {error_text}")
+RuntimeError: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+2026-03-22 22:26:24,998 [ERROR] llm.provider_manager: Provider 'ollama' call failed: 
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_reqrep.py", line 539, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\streams.py", line 680, in read
+    await self._waiter
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 161, in call
+    result = await method(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\ollama_provider.py", line 266, in analyze_intent
+    response = await self._chat(messages, temperature=0.3)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\ollama_provider.py", line 142, in _chat
+    async with session.post(
+               ^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1510, in __aenter__
+    self._resp: _RetType = await self._coro
+                           ^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 779, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 757, in _connect_and_send_request
+    await resp.start(conn)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_reqrep.py", line 534, in start
+    with self._timer:
+         ^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\helpers.py", line 713, in __exit__
+    raise asyncio.TimeoutError from exc_val
+TimeoutError
+2026-03-22 22:26:25,000 [WARNING] llm.provider_manager: Provider 'ollama' failed. Cooling down for 30s
+2026-03-22 22:26:25,001 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 22:26:25,704 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 34.109009256s (failures: 2)
+2026-03-22 22:26:25,704 [ERROR] engine: Plan draft failed: All LLM providers failed: ollama: ; gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 34.109009256s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '34s'}]}}
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\engine.py", line 142, in submit_generation
+    plan = await self.llm.analyze_intent(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 205, in analyze_intent
+    return await self.call("analyze_intent", prompt, available_models, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\llm\provider_manager.py", line 199, in call
+    raise AllProvidersFailedError(errors)
+llm.provider_manager.AllProvidersFailedError: All LLM providers failed: ollama: ; gemini: rate limited: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 34.109009256s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-2.5-flash', 'location': 'global'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '34s'}]}}
+2026-03-22 22:26:27,298 [WARNING] engine: In interactive flow, removing incompatible LoRA Bhairavi_Devi_Hindu_Art.safetensors for model arch flux
+2026-03-22 22:26:27,300 [INFO] llm.provider_manager: All providers on cooldown. Waiting 28s for 'ollama'...
+2026-03-22 22:26:48,566 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 22:26:48,566 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 22:26:48,566 [INFO] engine: AI Director Engine stopped
+2026-03-22 22:26:51,273 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 22:26:51,273 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 22:26:51,277 [INFO] core.workflow_manager: Loaded workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:26:51,279 [INFO] core.workflow_manager: Loaded workflow template: image_qwen_image_edit_2509
+2026-03-22 22:26:51,279 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo
+2026-03-22 22:26:51,280 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo_fun_union_controlnet
+2026-03-22 22:26:51,283 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 22:26:52,181 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 22:26:52,183 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 22:26:52,183 [INFO] engine: Starting AI Director Engine...
+2026-03-22 22:26:53,139 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 22:26:53,139 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 1)
+2026-03-22 22:26:53,139 [INFO] llm.provider_manager: Active LLM provider: ollama
+2026-03-22 22:26:53,139 [INFO] engine: LLM providers ready: ollama
+2026-03-22 22:26:53,139 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 22:26:53,210 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 22:26:53,210 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 22:26:53,211 [INFO] core.queue_manager: Queue manager started
+2026-03-22 22:26:53,219 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 22:26:53,219 [INFO] engine: AI Director Engine ready!
+2026-03-22 22:26:53,705 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 22:26:56,772 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 22:26:56,773 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 22:26:56,773 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 22:26:56,773 [INFO] ai_director:   Guilds: 1
+2026-03-22 22:26:56,774 [INFO] ai_director:   LLM: ollama
+2026-03-22 22:26:56,774 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 22:27:06,287 [INFO] ai_director: Received mention chat text: hello
+2026-03-22 22:27:26,414 [WARNING] engine: In interactive flow, removing incompatible LoRA Bhairavi_Devi_Hindu_Art.safetensors for model arch flux
+2026-03-22 22:27:37,718 [INFO] core.queue_manager: Job f66b858b-58cc-4169-a1dc-2bbf91e30d54 queued (position: 1)
+2026-03-22 22:27:37,719 [INFO] engine: Plan Executing: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=7.0
+2026-03-22 22:27:37,721 [INFO] core.workflow_manager: Building from user workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:27:37,748 [WARNING] engine: Generation attempt 1 failed: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+2026-03-22 22:27:37,748 [INFO] core.error_recovery: Disabling SDXL fallback because custom template 'image_flux2_klein_image_edit_9b_distilled' is active.
+2026-03-22 22:27:37,749 [ERROR] engine: Error is not auto-fixable: Unknown error: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble (Template mode: SDXL fallback disabled)
+2026-03-22 22:27:37,749 [ERROR] core.queue_manager: Job f66b858b-58cc-4169-a1dc-2bbf91e30d54 failed: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 598, in _process_job
+    result_images = await self._execute_with_recovery(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 631, in _execute_with_recovery
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 93, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 221, in _run_workflow
+    prompt_id = await self.engine.comfyui.queue_prompt(workflow)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 51, in queue_prompt
+    raise RuntimeError(f"ComfyUI rejected workflow: {error_text}")
+RuntimeError: ComfyUI rejected workflow: 500 Internal Server Error
+
+Server got itself in trouble
+2026-03-22 22:28:01,371 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 22:28:01,371 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 22:28:01,371 [INFO] engine: AI Director Engine stopped
+2026-03-22 22:34:47,234 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 22:34:47,234 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 22:34:47,237 [INFO] core.workflow_manager: Loaded workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:34:47,239 [INFO] core.workflow_manager: Loaded workflow template: image_qwen_image_edit_2509
+2026-03-22 22:34:47,239 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo
+2026-03-22 22:34:47,240 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo_fun_union_controlnet
+2026-03-22 22:34:47,242 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 22:34:48,379 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 22:34:48,380 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 22:34:48,382 [INFO] engine: Starting AI Director Engine...
+2026-03-22 22:34:49,298 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 22:34:49,298 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 1)
+2026-03-22 22:34:49,298 [INFO] llm.provider_manager: Active LLM provider: ollama
+2026-03-22 22:34:49,298 [INFO] engine: LLM providers ready: ollama
+2026-03-22 22:34:49,298 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 22:34:49,388 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 22:34:49,388 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 22:34:49,389 [INFO] core.queue_manager: Queue manager started
+2026-03-22 22:34:49,398 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 22:34:49,398 [INFO] engine: AI Director Engine ready!
+2026-03-22 22:34:49,860 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 22:34:52,825 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 22:34:52,825 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 22:34:52,825 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 22:34:52,825 [INFO] ai_director:   Guilds: 1
+2026-03-22 22:34:52,826 [INFO] ai_director:   LLM: ollama
+2026-03-22 22:34:52,826 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 22:35:18,791 [INFO] core.queue_manager: Job 5410ee0b-a8bf-47bf-8a94-7acc63090cc2 queued (position: 1)
+2026-03-22 22:35:18,793 [INFO] engine: Plan Executing: arch=sdxl, model=z_image_turbo_bf16.safetensors, steps=30, cfg=7.0
+2026-03-22 22:35:18,798 [INFO] core.workflow_manager: Building from user workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 22:35:18,799 [INFO] core.workflow_manager: Converting graph-editor format → API format
+2026-03-22 22:35:18,800 [INFO] core.workflow_manager: API workflow has 47 nodes: ['LoadImage', 'SaveImage', '7b34ab90-36f9-45ba-a665-71d418f0df18', 'SaveImage', '65c22b29-59aa-496b-89c6-55a603658670', 'LoadImage', 'KSamplerSelect', 'SamplerCustomAdvanced', 'VAEDecode', 'RandomNoise', 'UNETLoader', 'CLIPLoader', 'VAELoader', 'EmptyFlux2LatentImage', 'ImageScaleToTotalPixels', 'CFGGuider', 'Flux2Scheduler', 'CLIPTextEncode', 'ConditioningZeroOut', 'GetImageSize', '6007e698-2ebd-4917-84d8-299b35d7b7ab', 'ReferenceLatent', 'VAEEncode', 'ReferenceLatent', 'KSamplerSelect', 'Flux2Scheduler', 'CFGGuider', 'SamplerCustomAdvanced', 'VAEDecode', 'RandomNoise', 'UNETLoader', 'CLIPLoader', 'CLIPTextEncode', 'VAELoader', 'ImageScaleToTotalPixels', 'ImageScaleToTotalPixels', 'ConditioningZeroOut', 'EmptyFlux2LatentImage', 'GetImageSize', '93041a64-452a-477a-9447-40330b7c1136', '27eacb9f-0da2-421d-a0bf-b4b4e5fe5709', 'ReferenceLatent', 'VAEEncode', 'ReferenceLatent', 'ReferenceLatent', 'VAEEncode', 'ReferenceLatent']
+2026-03-22 22:35:19,026 [ERROR] core.comfyui_client: ComfyUI error: Node '7b34ab90-36f9-45ba-a665-71d418f0df18' not found. The custom node may not be installed.
+2026-03-22 22:35:19,027 [WARNING] engine: Generation attempt 1 failed: ComfyUI rejected workflow: {"error": {"type": "missing_node_type", "message": "Node '7b34ab90-36f9-45ba-a665-71d418f0df18' not found. The custom node may not be installed.", "details": "Node ID '#75'"
+2026-03-22 22:35:19,027 [INFO] core.error_recovery: Disabling SDXL fallback because custom template 'image_flux2_klein_image_edit_9b_distilled' is active.
+2026-03-22 22:35:19,028 [ERROR] engine: Error is not auto-fixable: Unknown error: ComfyUI rejected workflow: {"error": {"type": "missing_node_type", "message": "Node '7b34ab90-36f9-45ba-a665-71d418f0df18' not found. The custom node may not be installed.", "details": "Node ID '#75'" (Template mode: SDXL fallback disabled)
+2026-03-22 22:35:19,028 [ERROR] core.queue_manager: Job 5410ee0b-a8bf-47bf-8a94-7acc63090cc2 failed: ComfyUI rejected workflow: {"error": {"type": "missing_node_type", "message": "Node '7b34ab90-36f9-45ba-a665-71d418f0df18' not found. The custom node may not be installed.", "details": "Node ID '#75'", "extra_info": {"node_id": "75", "class_type": "7b34ab90-36f9-45ba-a665-71d418f0df18", "node_title": "7b34ab90-36f9-45ba-a665-71d418f0df18"}}, "node_errors": {}}
+Traceback (most recent call last):
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 169, in _worker
+    await self._process_job(job)
+  File "c:\Users\darkx\comfybot\core\queue_manager.py", line 190, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 604, in _process_job
+    result_images = await self._execute_with_recovery(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\engine.py", line 637, in _execute_with_recovery
+    result_images = await self.pipeline.execute(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 93, in execute
+    output_images = await self._run_workflow(workflow)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\pipeline.py", line 221, in _run_workflow
+    prompt_id = await self.engine.comfyui.queue_prompt(workflow)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\core\comfyui_client.py", line 74, in queue_prompt
+    raise RuntimeError(f"ComfyUI rejected workflow: {error_text[:500]}")
+RuntimeError: ComfyUI rejected workflow: {"error": {"type": "missing_node_type", "message": "Node '7b34ab90-36f9-45ba-a665-71d418f0df18' not found. The custom node may not be installed.", "details": "Node ID '#75'", "extra_info": {"node_id": "75", "class_type": "7b34ab90-36f9-45ba-a665-71d418f0df18", "node_title": "7b34ab90-36f9-45ba-a665-71d418f0df18"}}, "node_errors": {}}
+2026-03-22 23:32:28,480 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 23:32:28,480 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 23:32:28,483 [INFO] llm.ollama_provider: Ollama provider: http://127.0.0.1:11434 model=qwen2.5:1.5b
+2026-03-22 23:32:28,484 [INFO] core.comfyui_client: ComfyUI client: http://192.168.29.23:8188 (client_id=ai_director)
+2026-03-22 23:32:28,485 [INFO] core.workflow_manager: Loaded workflow: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 23:32:28,486 [INFO] core.workflow_manager: Loaded workflow: image_qwen_image_edit_2509
+2026-03-22 23:32:28,487 [INFO] core.workflow_manager: Loaded workflow: image_z_image_turbo
+2026-03-22 23:32:28,488 [INFO] core.workflow_manager: Loaded workflow: image_z_image_turbo_fun_union_controlnet
+2026-03-22 23:32:29,468 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 23:32:29,469 [INFO] discord_ui.commands: Slash commands registered: /generate, /workflows, /help
+2026-03-22 23:32:29,496 [INFO] engine: ✅ ComfyUI server is reachable
+2026-03-22 23:32:29,497 [INFO] engine: 📂 Loaded 4 workflow templates
+2026-03-22 23:32:29,497 [INFO] engine:   • image_flux2_klein_image_edit_9b_distilled: Workflow for editing or restyling a single image using Flux 2 Klein. Selected ON
+2026-03-22 23:32:29,497 [INFO] engine:   • image_qwen_image_edit_2509: Workflow for generalized image editing using the Qwen-Image model. Selected ONLY
+2026-03-22 23:32:29,497 [INFO] engine:   • image_z_image_turbo: Standard text-to-image generation using Z-Image Turbo. This is extremely fast. S
+2026-03-22 23:32:29,497 [INFO] engine:   • image_z_image_turbo_fun_union_controlnet: Fast Z-Image Turbo generation guided by a ControlNet structure. Selected ONLY wh
+2026-03-22 23:32:30,162 [INFO] ai_director: Synced 3 slash commands
+2026-03-22 23:32:33,088 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 23:32:33,089 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 23:32:33,089 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 23:32:33,089 [INFO] ai_director:   Guilds: 1
+2026-03-22 23:32:33,089 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 23:34:29,412 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 23:34:29,413 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 23:34:29,413 [INFO] engine: AI Director Engine stopped
+2026-03-22 23:34:31,883 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 23:34:31,883 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 23:34:31,885 [INFO] llm.ollama_provider: Ollama provider: http://127.0.0.1:11434 model=qwen2.5:1.5b
+2026-03-22 23:34:31,885 [INFO] core.comfyui_client: ComfyUI client: http://192.168.29.23:8188 (client_id=ai_director)
+2026-03-22 23:34:31,887 [INFO] core.workflow_manager: Loaded workflow: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 23:34:31,888 [INFO] core.workflow_manager: Loaded workflow: image_qwen_image_edit_2509
+2026-03-22 23:34:31,889 [INFO] core.workflow_manager: Loaded workflow: image_z_image_turbo
+2026-03-22 23:34:31,889 [INFO] core.workflow_manager: Loaded workflow: image_z_image_turbo_fun_union_controlnet
+2026-03-22 23:34:32,831 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 23:34:32,832 [INFO] discord_ui.commands: Slash commands registered: /generate, /workflows, /help
+2026-03-22 23:34:32,842 [INFO] engine: ✅ ComfyUI server is reachable
+2026-03-22 23:34:32,843 [INFO] engine: 📂 Loaded 4 workflow templates
+2026-03-22 23:34:32,843 [INFO] engine:   • image_flux2_klein_image_edit_9b_distilled: Workflow for editing or restyling a single image using Flux 2 Klein. Selected ON
+2026-03-22 23:34:32,843 [INFO] engine:   • image_qwen_image_edit_2509: Workflow for generalized image editing using the Qwen-Image model. Selected ONLY
+2026-03-22 23:34:32,843 [INFO] engine:   • image_z_image_turbo: Standard text-to-image generation using Z-Image Turbo. This is extremely fast. S
+2026-03-22 23:34:32,843 [INFO] engine:   • image_z_image_turbo_fun_union_controlnet: Fast Z-Image Turbo generation guided by a ControlNet structure. Selected ONLY wh
+2026-03-22 23:34:33,362 [INFO] ai_director: Synced 3 slash commands
+2026-03-22 23:34:36,272 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 23:34:36,272 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 23:34:36,273 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 23:34:36,273 [INFO] ai_director:   Guilds: 1
+2026-03-22 23:34:36,273 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 23:35:08,975 [INFO] ai_director: Chat from suraj.ae: hello
+2026-03-22 23:35:08,985 [INFO] ai_director: Chat from suraj.ae: hello
+2026-03-22 23:35:33,097 [ERROR] discord.app_commands.tree: Ignoring exception in command 'workflows'
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\discord_ui\commands.py", line 75, in workflows
+    await interaction.response.send_message(embed=embed)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 1085, in send_message
+    data = await adapter.create_interaction_response(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'workflows' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-22 23:36:07,577 [ERROR] discord.app_commands.tree: Ignoring exception in command 'generate'
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\discord_ui\commands.py", line 35, in generate
+    await interaction.response.defer(thinking=True)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 892, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'generate' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-22 23:36:10,395 [INFO] core.workflow_manager: Converting image_z_image_turbo_fun_union_controlnet from graph-editor to API format
+2026-03-22 23:36:10,395 [INFO] core.workflow_manager: Injected prompt into node 45
+2026-03-22 23:36:10,395 [INFO] core.workflow_manager: Injected seed 1594798042 into KSampler node 44
+2026-03-22 23:36:10,395 [INFO] core.workflow_manager: Injected dimensions 1024x1024 into EmptySD3LatentImage
+2026-03-22 23:36:10,395 [INFO] core.workflow_manager: Built workflow: image_z_image_turbo_fun_union_controlnet (18 nodes)
+2026-03-22 23:36:10,407 [ERROR] core.comfyui_client: ComfyUI error: Prompt outputs failed validation
+2026-03-22 23:36:10,408 [ERROR] core.comfyui_client:   Node 62: {'errors': [{'type': 'required_input_missing', 'message': 'Required input is missing', 'details': 'largest_size', 'extra_info': {'input_name': 'largest_size'}}, {'type': 'required_input_missing', 'message': 'Required input is missing', 'details': 'upscale_method', 'extra_info': {'input_name': 'upscale_method'}}], 'dependent_outputs': ['56', '9'], 'class_type': 'ImageScaleToMaxDimension'}
+2026-03-22 23:36:10,408 [ERROR] core.comfyui_client:   Node 64: {'errors': [{'type': 'required_input_missing', 'message': 'Required input is missing', 'details': 'name', 'extra_info': {'input_name': 'name'}}], 'dependent_outputs': ['9'], 'class_type': 'ModelPatchLoader'}
+2026-03-22 23:36:10,408 [ERROR] core.comfyui_client:   Node 60: {'errors': [{'type': 'required_input_missing', 'message': 'Required input is missing', 'details': 'strength', 'extra_info': {'input_name': 'strength'}}], 'dependent_outputs': ['9'], 'class_type': 'QwenImageDiffsynthControlnet'}
+2026-03-22 23:36:10,408 [ERROR] engine: ComfyUI submission failed: ComfyUI rejected workflow (HTTP 400): {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"62": {"errors": [{"type": "required_input_missing", "message": "Required input is missing", "details": "largest_size", "extra_info": {"input_name": "largest_size"}}, {"type": "required_input_missing", "message": "Required input is missing", "details": "upscale_method", "extra_info": {"input_name": "upscale_method"}}], "dependent_outputs": ["56",
+2026-03-22 23:40:31,693 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 23:40:31,694 [INFO] engine: Engine stopped
+2026-03-23 00:36:55,100 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-23 00:36:55,100 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-23 00:36:55,102 [INFO] llm.ollama_provider: Ollama provider: http://127.0.0.1:11434 model=qwen2.5:1.5b
+2026-03-23 00:36:55,102 [INFO] core.comfyui_client: ComfyUI client: http://192.168.29.23:8188 (client_id=ai_director)
+2026-03-23 00:36:55,104 [INFO] core.workflow_manager: Loaded workflow: image_flux2_klein_image_edit_9b_distilled
+2026-03-23 00:36:55,105 [INFO] core.workflow_manager: Loaded workflow: image_qwen_image_edit_2509
+2026-03-23 00:36:55,106 [INFO] core.workflow_manager: Loaded workflow: image_z_image_turbo
+2026-03-23 00:36:55,106 [INFO] core.workflow_manager: Loaded workflow: image_z_image_turbo_fun_union_controlnet
+2026-03-23 00:36:56,052 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-23 00:36:56,052 [INFO] discord_ui.commands: Slash commands registered: /generate, /workflows, /help
+2026-03-23 00:36:56,073 [INFO] engine: ✅ ComfyUI server is reachable
+2026-03-23 00:36:56,073 [INFO] engine: 📂 Loaded 4 workflow templates
+2026-03-23 00:36:56,073 [INFO] engine:   • image_flux2_klein_image_edit_9b_distilled: Workflow for editing or restyling a single image using Flux 2 Klein. Selected ON
+2026-03-23 00:36:56,073 [INFO] engine:   • image_qwen_image_edit_2509: Workflow for generalized image editing using the Qwen-Image model. Selected ONLY
+2026-03-23 00:36:56,073 [INFO] engine:   • image_z_image_turbo: Standard text-to-image generation using Z-Image Turbo. This is extremely fast. S
+2026-03-23 00:36:56,073 [INFO] engine:   • image_z_image_turbo_fun_union_controlnet: Fast Z-Image Turbo generation guided by a ControlNet structure. Selected ONLY wh
+2026-03-23 00:36:56,868 [INFO] ai_director: Synced 3 slash commands
+2026-03-23 00:36:59,762 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-23 00:36:59,762 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-23 00:36:59,762 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-23 00:36:59,762 [INFO] ai_director:   Guilds: 1
+2026-03-23 00:36:59,762 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-23 00:37:27,592 [ERROR] discord.app_commands.tree: Ignoring exception in command 'generate'
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\discord_ui\commands.py", line 35, in generate
+    await interaction.response.defer(thinking=True)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 892, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'generate' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-23 00:37:32,655 [INFO] core.workflow_manager: Converting image_z_image_turbo_fun_union_controlnet from graph-editor to API format
+2026-03-23 00:37:32,656 [INFO] core.workflow_manager: Injected prompt into node 45
+2026-03-23 00:37:32,656 [INFO] core.workflow_manager: Injected seed 1654588399 into KSampler node 44
+2026-03-23 00:37:32,656 [INFO] core.workflow_manager: Injected dimensions 1024x1024 into EmptySD3LatentImage
+2026-03-23 00:37:32,656 [INFO] core.workflow_manager: Built workflow: image_z_image_turbo_fun_union_controlnet (18 nodes)
+2026-03-23 00:37:32,670 [INFO] core.comfyui_client: Workflow queued: 98c9f5a0-7fd4-41a1-ba2a-7aec4211f167
+2026-03-23 00:37:49,602 [INFO] core.comfyui_client: Retrieved image: ComfyUI_temp_npujq_00001_.png (23604 bytes)
+2026-03-23 00:37:49,793 [INFO] core.comfyui_client: Retrieved image: z-image-turbo_00025_.png (1676224 bytes)
+2026-03-23 00:38:30,278 [ERROR] discord.app_commands.tree: Ignoring exception in autocomplete for 'generate' (Guild: 1485046907943256264, User: 1013793982268055552)
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1289, in _call
+    await command._invoke_autocomplete(interaction, focused, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 928, in _invoke_autocomplete
+    await interaction.response.autocomplete(choices)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 1359, in autocomplete
+    await adapter.create_interaction_response(
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 226, in request
+    raise HTTPException(response, data)
+discord.errors.HTTPException: 400 Bad Request (error code: 40060): Interaction has already been acknowledged.
+2026-03-23 00:38:44,566 [ERROR] discord.app_commands.tree: Ignoring exception in command 'generate'
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\discord_ui\commands.py", line 35, in generate
+    await interaction.response.defer(thinking=True)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 892, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'generate' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-23 00:38:47,097 [INFO] core.workflow_manager: Converting image_flux2_klein_image_edit_9b_distilled from graph-editor to API format
+2026-03-23 00:38:47,098 [INFO] core.workflow_manager: Injected prompt into first CLIPTextEncode node 74 (fallback)
+2026-03-23 00:38:47,099 [INFO] core.workflow_manager: Injected seed 642250814 into RandomNoise node 73
+2026-03-23 00:38:47,099 [INFO] core.workflow_manager: Built workflow: image_flux2_klein_image_edit_9b_distilled (42 nodes)
+2026-03-23 00:38:47,112 [ERROR] core.comfyui_client: ComfyUI error: Prompt outputs failed validation
+2026-03-23 00:38:47,112 [ERROR] core.comfyui_client:   Node 76: {'errors': [{'type': 'custom_validation_failed', 'message': 'Custom validation failed for node', 'details': 'image - Invalid image file: bold_outfit_woman.jpeg', 'extra_info': {'input_name': 'image'}}], 'dependent_outputs': ['122', '9'], 'class_type': 'LoadImage'}
+2026-03-23 00:38:47,114 [ERROR] core.comfyui_client:   Node 121: {'errors': [{'type': 'custom_validation_failed', 'message': 'Custom validation failed for node', 'details': 'image - Invalid image file: handbag_white.png', 'extra_info': {'input_name': 'image'}}], 'dependent_outputs': ['122', '9'], 'class_type': 'LoadImage'}
+2026-03-23 00:38:47,114 [ERROR] core.comfyui_client:   Node 63: {'errors': [{'type': 'exception_during_inner_validation', 'message': 'Exception when validating inner node', 'details': "'43'", 'extra_info': {'input_name': 'guider', 'input_config': ['GUIDER', {}], 'exception_message': "'43'", 'exception_type': 'KeyError', 'traceback': ['  File "D:\\ComfyUI\\execution.py", line 876, in validate_inputs\n    r = await validate_inputs(prompt_id, prompt, o_id, validated)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "D:\\ComfyUI\\execution.py", line 856, in validate_inputs\n    o_class_type = prompt[o_id][\'class_type\']\n                   ~~~~~~^^^^^^\n'], 'linked_node': ['63', 0]}}], 'dependent_outputs': ['9'], 'class_type': 'CFGGuider'}
+2026-03-23 00:38:47,115 [ERROR] engine: ComfyUI submission failed: ComfyUI rejected workflow (HTTP 400): {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"76": {"errors": [{"type": "custom_validation_failed", "message": "Custom validation failed for node", "details": "image - Invalid image file: bold_outfit_woman.jpeg", "extra_info": {"input_name": "image"}}], "dependent_outputs": ["122", "9"], "class_type": "LoadImage"}, "121": {"errors": [{"type": "custom_validation_failed", "message": "Custom validation failed for node", "details": "image - Invalid image file: handbag_white.png", "extra_info": {"input_name": "image"}}], "dependent_outputs": ["122", "9"], "class_type": "LoadImage"}, "63": {"errors": [{"type": "exception_during_inner_validation", "message": "Exception when validating inner node", "details": "'43'", "extra_info": {"input_name": "guider", "input_config": ["GUIDER", {}], "exception_message": "'43'", "exception_type": "KeyError", "traceback": ["  File \"D:\\ComfyUI\\execution.py\", line 876, in validate_inputs\n    r = await validate_inputs(prompt_id, prompt, o_id, validated)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n", "  File \"D:\\ComfyUI\\execution.py\", line 856, in validate_inputs\n    o_class_type = prompt[o_id]['class_type']\n                   ~~~~~~^^^^^^\n"], "linked_node": ["63", 0]}}], "dependent_outputs": ["9"], "class_type": "CFGGuider"}}}
+2026-03-23 00:39:13,487 [ERROR] discord.app_commands.tree: Ignoring exception in autocomplete for 'generate' (Guild: 1485046907943256264, User: 1013793982268055552)
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1289, in _call
+    await command._invoke_autocomplete(interaction, focused, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 928, in _invoke_autocomplete
+    await interaction.response.autocomplete(choices)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 1359, in autocomplete
+    await adapter.create_interaction_response(
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-23 00:39:34,160 [ERROR] discord.app_commands.tree: Ignoring exception in command 'generate'
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\discord_ui\commands.py", line 35, in generate
+    await interaction.response.defer(thinking=True)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 892, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'generate' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-23 00:39:36,217 [INFO] core.workflow_manager: Converting image_z_image_turbo from graph-editor to API format
+2026-03-23 00:39:36,217 [INFO] core.workflow_manager: Injected prompt into node 27
+2026-03-23 00:39:36,218 [INFO] core.workflow_manager: Injected seed 1973049734 into KSampler node 3
+2026-03-23 00:39:36,218 [INFO] core.workflow_manager: Injected dimensions 1024x1024 into EmptySD3LatentImage
+2026-03-23 00:39:36,218 [INFO] core.workflow_manager: Built workflow: image_z_image_turbo (10 nodes)
+2026-03-23 00:39:36,230 [INFO] core.comfyui_client: Workflow queued: 8fce3168-0575-4989-b192-6115f81a46df
+2026-03-23 00:41:07,287 [ERROR] engine: Generation failed: ComfyUI execution error: {"prompt_id": "8fce3168-0575-4989-b192-6115f81a46df", "node_id": "3", "node_type": "KSampler", "executed": ["28", "11", "33", "27", "30"], "exception_message": "mat1 and mat2 shapes cannot be multiplied (512x15360 and 12288x4096)\n\n\nTIPS: If you have any \"Load CLIP\" or \"*CLIP Loader\" nodes in your workflow connected to this sampler node make sure the correct file(s) and type is selected.", "exception_type": "RuntimeError", "traceback": ["  File \"D:\\ComfyUI\\execution.py\", line 525, in e
+2026-03-23 00:43:43,913 [ERROR] discord.app_commands.tree: Ignoring exception in autocomplete for 'generate' (Guild: 1485046907943256264, User: 1013793982268055552)
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1289, in _call
+    await command._invoke_autocomplete(interaction, focused, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 928, in _invoke_autocomplete
+    await interaction.response.autocomplete(choices)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 1359, in autocomplete
+    await adapter.create_interaction_response(
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-23 00:43:46,580 [ERROR] discord.app_commands.tree: Ignoring exception in command 'generate'
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\discord_ui\commands.py", line 35, in generate
+    await interaction.response.defer(thinking=True)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 892, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'generate' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-23 00:43:48,993 [INFO] core.workflow_manager: Converting image_z_image_turbo from graph-editor to API format
+2026-03-23 00:43:48,995 [INFO] core.workflow_manager: Injected prompt into node 27
+2026-03-23 00:43:48,995 [INFO] core.workflow_manager: Injected seed 130530632 into KSampler node 3
+2026-03-23 00:43:48,995 [INFO] core.workflow_manager: Injected dimensions 1024x1024 into EmptySD3LatentImage
+2026-03-23 00:43:48,995 [INFO] core.workflow_manager: Built workflow: image_z_image_turbo (10 nodes)
+2026-03-23 00:43:49,012 [INFO] core.comfyui_client: Workflow queued: db2539f7-c81c-419b-8cf3-c12f4edf0547
+2026-03-23 00:44:12,166 [ERROR] discord.app_commands.tree: Ignoring exception in command 'generate'
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\discord_ui\commands.py", line 35, in generate
+    await interaction.response.defer(thinking=True)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 892, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'generate' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-23 00:44:14,715 [ERROR] engine: Generation failed: ComfyUI execution error: {"prompt_id": "db2539f7-c81c-419b-8cf3-c12f4edf0547", "node_id": "3", "node_type": "KSampler", "executed": ["27", "33"], "exception_message": "mat1 and mat2 shapes cannot be multiplied (512x15360 and 12288x4096)\n\n\nTIPS: If you have any \"Load CLIP\" or \"*CLIP Loader\" nodes in your workflow connected to this sampler node make sure the correct file(s) and type is selected.", "exception_type": "RuntimeError", "traceback": ["  File \"D:\\ComfyUI\\execution.py\", line 525, in execute\n    output
+2026-03-23 00:44:14,839 [INFO] core.workflow_manager: Converting image_z_image_turbo from graph-editor to API format
+2026-03-23 00:44:14,840 [INFO] core.workflow_manager: Injected prompt into node 27
+2026-03-23 00:44:14,840 [INFO] core.workflow_manager: Injected seed 34814338 into KSampler node 3
+2026-03-23 00:44:14,841 [INFO] core.workflow_manager: Injected dimensions 1024x1024 into EmptySD3LatentImage
+2026-03-23 00:44:14,841 [INFO] core.workflow_manager: Built workflow: image_z_image_turbo (10 nodes)
+2026-03-23 00:44:14,851 [INFO] core.comfyui_client: Workflow queued: b78448d0-fb2f-49e0-8cd4-d151078abbb9
+2026-03-23 00:44:38,005 [ERROR] engine: Generation failed: ComfyUI execution error: {"prompt_id": "b78448d0-fb2f-49e0-8cd4-d151078abbb9", "node_id": "3", "node_type": "KSampler", "executed": ["27", "33"], "exception_message": "mat1 and mat2 shapes cannot be multiplied (512x15360 and 12288x4096)\n\n\nTIPS: If you have any \"Load CLIP\" or \"*CLIP Loader\" nodes in your workflow connected to this sampler node make sure the correct file(s) and type is selected.", "exception_type": "RuntimeError", "traceback": ["  File \"D:\\ComfyUI\\execution.py\", line 525, in execute\n    output
+2026-03-23 00:46:35,179 [INFO] ai_director: Shutting down AI Director...
+2026-03-23 00:46:35,179 [INFO] engine: Engine stopped
+2026-03-23 01:12:10,706 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-23 01:12:10,706 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-23 01:12:10,708 [INFO] llm.ollama_provider: Ollama provider: http://127.0.0.1:11434 model=qwen2.5:1.5b
+2026-03-23 01:12:10,708 [INFO] core.comfyui_client: ComfyUI client: http://192.168.29.23:8188 (client_id=ai_director)
+2026-03-23 01:12:10,711 [INFO] core.workflow_manager: Loaded workflow: image_flux2_klein_image_edit_9b_distilled
+2026-03-23 01:12:10,714 [INFO] core.workflow_manager: Loaded workflow: image_qwen_image_edit_2509
+2026-03-23 01:12:10,715 [INFO] core.workflow_manager: Loaded workflow: image_z_image_turbo
+2026-03-23 01:12:10,716 [INFO] core.workflow_manager: Loaded workflow: image_z_image_turbo_fun_union_controlnet
+2026-03-23 01:12:11,659 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-23 01:12:11,660 [INFO] discord_ui.commands: Slash commands registered: /generate, /workflows, /help
+2026-03-23 01:12:11,688 [INFO] engine: ✅ ComfyUI server is reachable
+2026-03-23 01:12:11,689 [INFO] engine: 📂 Loaded 4 workflow templates
+2026-03-23 01:12:11,689 [INFO] engine:   • image_flux2_klein_image_edit_9b_distilled: Workflow for editing or restyling a single image using Flux 2 Klein. Selected ON
+2026-03-23 01:12:11,689 [INFO] engine:   • image_qwen_image_edit_2509: Workflow for generalized image editing using the Qwen-Image model. Selected ONLY
+2026-03-23 01:12:11,690 [INFO] engine:   • image_z_image_turbo: Standard text-to-image generation using Z-Image Turbo. This is extremely fast. S
+2026-03-23 01:12:11,690 [INFO] engine:   • image_z_image_turbo_fun_union_controlnet: Fast Z-Image Turbo generation guided by a ControlNet structure. Selected ONLY wh
+2026-03-23 01:12:12,175 [INFO] ai_director: Synced 3 slash commands
+2026-03-23 01:12:15,204 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-23 01:12:15,204 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-23 01:12:15,204 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-23 01:12:15,204 [INFO] ai_director:   Guilds: 1
+2026-03-23 01:12:15,204 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-23 01:12:32,675 [ERROR] discord.app_commands.tree: Ignoring exception in command 'generate'
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\discord_ui\commands.py", line 35, in generate
+    await interaction.response.defer(thinking=True)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 892, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'generate' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-23 01:12:38,212 [INFO] core.workflow_manager: Converting image_z_image_turbo_fun_union_controlnet from graph-editor to API format
+2026-03-23 01:12:38,213 [INFO] core.workflow_manager: Injected prompt into CLIPTextEncode node 45
+2026-03-23 01:12:38,213 [INFO] core.workflow_manager: Injected seed 467175269 into KSampler node 44
+2026-03-23 01:12:38,214 [INFO] core.workflow_manager: Injected dimensions 1024x1024 into EmptySD3LatentImage
+2026-03-23 01:12:38,214 [INFO] core.workflow_manager: Built workflow: image_z_image_turbo_fun_union_controlnet (17 nodes)
+2026-03-23 01:12:38,292 [INFO] core.comfyui_client: Workflow queued: cbe1d4de-3645-49c3-9581-00ae1c582ccc
+2026-03-23 01:12:49,376 [ERROR] discord.app_commands.tree: Ignoring exception in autocomplete for 'generate' (Guild: 1485046907943256264, User: 1013793982268055552)
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1289, in _call
+    await command._invoke_autocomplete(interaction, focused, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 928, in _invoke_autocomplete
+    await interaction.response.autocomplete(choices)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 1359, in autocomplete
+    await adapter.create_interaction_response(
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-23 01:12:50,643 [INFO] core.comfyui_client: Retrieved image: ComfyUI_temp_tjlpc_00001_.png (23497 bytes)
+2026-03-23 01:12:52,187 [INFO] core.comfyui_client: Retrieved image: z-image-turbo_00028_.png (1611901 bytes)
+2026-03-23 01:12:53,036 [ERROR] discord.app_commands.tree: Ignoring exception in command 'generate'
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 859, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\darkx\comfybot\discord_ui\commands.py", line 35, in generate
+    await interaction.response.defer(thinking=True)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\interactions.py", line 892, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\webhook\async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\tree.py", line 1302, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 884, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\darkx\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\app_commands\commands.py", line 877, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'generate' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+2026-03-23 01:12:55,722 [INFO] core.workflow_manager: Converting image_z_image_turbo from graph-editor to API format
+2026-03-23 01:12:55,725 [INFO] core.workflow_manager: Injected prompt into node 27
+2026-03-23 01:12:55,725 [INFO] core.workflow_manager: Injected seed 848481125 into KSampler node 3
+2026-03-23 01:12:55,725 [INFO] core.workflow_manager: Injected dimensions 1024x1024 into EmptySD3LatentImage
+2026-03-23 01:12:55,725 [INFO] core.workflow_manager: Built workflow: image_z_image_turbo (10 nodes)
+2026-03-23 01:12:55,782 [ERROR] core.comfyui_client: ComfyUI error: Prompt outputs failed validation
+2026-03-23 01:12:55,783 [ERROR] core.comfyui_client:   Node 29: {'errors': [{'type': 'required_input_missing', 'message': 'Required input is missing', 'details': 'vae_name', 'extra_info': {'input_name': 'vae_name'}}], 'dependent_outputs': ['9'], 'class_type': 'VAELoader'}
+2026-03-23 01:12:55,784 [ERROR] core.comfyui_client:   Node 30: {'errors': [{'type': 'required_input_missing', 'message': 'Required input is missing', 'details': 'clip_name', 'extra_info': {'input_name': 'clip_name'}}], 'dependent_outputs': ['9'], 'class_type': 'CLIPLoader'}
+2026-03-23 01:12:55,785 [ERROR] core.comfyui_client:   Node 28: {'errors': [{'type': 'required_input_missing', 'message': 'Required input is missing', 'details': 'unet_name', 'extra_info': {'input_name': 'unet_name'}}], 'dependent_outputs': ['9'], 'class_type': 'UNETLoader'}
+2026-03-23 01:12:55,786 [ERROR] core.comfyui_client:   Node 3: {'errors': [{'type': 'required_input_missing', 'message': 'Required input is missing', 'details': 'steps', 'extra_info': {'input_name': 'steps'}}], 'dependent_outputs': ['9'], 'class_type': 'KSampler'}
+2026-03-23 01:12:55,788 [ERROR] engine: ComfyUI submission failed: ComfyUI rejected workflow (HTTP 400): {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"29": {"errors": [{"type": "required_input_missing", "message": "Required input is missing", "details": "vae_name", "extra_info": {"input_name": "vae_name"}}], "dependent_outputs": ["9"], "class_type": "VAELoader"}, "30": {"errors": [{"type": "required_input_missing", "message": "Required input is missing", "details": "clip_name", "extra_info": {
+2026-03-23 01:22:19,038 [INFO] ai_director: Shutting down AI Director...
+2026-03-23 01:22:19,039 [INFO] engine: Engine stopped
+2026-03-23 01:53:05,848 [INFO] ai_director: Shutting down AI Director...
+2026-03-23 01:53:05,850 [INFO] engine: Engine stopped

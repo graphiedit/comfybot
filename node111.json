@@ -1,0 +1,80 @@
+{
+  "id": 111,
+  "type": "TextEncodeQwenImageEditPlus",
+  "pos": [
+    -50,
+    -90
+  ],
+  "size": [
+    400,
+    200
+  ],
+  "flags": {},
+  "order": 10,
+  "mode": 0,
+  "inputs": [
+    {
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP",
+      "link": 205
+    },
+    {
+      "localized_name": "vae",
+      "name": "vae",
+      "shape": 7,
+      "type": "VAE",
+      "link": 207
+    },
+    {
+      "localized_name": "image1",
+      "name": "image1",
+      "shape": 7,
+      "type": "IMAGE",
+      "link": 250
+    },
+    {
+      "localized_name": "image2",
+      "name": "image2",
+      "shape": 7,
+      "type": "IMAGE",
+      "link": 235
+    },
+    {
+      "localized_name": "image3",
+      "name": "image3",
+      "shape": 7,
+      "type": "IMAGE",
+      "link": 237
+    },
+    {
+      "localized_name": "prompt",
+      "name": "prompt",
+      "type": "STRING",
+      "widget": {
+        "name": "prompt"
+      },
+      "link": 244
+    }
+  ],
+  "outputs": [
+    {
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING",
+      "links": [
+        211
+      ]
+    }
+  ],
+  "properties": {
+    "cnr_id": "comfy-core",
+    "ver": "0.3.59",
+    "Node name for S&R": "TextEncodeQwenImageEditPlus"
+  },
+  "widgets_values": [
+    ""
+  ],
+  "color": "#232",
+  "bgcolor": "#353"
+}

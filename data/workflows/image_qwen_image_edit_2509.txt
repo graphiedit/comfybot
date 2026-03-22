@@ -1,1 +1,1 @@
-Workflow for generalized image editing using the Qwen-Image model. Selected ONLY when the user provides an image AND asks to edit/modify/restyle it. Do not select this if no image is attached.
+Create a workflow that integrates Qwen with ImageEdit capabilities for fine-tuning uploaded images using a Flux architecture.

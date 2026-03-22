@@ -1,0 +1,13 @@
+3: {"class_type": "KSampler", "inputs": {"seed": 224017402148638, "control_after_generate": "randomize", "steps": 4, "cfg": 1, "sampler_name": "euler", "scheduler": "simple", "denoise": 1, "model": ["75", 0], "positive": ["111", 0], "negative": ["110", 0], "latent_image": ["88", 0]}}
+75: {"class_type": "CFGNorm", "inputs": {"strength": 1, "model": ["66", 0]}}
+66: {"class_type": "ModelSamplingAuraFlow", "inputs": {"shift": 3, "model": ["89", 0]}}
+89: {"class_type": "LoraLoaderModelOnly", "inputs": {"lora_name": "Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors", "strength_model": 1, "model": ["37", 0]}}
+37: {"class_type": "UNETLoader", "inputs": {"unet_name": "qwen_image_edit_2509_fp8_e4m3fn.safetensors", "weight_dtype": "default"}}
+111: {"class_type": "TextEncodeQwenImageEditPlus", "inputs": {"prompt": ["435", 0], "clip": ["38", 0], "vae": ["39", 0], "image1": ["117", 0]}}
+435: {"class_type": "PrimitiveStringMultiline", "inputs": {"string": "\nremove cap "}}
+38: {"class_type": "CLIPLoader", "inputs": {"clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors", "type": "qwen_image", "device": "default"}}
+39: {"class_type": "VAELoader", "inputs": {"vae_name": "qwen_image_vae.safetensors"}}
+117: {"class_type": "FluxKontextImageScale", "inputs": {"image": ["78", 0]}}
+78: {"class_type": "LoadImage", "inputs": {"image": "WhatsApp Image 2026-03-14 at 1.47.34 PM (1).jpeg", "upload": "image"}}
+110: {"class_type": "TextEncodeQwenImageEditPlus", "inputs": {"prompt": "", "clip": ["38", 0], "vae": ["39", 0], "image1": ["117", 0]}}
+88: {"class_type": "VAEEncode", "inputs": {"vae": ["39", 0], "pixels": ["117", 0]}}

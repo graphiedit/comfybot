@@ -1,211 +1,182 @@
 """
-Discord Interactive Buttons — post-generation action buttons.
-
-Retry, Upscale, Vary (subtle/strong), and Style change.
-Each button triggers a new job with modified parameters.
+Discord Buttons — interactive views for image actions and plan review.
 """
-import discord
-from discord.ui import View, Button, button
-
+import asyncio
+import io
 import logging
-from typing import Optional, Callable
+import random
+
+import discord
 
 logger = logging.getLogger(__name__)
 
 
-class GenerationButtons(View):
-    """
-    Action buttons shown after image generation.
-    
-    Buttons:
-    - 🔄 Retry — same settings, new seed
-    - ⬆️ Upscale — 2x resolution
-    - 🎨 Vary (Subtle) — small variations
-    - 🎭 Vary (Strong) — bigger variations
-    - 🎬 Make Cinematic — apply cinematic style
-    - 👤 Fix Face — face restoration passing
-    - ✨ Enhance — upscale and add details
-    - 🎲 Creative Remix — random style variation
-    """
+class ImageActionView(discord.ui.View):
+    """Buttons shown after image generation: Retry, Vary, Wide, Tall, Delete."""
 
-    def __init__(
-        self,
-        job_id: str,
-        on_action: Callable,
-        timeout: float = 600,  # 10 minutes
-    ):
+    def __init__(self, engine, prompt: str, user_id: str, timeout: float = 300):
         super().__init__(timeout=timeout)
-        self.job_id = job_id
-        self.on_action = on_action  # async callback(interaction, action, job_id)
+        self.engine = engine
+        self.prompt = prompt
+        self.user_id = user_id
 
-    @button(label="Retry", emoji="🔄", style=discord.ButtonStyle.secondary, custom_id="retry")
-    async def retry_button(self, interaction: discord.Interaction, btn: Button):
-        await self._handle_action(interaction, "retry")
+    async def _regenerate(self, interaction: discord.Interaction, action: str):
+        """Common handler for regeneration actions."""
+        await interaction.response.defer()
 
-    @button(label="Upscale 2x", emoji="⬆️", style=discord.ButtonStyle.primary, custom_id="upscale")
-    async def upscale_button(self, interaction: discord.Interaction, btn: Button):
-        await self._handle_action(interaction, "upscale")
+        from discord_ui.embeds import create_generating_embed, create_result_embed, create_error_embed
 
-    @button(label="Vary (Subtle)", emoji="🎨", style=discord.ButtonStyle.secondary, custom_id="vary_subtle")
-    async def vary_subtle_button(self, interaction: discord.Interaction, btn: Button):
-        await self._handle_action(interaction, "vary_subtle")
-
-    @button(label="Vary (Strong)", emoji="🎭", style=discord.ButtonStyle.secondary, custom_id="vary_strong")
-    async def vary_strong_button(self, interaction: discord.Interaction, btn: Button):
-        await self._handle_action(interaction, "vary_strong")
-
-    @button(label="Make Cinematic", emoji="🎬", style=discord.ButtonStyle.primary, custom_id="style_cinematic")
-    async def cinematic_button(self, interaction: discord.Interaction, btn: Button):
-        await self._handle_action(interaction, "style_cinematic")
-        
-    @button(label="Fix Face", emoji="👤", style=discord.ButtonStyle.primary, custom_id="face_fix")
-    async def face_fix_button(self, interaction: discord.Interaction, btn: Button):
-        await self._handle_action(interaction, "face_fix")
-        
-    @button(label="Enhance", emoji="✨", style=discord.ButtonStyle.primary, custom_id="enhance")
-    async def enhance_button(self, interaction: discord.Interaction, btn: Button):
-        await self._handle_action(interaction, "enhance")
-        
-    @button(label="Creative Remix", emoji="🎲", style=discord.ButtonStyle.secondary, custom_id="remix")
-    async def remix_button(self, interaction: discord.Interaction, btn: Button):
-        await self._handle_action(interaction, "remix")
-
-    @button(label="Info", emoji="ℹ️", style=discord.ButtonStyle.secondary, custom_id="info")
-    async def info_button(self, interaction: discord.Interaction, btn: Button):
-        await self._handle_action(interaction, "info")
-
-    async def _handle_action(self, interaction: discord.Interaction, action: str):
-        """Route button clicks to the action callback."""
         try:
-            await self.on_action(interaction, action, self.job_id)
+            if action == "retry":
+                images = await self.engine.retry_generation(interaction.channel, self.user_id)
+            elif action == "vary":
+                images = await self.engine.vary_generation(interaction.channel, self.user_id)
+            elif action == "wide":
+                images = await self.engine.change_aspect(interaction.channel, self.user_id, "wide")
+            elif action == "tall":
+                images = await self.engine.change_aspect(interaction.channel, self.user_id, "tall")
+            else:
+                images = []
+
+            if images:
+                for i, img_data in enumerate(images):
+                    file = discord.File(io.BytesIO(img_data), filename=f"generated_{i}.png")
+                    embed = create_result_embed(
+                        prompt=self.prompt,
+                        workflow=action,
+                        seed=random.randint(0, 2**31),
+                    )
+                    view = ImageActionView(engine=self.engine, prompt=self.prompt, user_id=self.user_id)
+                    await interaction.channel.send(file=file, embed=embed, view=view)
+            else:
+                embed = create_error_embed(f"{action.capitalize()} failed — no images returned.")
+                await interaction.followup.send(embed=embed, ephemeral=True)
+
         except Exception as e:
-            logger.error(f"Button action '{action}' failed: {e}", exc_info=True)
-            try:
-                await interaction.response.send_message(
-                    f"❌ Action failed: {str(e)[:200]}",
-                    ephemeral=True,
-                )
-            except discord.errors.InteractionResponded:
-                pass
+            logger.error(f"{action} failed: {e}", exc_info=True)
+            embed = create_error_embed(f"Error: {str(e)[:300]}")
+            await interaction.followup.send(embed=embed, ephemeral=True)
 
-    async def on_timeout(self):
-        """Disable buttons after timeout."""
-        for item in self.children:
-            if isinstance(item, Button):
-                item.disabled = True
+    @discord.ui.button(label="Retry", emoji="🔄", style=discord.ButtonStyle.secondary)
+    async def retry(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self._regenerate(interaction, "retry")
+
+    @discord.ui.button(label="Vary", emoji="🎲", style=discord.ButtonStyle.secondary)
+    async def vary(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self._regenerate(interaction, "vary")
+
+    @discord.ui.button(label="Wide", emoji="↔️", style=discord.ButtonStyle.secondary)
+    async def wide(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self._regenerate(interaction, "wide")
+
+    @discord.ui.button(label="Tall", emoji="↕️", style=discord.ButtonStyle.secondary)
+    async def tall(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self._regenerate(interaction, "tall")
+
+    @discord.ui.button(label="Delete", emoji="🗑️", style=discord.ButtonStyle.danger)
+    async def delete(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if str(interaction.user.id) == self.user_id:
+            await interaction.message.delete()
+        else:
+            await interaction.response.send_message("Only the requester can delete this.", ephemeral=True)
 
 
-class ModelSelectView(View):
-    """
-    Dynamic model selection dropdown — lets users pick a checkpoint.
-    """
+class PlanReviewView(discord.ui.View):
+    """Buttons for reviewing a generation plan before execution."""
 
-    def __init__(
-        self,
-        checkpoints: list,
-        on_select: Callable,
-        timeout: float = 120,
-    ):
+    def __init__(self, engine, plan, user_id: str, channel, images=None, timeout: float = 120):
         super().__init__(timeout=timeout)
-        self.on_select = on_select
-        
-        # Build select menu
-        options = []
-        for ckpt in checkpoints[:25]:  # Discord limit: 25 options
-            name = ckpt if isinstance(ckpt, str) else ckpt.get("filename", "")
-            label = name.replace(".safetensors", "")[:100]
-            
-            # Add style hint if available
-            desc = ""
-            if isinstance(ckpt, dict) and ckpt.get("styles"):
-                desc = ", ".join(ckpt["styles"])[:100]
-            
-            options.append(
-                discord.SelectOption(label=label, value=name, description=desc)
-            )
-        
-        if options:
-            select = discord.ui.Select(
-                placeholder="Choose a model...",
-                options=options,
-                custom_id="model_select",
-            )
-            select.callback = self._on_model_selected
-            self.add_item(select)
+        self.engine = engine
+        self.plan = plan
+        self.user_id = user_id
+        self.channel = channel
+        self.images = images
 
-    async def _on_model_selected(self, interaction: discord.Interaction):
-        selected = interaction.data["values"][0]
-        await self.on_select(interaction, selected)
+    @discord.ui.button(label="Generate", emoji="✅", style=discord.ButtonStyle.success)
+    async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        """Confirm and start generation."""
+        if str(interaction.user.id) != self.user_id:
+            await interaction.response.send_message("Only the requester can confirm.", ephemeral=True)
+            return
+
+        await interaction.response.defer()
+
+        from discord_ui.embeds import create_generating_embed, create_result_embed, create_error_embed
+
+        embed = create_generating_embed(self.plan.enhanced_prompt, self.plan.workflow_template)
+        await interaction.message.edit(embed=embed, view=None)
+
+        try:
+            result = await self.engine._execute_with_recovery(self.plan, self.channel)
+            if result:
+                for i, img_data in enumerate(result):
+                    file = discord.File(io.BytesIO(img_data), filename=f"generated_{i}.png")
+                    embed = create_result_embed(
+                        prompt=self.plan.enhanced_prompt,
+                        workflow=self.plan.workflow_template,
+                        seed=self.plan.seed,
+                    )
+                    view = ImageActionView(
+                        engine=self.engine,
+                        prompt=self.plan.enhanced_prompt,
+                        user_id=self.user_id,
+                    )
+                    await self.channel.send(file=file, embed=embed, view=view)
+                # Delete the review message
+                try:
+                    await interaction.message.delete()
+                except Exception:
+                    pass
+            else:
+                embed = create_error_embed("Generation failed — no images returned.")
+                await interaction.message.edit(embed=embed, view=None)
+        except Exception as e:
+            embed = create_error_embed(f"Error: {str(e)[:500]}")
+            await interaction.message.edit(embed=embed, view=None)
+
+    @discord.ui.button(label="Edit Prompt", emoji="✏️", style=discord.ButtonStyle.primary)
+    async def edit_prompt(self, interaction: discord.Interaction, button: discord.ui.Button):
+        """Open a modal to edit the prompt."""
+        if str(interaction.user.id) != self.user_id:
+            await interaction.response.send_message("Only the requester can edit.", ephemeral=True)
+            return
+
+        modal = PromptEditModal(self.plan, self)
+        await interaction.response.send_modal(modal)
+
+    @discord.ui.button(label="Cancel", emoji="❌", style=discord.ButtonStyle.danger)
+    async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+        """Cancel the generation."""
+        if str(interaction.user.id) != self.user_id:
+            await interaction.response.send_message("Only the requester can cancel.", ephemeral=True)
+            return
+
+        embed = discord.Embed(
+            title="❌ Generation Cancelled",
+            color=0x6b7280,
+        )
+        await interaction.message.edit(embed=embed, view=None)
 
 
-class StyleSelectView(View):
-    """Quick style selection buttons."""
+class PromptEditModal(discord.ui.Modal, title="Edit Prompt"):
+    """Modal for editing the generation prompt before submitting."""
 
-    STYLES = [
-        ("📸 Realistic", "realistic"),
-        ("🎌 Anime", "anime"),
-        ("🎬 Cinematic", "cinematic"),
-        ("🗡️ Fantasy", "fantasy"),
-        ("🤖 Sci-Fi", "scifi"),
-        ("🎨 Artistic", "artistic"),
-    ]
+    def __init__(self, plan, review_view: PlanReviewView):
+        super().__init__()
+        self.plan = plan
+        self.review_view = review_view
+        self.prompt_input = discord.ui.TextInput(
+            label="Enhanced Prompt",
+            style=discord.TextStyle.paragraph,
+            default=plan.enhanced_prompt[:4000],
+            max_length=4000,
+            required=True,
+        )
+        self.add_item(self.prompt_input)
 
-    def __init__(self, on_select: Callable, timeout: float = 120):
-        super().__init__(timeout=timeout)
-        self.on_select = on_select
-        
-        for label, value in self.STYLES:
-            btn = Button(label=label, style=discord.ButtonStyle.secondary, custom_id=f"style_{value}")
-            btn.callback = self._make_callback(value)
-            self.add_item(btn)
+    async def on_submit(self, interaction: discord.Interaction):
+        self.plan.enhanced_prompt = self.prompt_input.value
 
-    def _make_callback(self, style: str):
-        async def callback(interaction: discord.Interaction):
-            await self.on_select(interaction, style)
-        return callback
-
-
-class PlanApprovalView(View):
-    """
-    Buttons for the pre-generation interactive loop.
-    Allows user to approve, reroll, or cancel an AI-generated plan.
-    """
-
-    def __init__(
-        self,
-        on_approve: Callable,
-        on_reroll: Callable,
-        on_cancel: Callable,
-        timeout: float = 600,
-    ):
-        super().__init__(timeout=timeout)
-        self.on_approve = on_approve
-        self.on_reroll = on_reroll
-        self.on_cancel = on_cancel
-
-    @button(label="🚀 Generate Now", style=discord.ButtonStyle.success, custom_id="plan_approve")
-    async def approve_button(self, interaction: discord.Interaction, btn: Button):
-        self._disable_all()
-        await interaction.response.edit_message(view=self)
-        await self.on_approve(interaction)
-
-    @button(label="🔄 Reroll Plan", style=discord.ButtonStyle.secondary, custom_id="plan_reroll")
-    async def reroll_button(self, interaction: discord.Interaction, btn: Button):
-        self._disable_all()
-        await interaction.response.edit_message(view=self)
-        await self.on_reroll(interaction)
-
-    @button(label="❌ Cancel", style=discord.ButtonStyle.danger, custom_id="plan_cancel")
-    async def cancel_button(self, interaction: discord.Interaction, btn: Button):
-        self._disable_all()
-        await interaction.response.edit_message(view=self)
-        await self.on_cancel(interaction)
-
-    def _disable_all(self):
-        for item in self.children:
-            if isinstance(item, Button):
-                item.disabled = True
-
-    async def on_timeout(self):
-        self._disable_all()
-
+        from discord_ui.embeds import create_plan_review_embed
+        embed = create_plan_review_embed(self.plan)
+        await interaction.response.edit_message(embed=embed, view=self.review_view)

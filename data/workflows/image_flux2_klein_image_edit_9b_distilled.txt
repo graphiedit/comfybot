@@ -1,1 +1,0 @@
-Workflow for editing or restyling a single image using Flux 2 Klein. Selected ONLY when the user provides an image AND wants to edit/restyle/modify it. Do not select this if no image is attached.

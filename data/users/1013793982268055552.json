@@ -1,13 +1,13 @@
 {
   "user_id": "1013793982268055552",
   "preferred_styles": {
-    "realistic": 1
+    "realistic": 12
   },
   "preferred_models": {
     "z_image_turbo_bf16.safetensors": 1
   },
   "favorite_prompts": [],
-  "generation_count": 1,
+  "generation_count": 12,
   "last_used_preset": "",
   "custom_defaults": {}
 }

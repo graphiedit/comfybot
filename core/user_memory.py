@@ -36,6 +36,18 @@ class UserProfile:
             return "realistic"
         return max(self.preferred_styles.items(), key=lambda x: x[1])[0]
 
+    def get_top_styles(self, n: int = 3) -> List[tuple]:
+        """Get the user's top n styles and their counts."""
+        if not self.preferred_styles:
+            return []
+        return sorted(self.preferred_styles.items(), key=lambda x: x[1], reverse=True)[:n]
+
+    def get_top_models(self, n: int = 3) -> List[tuple]:
+        """Get the user's top n models and their counts."""
+        if not self.preferred_models:
+            return []
+        return sorted(self.preferred_models.items(), key=lambda x: x[1], reverse=True)[:n]
+
 
 class UserMemory:
     """Manages persistent user profiles."""

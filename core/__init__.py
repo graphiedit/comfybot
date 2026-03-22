@@ -1,5 +1,3 @@
-from .comfyui_client import ComfyUIClient
-from .workflow_builder import WorkflowBuilder
-from .queue_manager import QueueManager
-
-__all__ = ["ComfyUIClient", "WorkflowBuilder", "QueueManager"]
+"""Core package — ComfyUI client and workflow management."""
+from core.comfyui_client import ComfyUIClient
+from core.workflow_manager import WorkflowManager
