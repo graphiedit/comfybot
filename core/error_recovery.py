@@ -79,31 +79,33 @@ class ErrorDiagnosticAgent:
                 description="Maximum retries exceeded. Giving up.",
             )
 
+        strategy = None
+
         # --- Pattern matching ---
         
         # 1. Value not in list (wrong model/CLIP/VAE name)
         if "not in" in error_lower and ("value" in error_lower or "clip_name" in error_lower or "vae_name" in error_lower or "unet_name" in error_lower):
-            return self._diagnose_value_not_in_list(error_msg, workflow, plan, retry_count)
+            strategy = self._diagnose_value_not_in_list(error_msg, workflow, plan, retry_count)
         
         # 2. Meta tensor error (model loading issue)
-        if "meta tensor" in error_lower or "cannot copy out of meta" in error_lower:
-            return self._diagnose_meta_tensor(error_msg, workflow, plan, retry_count)
+        elif "meta tensor" in error_lower or "cannot copy out of meta" in error_lower:
+            strategy = self._diagnose_meta_tensor(error_msg, workflow, plan, retry_count)
         
         # 3. Out of memory
-        if "out of memory" in error_lower or "cuda out of memory" in error_lower or "oom" in error_lower:
-            return self._diagnose_oom(error_msg, workflow, plan, retry_count)
+        elif "out of memory" in error_lower or "cuda out of memory" in error_lower or "oom" in error_lower:
+            strategy = self._diagnose_oom(error_msg, workflow, plan, retry_count)
         
         # 4. Prompt validation failed
-        if "prompt_outputs_failed_validation" in error_lower or "failed validation" in error_lower:
-            return self._diagnose_validation_error(error_msg, workflow, plan, retry_count)
+        elif "prompt_outputs_failed_validation" in error_lower or "failed validation" in error_lower:
+            strategy = self._diagnose_validation_error(error_msg, workflow, plan, retry_count)
         
         # 5. Execution error (generic)
-        if "execution_error" in error_lower or "exception_message" in error_lower:
-            return self._diagnose_execution_error(error_msg, workflow, plan, retry_count)
+        elif "execution_error" in error_lower or "exception_message" in error_lower:
+            strategy = self._diagnose_execution_error(error_msg, workflow, plan, retry_count)
         
         # 6. Timeout
-        if "timed out" in error_lower or "timeout" in error_lower:
-            return RecoveryStrategy(
+        elif "timed out" in error_lower or "timeout" in error_lower:
+            strategy = RecoveryStrategy(
                 can_fix=True,
                 error_type=ErrorType.TIMEOUT,
                 description="Generation timed out. Reducing steps and resolution.",
@@ -113,21 +115,33 @@ class ErrorDiagnosticAgent:
             )
         
         # 7. Connection error
-        if "connection" in error_lower or "cannot connect" in error_lower or "refused" in error_lower:
-            return RecoveryStrategy(
+        elif "connection" in error_lower or "cannot connect" in error_lower or "refused" in error_lower:
+            strategy = RecoveryStrategy(
                 can_fix=False,
                 error_type=ErrorType.CONNECTION_ERROR,
                 description="Cannot connect to ComfyUI server.",
             )
         
-        # Unknown error
-        return RecoveryStrategy(
-            can_fix=retry_count < 1,  # Allow one generic retry
-            error_type=ErrorType.UNKNOWN,
-            description=f"Unknown error: {error_msg[:200]}",
-            switch_to_sdxl=retry_count == 0,  # Try SDXL as last resort
-            retry_count=retry_count,
-        )
+        else:
+            # Unknown error
+            strategy = RecoveryStrategy(
+                can_fix=retry_count < 1,  # Allow one generic retry
+                error_type=ErrorType.UNKNOWN,
+                description=f"Unknown error: {error_msg[:200]}",
+                switch_to_sdxl=retry_count == 0,  # Try SDXL as last resort
+                retry_count=retry_count,
+            )
+            
+        # Feature 10: Strict Template Adherence
+        if plan and getattr(plan, 'workflow_template', None) and strategy.switch_to_sdxl:
+            logger.info(f"Disabling SDXL fallback because custom template '{plan.workflow_template}' is active.")
+            strategy.switch_to_sdxl = False
+            # If we were relying on SDXL to "fix" it, we can't fix it anymore
+            if not strategy.fixes and not strategy.reduce_resolution and not strategy.reduce_steps and not strategy.fallback_model:
+                strategy.can_fix = False
+            strategy.description += " (Template mode: SDXL fallback disabled)"
+            
+        return strategy
 
     def _diagnose_value_not_in_list(self, error_msg, workflow, plan, retry_count) -> RecoveryStrategy:
         """Handle 'value X not in [Y, Z]' errors — wrong model/CLIP/VAE name."""

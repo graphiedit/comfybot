@@ -24,7 +24,7 @@ import logging
 
 import discord
 from discord import app_commands
-from typing import Optional
+from typing import Optional, List, Dict, Any
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +42,7 @@ def setup_commands(bot):
         seed="Random seed (-1 for random)",
         width="Image width (default: 1024)",
         height="Image height (default: 1024)",
+        workflow="Select a custom workflow template",
     )
     async def generate_cmd(
         interaction: discord.Interaction,
@@ -53,11 +54,12 @@ def setup_commands(bot):
         seed: Optional[int] = None,
         width: Optional[int] = None,
         height: Optional[int] = None,
+        workflow: Optional[str] = None,
     ):
         await interaction.response.defer()
         
         # Build user overrides
-        overrides = {}
+        overrides: Dict[str, Any] = {}
         if model:
             overrides["checkpoint"] = model
         if style:
@@ -70,6 +72,8 @@ def setup_commands(bot):
             overrides["width"] = width
         if height:
             overrides["height"] = height
+        if workflow:
+            overrides["workflow_template"] = workflow
         
         # Handle reference image
         image_bytes = None
@@ -83,6 +87,28 @@ def setup_commands(bot):
             image_bytes=image_bytes,
             user_overrides=overrides,
         )
+
+    @generate_cmd.autocomplete("workflow")
+    async def workflow_autocomplete(
+        interaction: discord.Interaction,
+        current: str,
+    ) -> List[app_commands.Choice[str]]:
+        templates = bot.engine.workflow_manager.templates
+        return [
+            app_commands.Choice(name=name, value=name)
+            for name in templates.keys() if current.lower() in name.lower()
+        ][:25]
+
+    @bot.tree.command(name="workflows", description="📜 List available custom workflow templates")
+    async def workflows_cmd(interaction: discord.Interaction):
+        templates = bot.engine.workflow_manager.templates
+        if not templates:
+            await interaction.response.send_message("No custom workflow templates found in `data/workflows/`.", ephemeral=True)
+            return
+            
+        from discord_ui.embeds import create_workflows_list_embed
+        embed = create_workflows_list_embed(templates)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @bot.tree.command(name="upscale", description="⬆️ Upscale a previously generated image")
     @app_commands.describe(

@@ -236,3 +236,18 @@ def create_plan_approval_embed(plan, review=None) -> discord.Embed:
     embed.set_footer(text="Click '🚀 Generate Now' to proceed!")
     return embed
 
+def create_workflows_list_embed(templates: dict) -> discord.Embed:
+    """Create a nice list of available workflow templates."""
+    embed = discord.Embed(
+        title="📜 Available Workflow Templates",
+        description="These workflows are available for use via the AI Director.",
+        color=COLOR_INFO,
+    )
+    
+    for name, info in templates.items():
+        desc = info.get("description", "No description provided.")
+        embed.add_field(name=f"🔹 {name}", value=desc, inline=False)
+        
+    embed.set_footer(text="Use /generate workflow: [name] or just chat with the bot!")
+    return embed
+

@@ -120,6 +120,7 @@ class AIDirectorBot(commands.Bot):
                     response = await self.engine.chat(
                         user_id=str(message.author.id),
                         message=clean_content,
+                        channel=message.channel,
                     )
                     
                     from discord_ui.embeds import create_chat_embed

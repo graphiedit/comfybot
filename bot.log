@@ -2393,3 +2393,120 @@ aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gatewa
 2026-03-22 19:25:39,789 [INFO] ai_director: Shutting down AI Director...
 2026-03-22 19:25:39,790 [INFO] core.queue_manager: Queue manager stopped
 2026-03-22 19:25:39,790 [INFO] engine: AI Director Engine stopped
+2026-03-22 19:56:09,181 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 19:56:09,181 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 19:56:09,186 [INFO] core.workflow_manager: Loaded workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 19:56:09,191 [INFO] core.workflow_manager: Loaded workflow template: image_qwen_image_edit_2509
+2026-03-22 19:56:09,194 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo
+2026-03-22 19:56:09,195 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo_fun_union_controlnet
+2026-03-22 19:56:09,200 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 19:56:10,475 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 19:56:10,477 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 19:56:10,477 [INFO] engine: Starting AI Director Engine...
+2026-03-22 19:56:12,140 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 19:56:13,135 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 19:56:13,136 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 19:56:13,136 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 19:56:13,136 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 19:56:13,136 [INFO] engine: LLM providers ready: gemini
+2026-03-22 19:56:13,136 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 19:56:13,214 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 19:56:13,214 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 19:56:13,215 [INFO] core.queue_manager: Queue manager started
+2026-03-22 19:56:13,226 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 19:56:13,227 [INFO] engine: AI Director Engine ready!
+2026-03-22 19:56:13,805 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 19:56:16,695 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 19:56:16,697 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 19:56:16,697 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 19:56:16,699 [INFO] ai_director:   Guilds: 1
+2026-03-22 19:56:16,699 [INFO] ai_director:   LLM: gemini
+2026-03-22 19:56:16,699 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 19:56:40,668 [INFO] ai_director: Received mention chat text: hello
+2026-03-22 19:56:41,190 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 19:57:04,895 [INFO] ai_director: Received mention chat text: hi
+2026-03-22 19:57:05,382 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 19:57:05,849 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 54.062883103s (failures: 1)
+2026-03-22 20:26:55,951 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 20:26:56,670 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 3.206720197s (failures: 2)
+2026-03-22 20:28:37,275 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 20:28:38,333 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 21.546858057s (failures: 1)
+2026-03-22 20:28:41,100 [INFO] engine: Dropped IPAdapter as model z_image_turbo_bf16.safetensors is flux
+2026-03-22 20:28:41,101 [WARNING] engine: In interactive flow, removing incompatible LoRA Bhairavi_Devi_Hindu_Art.safetensors for model arch flux
+2026-03-22 20:28:46,992 [INFO] core.queue_manager: Job d0ffc9b8-940e-4763-8759-278f2080dc69 queued (position: 1)
+2026-03-22 20:28:46,993 [INFO] engine: Plan Executing: arch=flux, model=z_image_turbo_bf16.safetensors, steps=30, cfg=7.0
+2026-03-22 20:28:46,994 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 20:28:46,994 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 20:28:47,005 [INFO] core.comfyui_client: Workflow queued: c4852c0d-1d87-4ba4-963e-bcfaa5bcfe0b
+2026-03-22 20:28:52,554 [WARNING] engine: Generation attempt 1 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 20:28:52,555 [INFO] engine: 🔧 Auto-recovery: Model failed to load (meta tensor error). Retrying with fp8_e4m3fn weight dtype.
+2026-03-22 20:28:52,968 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 20:28:52,968 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 20:28:52,986 [INFO] core.comfyui_client: Workflow queued: 745b3bf1-f660-43b9-9ef5-217ce05f3ad3
+2026-03-22 20:28:53,069 [WARNING] engine: Generation attempt 2 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 20:28:53,069 [INFO] engine: 🔧 Auto-recovery: Model still failing. Switching to a different model. Using 'Juggernaut-XL_v9_RunDiffusion.safetensors'.
+2026-03-22 20:28:53,692 [INFO] core.workflow_builder: Building workflow: action=generate, arch=flux, style=realistic
+2026-03-22 20:28:53,694 [INFO] core.workflow_builder: Workflow built with 10 nodes: ['unet_loader', 'clip_loader', 'vae_loader', 'positive_prompt', 'negative_prompt', 'empty_latent', 'flux_guidance', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 20:28:53,704 [INFO] core.comfyui_client: Workflow queued: 31420d70-922e-409e-a9cb-4ac0c21c8780
+2026-03-22 20:28:53,768 [WARNING] engine: Generation attempt 3 failed: ComfyUI execution error: Cannot copy out of meta tensor; no data!
+
+2026-03-22 20:28:53,768 [INFO] engine: 🔧 Auto-recovery: Persistent model loading failure. Falling back to SDXL.
+2026-03-22 20:28:53,770 [INFO] core.error_recovery: Recovery: falling back to SDXL (DreamShaperXL_Lightning)
+2026-03-22 20:28:54,234 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=realistic
+2026-03-22 20:28:54,234 [INFO] core.workflow_builder: Workflow built with 7 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image']
+2026-03-22 20:28:54,244 [INFO] core.comfyui_client: Workflow queued: 9c34adf4-2bb9-4d13-acc7-07d3da418912
+2026-03-22 20:29:10,948 [WARNING] core.quality_analyzer: Unknown LLM provider ProviderManager for QualityAnalyzer. Returning default score.
+2026-03-22 20:29:10,950 [INFO] core.pipeline: Quality Score: 8.0 (Faces: 8.0, Artifacts: 2.0)
+2026-03-22 20:29:10,951 [INFO] core.pipeline: Image meets quality standards. Proceeding.
+2026-03-22 20:29:10,953 [INFO] core.queue_manager: Job d0ffc9b8-940e-4763-8759-278f2080dc69 completed in 24.0s
+2026-03-22 20:53:31,634 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 20:53:31,635 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 20:53:31,635 [INFO] engine: AI Director Engine stopped
+2026-03-22 20:53:34,393 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 20:53:34,394 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 20:53:34,438 [INFO] core.workflow_manager: Loaded workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 20:53:34,472 [INFO] core.workflow_manager: Loaded workflow template: image_qwen_image_edit_2509
+2026-03-22 20:53:34,506 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo
+2026-03-22 20:53:34,548 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo_fun_union_controlnet
+2026-03-22 20:53:34,566 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 20:53:35,590 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 20:53:35,591 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 20:53:35,591 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 20:53:35,591 [INFO] engine: AI Director Engine stopped
+2026-03-22 20:54:41,781 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 20:54:41,781 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 20:54:41,784 [INFO] core.workflow_manager: Loaded workflow template: image_flux2_klein_image_edit_9b_distilled
+2026-03-22 20:54:41,785 [INFO] core.workflow_manager: Loaded workflow template: image_qwen_image_edit_2509
+2026-03-22 20:54:41,786 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo
+2026-03-22 20:54:41,786 [INFO] core.workflow_manager: Loaded workflow template: image_z_image_turbo_fun_union_controlnet
+2026-03-22 20:54:41,790 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 20:54:42,908 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 20:54:42,911 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 20:54:42,912 [INFO] engine: Starting AI Director Engine...
+2026-03-22 20:54:45,080 [INFO] llm.base: Creating LLM provider: gemini (type=gemini)
+2026-03-22 20:54:45,733 [INFO] llm.provider_manager: Initialized LLM provider: gemini (priority 1)
+2026-03-22 20:54:45,733 [INFO] llm.base: Creating LLM provider: ollama (type=ollama)
+2026-03-22 20:54:45,734 [INFO] llm.provider_manager: Initialized LLM provider: ollama (priority 2)
+2026-03-22 20:54:45,734 [INFO] llm.provider_manager: Active LLM provider: gemini
+2026-03-22 20:54:45,734 [INFO] engine: LLM providers ready: gemini
+2026-03-22 20:54:45,735 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 20:54:45,850 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 5 diffusion models, 7 LoRAs, 1 ControlNets, 2 IP-Adapters
+2026-03-22 20:54:45,850 [INFO] registry.model_registry: Diffusion models found: ['flux-2-klein-9b-fp8.safetensors', 'flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 20:54:45,850 [INFO] core.queue_manager: Queue manager started
+2026-03-22 20:54:45,862 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 20:54:45,864 [INFO] engine: AI Director Engine ready!
+2026-03-22 20:54:46,479 [INFO] ai_director: Synced 13 slash commands
+2026-03-22 20:54:49,768 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 20:54:49,768 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 20:54:49,768 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 20:54:49,769 [INFO] ai_director:   Guilds: 1
+2026-03-22 20:54:49,769 [INFO] ai_director:   LLM: gemini
+2026-03-22 20:54:49,769 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 20:55:21,413 [INFO] ai_director: Received mention chat text: hello , what can you do?
+2026-03-22 20:55:21,917 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 20:55:22,629 [WARNING] llm.provider_manager: Provider 'gemini' rate-limited for 37.244679951s (failures: 1)
+2026-03-22 21:16:37,957 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 21:16:37,957 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 21:16:37,958 [INFO] engine: AI Director Engine stopped

@@ -14,10 +14,11 @@ import asyncio
 import dataclasses
 import io
 import logging
+import re
 import tempfile
 import os
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict, Any, List
 
 import discord
 
@@ -82,6 +83,7 @@ class AIDirectorEngine:
         # Job metadata storage (plan details for buttons)
         self._job_metadata: dict[str, dict] = {}
         self._job_interactions: dict[str, discord.Interaction] = {}
+        self._job_channels: dict[str, discord.abc.Messageable] = {}
 
     async def start(self):
         """Initialize all subsystems."""
@@ -312,24 +314,37 @@ class AIDirectorEngine:
                 user_overrides=overrides,
             )
 
-    async def chat(self, user_id: str, message: str) -> str:
+    async def chat(self, user_id: str, message: str, channel: Optional[discord.abc.Messageable] = None) -> str:
         """Chat with the AI Director."""
         history = self._chat_history.setdefault(user_id, [])
         
-        # Build system context with available models
+        # Build system context with available models and templates
         available = self.registry.get_available_models_for_llm()
+        available_templates = self.workflow_manager.get_available_templates_for_llm()
+        
         ckpt_names = [c["filename"] if isinstance(c, dict) else c for c in available.get("checkpoints", [])]
         dm_names = [d["filename"] if isinstance(d, dict) else d for d in available.get("diffusion_models", [])]
-        all_models = ckpt_names[:3] + dm_names[:3]
+        all_models = ckpt_names[:5] + dm_names[:5]
         
         context = (
             "You are an AI art assistant for a Stable Diffusion image generation system.\n"
             f"Available models: {', '.join(all_models)}\n"
+            f"{available_templates}\n"
             "You can help users craft prompts, explain models/LoRAs, and suggest settings.\n"
-            "If they want to generate, tell them to use /generate command."
         )
         
         response = await self.llm.chat(message, history, system_context=context)
+        
+        # Check for autonomous generation tag: <generate>prompt</generate>
+        gen_match = re.search(r"<generate>(.*?)</generate>", response, re.DOTALL | re.IGNORECASE)
+        if gen_match and channel:
+            gen_prompt = gen_match.group(1).strip()
+            # Trigger generation in the background
+            asyncio.create_task(self.submit_generation_from_chat(channel, user_id, gen_prompt))
+            # Strip the tag from the response for the user
+            response = response.replace(gen_match.group(0), "").strip()
+            if not response:
+                response = f"Rocketing away to generate: **{gen_prompt}**"
         
         # Update conversation history
         history.append({"role": "user", "content": message})
@@ -340,6 +355,75 @@ class AIDirectorEngine:
             history[:] = history[-20:]
         
         return response
+
+    async def submit_generation_from_chat(
+        self,
+        channel: discord.abc.Messageable,
+        user_id: str,
+        prompt: str,
+    ):
+        """Submit generation triggered from a chat message (no interaction)."""
+        import uuid
+        job_id = str(uuid.uuid4())
+        
+        await channel.send(f"🎨 **AI Director Agent** is starting generation: *{prompt}*")
+        
+        try:
+            available_models = self.registry.get_available_models_for_llm()
+            user_prefs = self.user_memory.get_preferences_for_llm(user_id)
+            available_templates = self.workflow_manager.get_available_templates_for_llm()
+            full_prompt = f"{prompt}\n\n[USER PREFERENCES Context]\n{user_prefs}\n{available_templates}"
+            
+            plan = await self.llm.analyze_intent(
+                prompt=full_prompt,
+                available_models=available_models,
+                has_reference_image=False,
+            )
+            
+            # Apply same logic as submit_generation
+            if plan.style_category:
+                preset = self.style_presets.get_preset(plan.style_category)
+                if preset:
+                    plan = self.style_presets.apply_preset(plan, preset)
+            
+            if plan.checkpoint:
+                resolved = self.registry.resolve_checkpoint(plan.checkpoint)
+                plan.checkpoint = resolved if resolved else (self.registry.get_best_checkpoint(plan.style_category) or "")
+            
+            if not plan.checkpoint:
+                plan.checkpoint = self.registry.get_best_checkpoint(plan.style_category) or self.config.get("defaults", {}).get("ckpt", "Juggernaut-XL_v9_RunDiffusion.safetensors")
+            
+            plan.model_arch = self.registry.get_model_arch(plan.checkpoint)
+            
+            # Compatibility filtering
+            final_loras = []
+            for lora in plan.loras:
+                lora_name = lora.get("name", "")
+                compat = self.registry.get_lora_compatibility(lora_name)
+                if plan.model_arch in compat:
+                    final_loras.append(lora)
+            plan.loras = final_loras
+
+            # Create the Job
+            job = Job(
+                user_id=user_id,
+                guild_id="", # Hard to get from channel easily without interaction sometimes, but we can try
+                channel_id=str(channel.id) if hasattr(channel, 'id') else "",
+                prompt=prompt,
+                metadata={
+                    "plan": plan,
+                    "from_chat": True
+                },
+            )
+            job.id = job_id
+            self._job_channels[job.id] = channel
+            job.on_status_change = self._on_job_status_change
+            
+            await self.queue.submit(job)
+            
+        except Exception as e:
+            logger.error(f"Chat-triggered generation failed: {e}")
+            await channel.send(f"❌ Failed to start generation: {str(e)}")
 
     async def _process_job(self, job: Job) -> list:
         """
@@ -587,8 +671,12 @@ class AIDirectorEngine:
     async def _notify_discord(self, job: Job):
         """Send status updates and results to Discord."""
         interaction = self._job_interactions.get(job.id)
-        if not interaction:
+        channel = self._job_channels.get(job.id)
+        
+        if not interaction and not channel:
             return
+        
+        dest = interaction.channel if interaction else channel
         
         try:
             if job.status == JobStatus.COMPLETE and job.result_images:
@@ -639,12 +727,14 @@ class AIDirectorEngine:
                     inline=False
                 )
                 
-                await interaction.channel.send(embed=embed)
+                await dest.send(embed=embed)
                 
                 # Clean up
                 self.error_agent.clear_history(job.id)
                 if job.id in self._job_interactions:
                     del self._job_interactions[job.id]
+                if job.id in self._job_channels:
+                    del self._job_channels[job.id]
             
             else:
                 # Progress updates
