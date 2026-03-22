@@ -2,14 +2,21 @@
 Discord Slash Commands — the user-facing interface.
 
 Commands:
-  /generate  — generate an image from a prompt (+ optional reference image)
-  /upscale   — upscale a previously generated image
-  /vary      — create variations of a previous generation
-  /edit      — edit an image with a new prompt (img2img)
-  /chat      — chat with the AI Director about art
-  /models    — list available models
-  /queue     — check queue status
-  /settings  — view/change generation defaults
+  /generate    — generate an image from a prompt (+ optional reference image)
+  /upscale     — upscale a previously generated image
+  /vary        — create variations of a previous generation
+  /edit        — edit an image with a new prompt (img2img)
+  /chat        — chat with the AI Director about art
+  /models      — list available models
+  /queue       — check queue status
+  /settings    — view/change generation defaults
+  
+  # Director Features
+  /dream       — Auto/Creative mode (minimal input)
+  /refine      — Give feedback on the last generation
+  /style       — Browse and apply style presets
+  /history     — View recent generations
+  /preferences — View/manage your user preferences
 """
 import io
 import dataclasses
@@ -145,6 +152,90 @@ def setup_commands(bot):
             user_overrides={"denoise": strength, "action": "edit"},
         )
 
+    # --- Director Features ---
+
+    @bot.tree.command(name="dream", description="✨ Auto Mode: AI Director invents a prompt for you")
+    @app_commands.describe(
+        theme="Optional theme or basic idea (e.g., 'cyberpunk city')",
+    )
+    async def dream_cmd(
+        interaction: discord.Interaction,
+        theme: Optional[str] = None,
+    ):
+        await interaction.response.defer()
+        prompt = theme or "Surprise me with a beautiful, creative masterpiece"
+        await bot.engine.submit_generation(
+            interaction=interaction,
+            prompt=prompt,
+            user_overrides={"action": "dream"},
+        )
+
+    @bot.tree.command(name="refine", description="🖌️ Refine your last generation with feedback")
+    @app_commands.describe(
+        feedback="What to change (e.g., 'make it darker', 'fix the eyes')",
+    )
+    async def refine_cmd(
+        interaction: discord.Interaction,
+        feedback: str,
+    ):
+        # We need to find the user's last generated image
+        last_job_meta = getattr(bot.engine, "_user_last_job", {}).get(str(interaction.user.id))
+        
+        if not last_job_meta or "result_images" not in last_job_meta:
+            await interaction.response.send_message("❌ I couldn't find your last generation. Use `/generate` or `/dream` first.", ephemeral=True)
+            return
+
+        await interaction.response.defer()
+        image_bytes = last_job_meta["result_images"][-1]
+        
+        # We generate a refined prompt based on feedback
+        # A full implementation would use the LLM to understand the feedback
+        # For now, we append it to the prompt if we know it, or just use it roughly
+        original_prompt = last_job_meta.get("prompt", "")
+        new_prompt = f"{original_prompt}, {feedback}" if original_prompt else feedback
+        
+        await bot.engine.submit_generation(
+            interaction=interaction,
+            prompt=new_prompt,
+            image_bytes=image_bytes,
+            user_overrides={"action": "refine_feedback", "denoise": 0.45},
+        )
+
+    @bot.tree.command(name="style", description="🎭 Browse available style presets")
+    async def style_cmd(interaction: discord.Interaction):
+        from discord_ui.buttons import StyleSelectView
+        
+        embed = discord.Embed(
+            title="🎨 Style Presets",
+            description="Select a style below to see what it looks like or use it in your next generation. (You can also type the style directly like `/generate prompt: cat style: cinematic`).",
+            color=0x7C3AED
+        )
+        
+        async def on_style_select(interaction: discord.Interaction, style: str):
+            await interaction.response.send_message(f"Selected style: **{style}**. Try `/generate style:{style}`", ephemeral=True)
+            
+        view = StyleSelectView(on_select=on_style_select)
+        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
+        
+    @bot.tree.command(name="preferences", description="👤 View your AI Director preferences")
+    async def prefs_cmd(interaction: discord.Interaction):
+        user_id = str(interaction.user.id)
+        prefs = bot.engine.user_memory.get_profile(user_id)
+        
+        embed = discord.Embed(
+            title=f"👤 Preferences for {interaction.user.display_name}",
+            color=0x7C3AED
+        )
+        embed.add_field(name="Generations", value=str(prefs.generation_count))
+        
+        top_styles = [f"{s} ({c})" for s, c in prefs.get_top_styles(3)]
+        embed.add_field(name="Top Styles", value=", ".join(top_styles) or "None yet")
+        
+        top_models = [f"{m.replace('.safetensors', '')} ({c})" for m, c in prefs.get_top_models(3)]
+        embed.add_field(name="Top Models", value=", ".join(top_models) or "None yet")
+        
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+        
     @bot.tree.command(name="chat", description="💬 Chat with the AI Director about art and generation")
     @app_commands.describe(message="Your message to the AI Director")
     async def chat_cmd(

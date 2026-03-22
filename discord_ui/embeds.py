@@ -8,7 +8,7 @@ import discord
 from typing import Optional
 
 from core.queue_manager import Job, JobStatus
-
+from core.quality_analyzer import QualityScore
 
 # Color palette
 COLOR_PRIMARY = 0x7C3AED     # Purple — main brand
@@ -161,4 +161,37 @@ def create_chat_embed(response: str) -> discord.Embed:
         color=COLOR_PRIMARY,
     )
     embed.set_author(name="🎨 AI Director")
+    return embed
+
+
+def create_quality_report_embed(score: QualityScore) -> discord.Embed:
+    """Display the results of the LLM quality analysis."""
+    
+    color = COLOR_SUCCESS if score.overall >= 7.0 else (COLOR_WARNING if score.overall >= 5.0 else COLOR_ERROR)
+    
+    embed = discord.Embed(
+        title="🔍 Quality Analysis Report",
+        description=f"**Overall Score:** {score.overall}/10",
+        color=color
+    )
+    
+    # Detailed scores
+    details = []
+    if score.faces is not None:
+        details.append(f"**Faces:** {score.faces}/10")
+    if score.hands is not None:
+        details.append(f"**Hands:** {score.hands}/10")
+    if score.composition is not None:
+        details.append(f"**Composition:** {score.composition}/10")
+    if score.sharpness is not None:
+        details.append(f"**Sharpness:** {score.sharpness}/10")
+    if score.artifacts is not None:
+        details.append(f"**Artifacts:** {score.artifacts}/10 (higher is better)")
+        
+    embed.add_field(name="Detailed Scores", value="\n".join(details), inline=True)
+    
+    # Issues
+    if score.issues:
+        embed.add_field(name="Detected Issues", value="\n".join([f"• {i}" for i in score.issues]), inline=True)
+        
     return embed

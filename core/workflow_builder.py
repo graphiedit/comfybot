@@ -23,6 +23,35 @@ logger = logging.getLogger(__name__)
 BASE_WORKFLOW_PATH = Path(__file__).parent.parent / "data" / "workflow_base.json"
 
 
+class WorkflowGraph:
+    """Represents a ComfyUI workflow graph to enable easier dynamic building."""
+    
+    def __init__(self):
+        self.nodes = {}
+        
+    def add_node(self, node_id: str, class_type: str, inputs: dict) -> str:
+        """Add a node to the graph and return its ID."""
+        self.nodes[node_id] = {
+            "inputs": inputs,
+            "class_type": class_type,
+        }
+        return node_id
+        
+    def update_input(self, node_id: str, input_name: str, value: any):
+        """Update a specific input on an existing node."""
+        if node_id in self.nodes:
+            self.nodes[node_id]["inputs"][input_name] = value
+            
+    def remove_node(self, node_id: str):
+        """Remove a node from the graph."""
+        if node_id in self.nodes:
+            del self.nodes[node_id]
+            
+    def to_comfyui_format(self) -> dict:
+        """Export to ComfyUI JSON format."""
+        return copy.deepcopy(self.nodes)
+
+
 class WorkflowBuilder:
     """Builds ComfyUI API-format JSON workflows from a GenerationPlan."""
 
@@ -610,3 +639,121 @@ class WorkflowBuilder:
         
         logger.info("Built upscale workflow")
         return workflow
+
+    def build_img2img_workflow(self, plan: GenerationPlan, input_image: str) -> dict:
+        """Build an img2img refinement workflow."""
+        g = WorkflowGraph()
+        seed = plan.seed if plan.seed != -1 else int(time.time() * 1000) % 1000000000
+        checkpoint = plan.checkpoint or self.defaults.get("ckpt", "Juggernaut-XL_v9_RunDiffusion.safetensors")
+        
+        g.add_node("base_model", "CheckpointLoaderSimple", {"ckpt_name": checkpoint})
+        g.add_node("load_image", "LoadImage", {"image": input_image, "upload": "image"})
+        g.add_node("vae_encode", "VAEEncode", {"pixels": ["load_image", 0], "vae": ["base_model", 2]})
+        g.add_node("positive_prompt", "CLIPTextEncode", {"text": plan.enhanced_prompt or "masterpiece", "clip": ["base_model", 1]})
+        g.add_node("negative_prompt", "CLIPTextEncode", {"text": plan.negative_prompt, "clip": ["base_model", 1]})
+        g.add_node("sampler", "KSampler", {
+            "seed": seed,
+            "steps": plan.steps,
+            "cfg": plan.cfg,
+            "sampler_name": plan.sampler,
+            "scheduler": plan.scheduler,
+            "denoise": plan.denoise,  # Typically 0.3 - 0.5 for refinement
+            "model": ["base_model", 0],
+            "positive": ["positive_prompt", 0],
+            "negative": ["negative_prompt", 0],
+            "latent_image": ["vae_encode", 0],
+        })
+        g.add_node("vae_decode", "VAEDecode", {"samples": ["sampler", 0], "vae": ["base_model", 2]})
+        g.add_node("save_image", "SaveImage", {"filename_prefix": "AI_Director_Refine", "images": ["vae_decode", 0]})
+        
+        return g.to_comfyui_format()
+
+    def build_face_fix_workflow(self, input_image: str) -> dict:
+        """Build a workflow explicitly for face restoration (e.g., FaceDetailer or CodeFormer)."""
+        # Using a simple setup assuming standard nodes available. 
+        # In a real ComfyUI setup, FaceDetailer is heavily preferred.
+        g = WorkflowGraph()
+        
+        g.add_node("load_image", "LoadImage", {"image": input_image, "upload": "image"})
+        
+        # Assume ComfyUI has standard FaceDetailer installed (Impact Pack)
+        # If not, will gracefully fail and engine handles it
+        g.add_node("bbox_detector", "UltralyticsDetectorProvider", {"model_name": "bbox/face_yolov8m.pt"})
+        
+        checkpoint = self.defaults.get("ckpt", "Juggernaut-XL_v9_RunDiffusion.safetensors")
+        g.add_node("base_model", "CheckpointLoaderSimple", {"ckpt_name": checkpoint})
+        
+        g.add_node("face_detailer", "FaceDetailer", {
+            "image": ["load_image", 0],
+            "model": ["base_model", 0],
+            "clip": ["base_model", 1],
+            "vae": ["base_model", 2],
+            "guide_size": 384,
+            "guide_size_for": "bbox",
+            "max_size": 1024,
+            "seed": int(time.time() * 1000) % 1000000000,
+            "steps": 25,
+            "cfg": 5.0,
+            "sampler_name": "dpmpp_2m_sde",
+            "scheduler": "karras",
+            "denoise": 0.35, # Low denoise just for face
+            "feather": 5,
+            "noise_mask": True,
+            "force_inpaint": True,
+            "bbox_detector": ["bbox_detector", 0],
+            "wildcard": "",
+            "cycle": 1,
+            "inpaint_model": False,
+            "noise_mask_feather": 20
+        })
+        
+        g.add_node("save_image", "SaveImage", {"filename_prefix": "AI_Director_FaceFix", "images": ["face_detailer", 0]})
+        
+        return g.to_comfyui_format()
+
+    def build_detail_workflow(self, plan: GenerationPlan, input_image: str) -> dict:
+        """Build an SD upscale / detail enhancement workflow."""
+        g = WorkflowGraph()
+        seed = plan.seed if plan.seed != -1 else int(time.time() * 1000) % 1000000000
+        checkpoint = plan.checkpoint or self.defaults.get("ckpt", "Juggernaut-XL_v9_RunDiffusion.safetensors")
+        
+        g.add_node("base_model", "CheckpointLoaderSimple", {"ckpt_name": checkpoint})
+        g.add_node("load_image", "LoadImage", {"image": input_image, "upload": "image"})
+        
+        # Upscale the image slightly first using pixel space
+        g.add_node("upscale_model_loader", "UpscaleModelLoader", {"model_name": "4x-UltraSharp.pth"})
+        g.add_node("image_upscale", "ImageUpscaleWithModel", {
+            "upscale_model": ["upscale_model_loader", 0],
+            "image": ["load_image", 0]
+        })
+        
+        # Downscale if it's too big, so we're effectively doing a 1.5x upscaler
+        g.add_node("image_scale", "ImageScale", {
+            "image": ["image_upscale", 0],
+            "upscale_method": "bicubic",
+            "width": plan.width, # Could be modified to be 1.5x original
+            "height": plan.height,
+            "crop": "disabled"
+        })
+        
+        g.add_node("vae_encode", "VAEEncode", {"pixels": ["image_scale", 0], "vae": ["base_model", 2]})
+        g.add_node("positive_prompt", "CLIPTextEncode", {"text": plan.enhanced_prompt, "clip": ["base_model", 1]})
+        g.add_node("negative_prompt", "CLIPTextEncode", {"text": plan.negative_prompt, "clip": ["base_model", 1]})
+        
+        g.add_node("sampler", "KSampler", {
+            "seed": seed,
+            "steps": max(plan.steps, 25),
+            "cfg": plan.cfg,
+            "sampler_name": plan.sampler,
+            "scheduler": plan.scheduler,
+            "denoise": 0.35,  # Low denoise adds details without changing composition
+            "model": ["base_model", 0],
+            "positive": ["positive_prompt", 0],
+            "negative": ["negative_prompt", 0],
+            "latent_image": ["vae_encode", 0],
+        })
+        
+        g.add_node("vae_decode", "VAEDecode", {"samples": ["sampler", 0], "vae": ["base_model", 2]})
+        g.add_node("save_image", "SaveImage", {"filename_prefix": "AI_Director_Detail", "images": ["vae_decode", 0]})
+        
+        return g.to_comfyui_format()

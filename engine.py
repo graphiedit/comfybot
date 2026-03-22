@@ -20,6 +20,12 @@ from registry.model_registry import ModelRegistry
 from core.comfyui_client import ComfyUIClient
 from core.workflow_builder import WorkflowBuilder
 from core.queue_manager import QueueManager, Job, JobStatus
+from core.pipeline import GenerationPipeline
+from core.quality_analyzer import QualityScore
+from core.user_memory import UserMemory
+from core.image_analyzer import ImageAnalyzer
+from core.cache import MemoryCache
+from registry.style_presets import StylePresetManager
 from discord_ui.embeds import (
     create_progress_embed,
     create_generation_embed,
@@ -47,6 +53,16 @@ class AIDirectorEngine:
         self.comfyui = ComfyUIClient(config)
         self.builder = WorkflowBuilder(config, registry=self.registry)
         self.queue = QueueManager(max_concurrent=1)
+        
+        # New advanced capabilities
+        self.pipeline = GenerationPipeline(self, config)
+        self.user_memory = UserMemory(config)
+        self.style_presets = StylePresetManager()
+        self.image_analyzer = ImageAnalyzer(self.llm)
+        self.cache = MemoryCache(
+            max_entries=config.get("cache", {}).get("max_entries", 100),
+            default_ttl=config.get("cache", {}).get("ttl_seconds", 3600)
+        )
         
         # Per-user conversation history for chat context
         self._chat_history: dict[str, list] = {}
@@ -256,8 +272,17 @@ class AIDirectorEngine:
                 if action == "upscale":
                     reference_remote = remote_name
                 else:
-                    # For style reference → IP-Adapter, for pose → ControlNet
-                    reference_remote = remote_name
+                    # Let Image Analyzer decide the best tools for reference
+                    analysis = await self.image_analyzer.analyze(job.metadata["image_bytes"])
+                    logger.info(f"Image Analysis: {analysis.raw_response}")
+                    
+                    if "ipadapter" in analysis.recommended_tools or analysis.style_info:
+                        reference_remote = remote_name
+                        
+                    if "openpose" in analysis.recommended_tools and analysis.has_pose:
+                        pose_remote = remote_name
+                    elif "depth" in analysis.recommended_tools and analysis.has_depth:
+                        pose_remote = remote_name # Using depth as "pose" structurally
             finally:
                 try:
                     os.unlink(tmp_path)
@@ -269,6 +294,7 @@ class AIDirectorEngine:
         await self._notify_discord(job)
         
         available_models = self.registry.get_available_models_for_llm()
+        user_prefs = self.user_memory.get_preferences_for_llm(job.user_id)
         
         if action == "upscale":
             # Simple upscale plan
@@ -280,12 +306,30 @@ class AIDirectorEngine:
                 height=overrides.get("height", 1024),
             )
         else:
-            plan = await self.llm.analyze_intent(
-                prompt=job.prompt,
-                available_models=available_models,
-                has_reference_image=job.metadata.get("has_image", False),
-            )
-        
+            # Check cache first
+            cache_key = self.cache.generate_prompt_key(job.prompt, overrides)
+            cached_plan_dict = self.cache.get(cache_key) if self.config.get("cache", {}).get("enabled", True) else None
+            
+            if cached_plan_dict:
+                logger.info(f"Cache hit for prompt: {job.prompt}")
+                plan = GenerationPlan(**cached_plan_dict)
+            else:
+                # Add user context to analysis
+                full_prompt = f"{job.prompt}\n\n[USER PREFERENCES Context]\n{user_prefs}"
+                plan = await self.llm.analyze_intent(
+                    prompt=full_prompt,
+                    available_models=available_models,
+                    has_reference_image=job.metadata.get("has_image", False),
+                )
+                
+                # Apply style preset if matched
+                if plan.style_category:
+                    preset = self.style_presets.get_preset(plan.style_category)
+                    if preset:
+                        plan = self.style_presets.apply_preset(plan, preset)
+                
+                if self.config.get("cache", {}).get("enabled", True):
+                    self.cache.set(cache_key, dataclasses.asdict(plan))
         # Apply user overrides — user choices take priority over AI
         for key, value in overrides.items():
             if hasattr(plan, key) and key != "action":
@@ -325,36 +369,21 @@ class AIDirectorEngine:
         
         logger.info(f"Plan: arch={plan.model_arch}, model={plan.checkpoint}, steps={plan.steps}, cfg={plan.cfg}")
         
-        # --- Step 3: Build workflow ---
-        job.status = JobStatus.BUILDING
-        await self._notify_discord(job)
-        
-        workflow = self.builder.build(
-            plan=plan,
-            reference_image=reference_remote,
-            pose_image=pose_remote,
+        # --- Step 3-4: Build & Execute Pipeline ---
+        async def on_status_update(status: JobStatus):
+            job.status = status
+            await self._notify_discord(job)
+            
+        result_images = await self.pipeline.execute(
+            job.id, plan, reference_remote, pose_remote, on_status_update
         )
-        
-        # --- Step 4: Execute in ComfyUI ---
-        job.status = JobStatus.GENERATING
-        await self._notify_discord(job)
-        
-        async def on_progress(node, value, max_val):
-            # Could update progress in Discord here
-            pass
-        
-        prompt_id = await self.comfyui.queue_prompt(workflow)
-        output_images = await self.comfyui.wait_for_result(
-            prompt_id, on_progress=on_progress
-        )
-        
-        # Collect all output images
-        result_images = []
-        for node_id, images in output_images.items():
-            result_images.extend(images)
         
         if not result_images:
-            raise RuntimeError("ComfyUI returned no images")
+            raise RuntimeError("Pipeline returned no images")
+            
+        # Record successful generation to user memory
+        if action not in ("upscale", "edit"):
+            self.user_memory.record_generation(job.user_id, plan)
         
         # Store metadata for button actions
         plan_dict = dataclasses.asdict(plan)

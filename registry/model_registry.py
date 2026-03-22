@@ -578,33 +578,93 @@ class ModelRegistry:
         
         return best
 
+    def score_model(self, model_entry: dict, style_category: str, prompt_keywords: list = None) -> float:
+        """
+        Score a model based on its fit for the request.
+        Factors: Style match (40%), Quality (30%), Architecture/Tags (20%), Base (10%)
+        """
+        score = 0.0
+        
+        # 1. Style Match (up to 40 points)
+        styles = model_entry.get("styles", ["general"])
+        if style_category in styles:
+            score += 40.0
+        elif "general" in styles:
+            score += 10.0
+            
+        # 2. Quality rating (up to 30 points)
+        quality = model_entry.get("quality", 5)
+        score += quality * 3.0  # 1-10 -> 3-30
+        
+        # 3. Keyword matching (up to 20 points)
+        prompt_keywords = prompt_keywords or []
+        tags = model_entry.get("tags", [])
+        matches = sum(1 for kw in prompt_keywords if kw.lower() in [t.lower() for t in tags])
+        score += min(20.0, matches * 5.0)
+        
+        # 4. Modern Architecture bonus (up to 10 points)
+        arch = model_entry.get("arch", "sdxl")
+        if arch in ("flux", "hunyuan"):
+            score += 10.0
+        elif arch == "sdxl":
+            score += 5.0
+            
+        return score
+
+    def get_best_models_ranked(self, style_category: str, prompt_keywords: list = None, top_n: int = 3) -> list:
+        """Get the top N models ranked by score for a given style and prompt."""
+        candidates = []
+        
+        # Add Checkpoints
+        for ckpt in self._model_catalog.get("checkpoints", []):
+            if not self._checkpoints or ckpt["filename"] in self._checkpoints:
+                score = self.score_model(ckpt, style_category, prompt_keywords)
+                candidates.append((ckpt["filename"], ckpt.get("arch", "sdxl"), score))
+                
+        # Add Diffusion Models
+        for dm in self._model_catalog.get("diffusion_models", []):
+            if not self._diffusion_models or dm["filename"] in self._diffusion_models:
+                score = self.score_model(dm, style_category, prompt_keywords)
+                candidates.append((dm["filename"], dm.get("arch", "flux"), score))
+                
+        # Sort by score descending
+        candidates.sort(key=lambda x: x[2], reverse=True)
+        
+        return candidates[:top_n]
+
     def get_best_model(self, style_category: str) -> tuple:
         """
         Get the best model (checkpoint or diffusion model) for a style.
         Returns (filename, arch).
         """
-        # Score all models (checkpoints + diffusion models)
-        candidates = []
-        
-        for ckpt in self._model_catalog.get("checkpoints", []):
-            if ckpt["filename"] in self._checkpoints or not self._checkpoints:
-                if style_category in ckpt.get("styles", []):
-                    candidates.append((ckpt["filename"], ckpt.get("arch", "sdxl"), ckpt.get("quality", 5)))
-        
-        for dm in self._model_catalog.get("diffusion_models", []):
-            if dm["filename"] in self._diffusion_models or not self._diffusion_models:
-                if style_category in dm.get("styles", []):
-                    candidates.append((dm["filename"], dm.get("arch", "flux"), dm.get("quality", 5)))
-        
-        if candidates:
-            candidates.sort(key=lambda x: x[2], reverse=True)
-            return candidates[0][0], candidates[0][1]
+        ranked = self.get_best_models_ranked(style_category, top_n=1)
+        if ranked:
+            return ranked[0][0], ranked[0][1]
         
         # Fallback
         if self._checkpoints:
             return self._checkpoints[0], "sdxl"
         
         return "", "sdxl"
+
+    def get_compatible_loras(self, model_arch: str, prompt_keywords: list = None) -> list:
+        """Find the best LoRAs for a given architecture and prompt."""
+        prompt_keywords = prompt_keywords or []
+        matches = []
+        
+        for lora in self._lora_catalog.get("loras", []):
+            if not self._loras or lora["filename"] in self._loras:
+                # Check architecture compatibility
+                compat = lora.get("compatible_models", ["sdxl"])
+                if model_arch in compat:
+                    # Check if keywords match
+                    lora_kws = lora.get("keywords", [])
+                    has_match = any(kw.lower() in [k.lower() for k in prompt_keywords] for kw in lora_kws)
+                    
+                    if has_match:
+                        matches.append(lora)
+                        
+        return matches
 
     def get_checkpoint_defaults(self, checkpoint: str) -> dict:
         """Get default settings for a specific checkpoint."""

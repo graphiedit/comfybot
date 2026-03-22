@@ -22,6 +22,10 @@ class GenerationButtons(View):
     - ⬆️ Upscale — 2x resolution
     - 🎨 Vary (Subtle) — small variations
     - 🎭 Vary (Strong) — bigger variations
+    - 🎬 Make Cinematic — apply cinematic style
+    - 👤 Fix Face — face restoration passing
+    - ✨ Enhance — upscale and add details
+    - 🎲 Creative Remix — random style variation
     """
 
     def __init__(
@@ -49,6 +53,22 @@ class GenerationButtons(View):
     @button(label="Vary (Strong)", emoji="🎭", style=discord.ButtonStyle.secondary, custom_id="vary_strong")
     async def vary_strong_button(self, interaction: discord.Interaction, btn: Button):
         await self._handle_action(interaction, "vary_strong")
+
+    @button(label="Make Cinematic", emoji="🎬", style=discord.ButtonStyle.primary, custom_id="style_cinematic")
+    async def cinematic_button(self, interaction: discord.Interaction, btn: Button):
+        await self._handle_action(interaction, "style_cinematic")
+        
+    @button(label="Fix Face", emoji="👤", style=discord.ButtonStyle.primary, custom_id="face_fix")
+    async def face_fix_button(self, interaction: discord.Interaction, btn: Button):
+        await self._handle_action(interaction, "face_fix")
+        
+    @button(label="Enhance", emoji="✨", style=discord.ButtonStyle.primary, custom_id="enhance")
+    async def enhance_button(self, interaction: discord.Interaction, btn: Button):
+        await self._handle_action(interaction, "enhance")
+        
+    @button(label="Creative Remix", emoji="🎲", style=discord.ButtonStyle.secondary, custom_id="remix")
+    async def remix_button(self, interaction: discord.Interaction, btn: Button):
+        await self._handle_action(interaction, "remix")
 
     @button(label="Info", emoji="ℹ️", style=discord.ButtonStyle.secondary, custom_id="info")
     async def info_button(self, interaction: discord.Interaction, btn: Button):

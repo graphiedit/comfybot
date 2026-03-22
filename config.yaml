@@ -38,3 +38,16 @@ defaults:
   upscale_factor: 2.0
   ckpt: "Juggernaut-XL_v9_RunDiffusion.safetensors"
   controlnet_model: "thibaud_xl_openpose_256lora.safetensors"
+
+# Pipeline Settings
+pipeline:
+  max_retries: 2
+  quality_threshold: 6.0
+  auto_upscale: false
+  auto_face_fix: true
+
+# Cache Settings
+cache:
+  enabled: true
+  ttl_seconds: 3600
+  max_entries: 100
