@@ -1,0 +1,51 @@
+loras:
+- compatible_models:
+  - sdxl
+  default_weight: 0.8
+  filename: cyberpunk_neon_v1.safetensors
+  id: neon_cyberpunk
+  keywords:
+  - cyberpunk
+  - neon
+  - futuristic city
+  - synthwave
+  trigger_words:
+  - cybrpnk style
+- compatible_models:
+  - sdxl
+  default_weight: 1.0
+  filename: studio_ghibli_style.safetensors
+  id: anime_ghibli
+  keywords:
+  - anime
+  - ghibli
+  - miyazaki
+  - cel shaded
+  trigger_words:
+  - ghibli style
+- compatible_models:
+  - sdxl
+  default_weight: 0.7
+  filename: dark_fantasy_xl.safetensors
+  id: dark_fantasy
+  keywords:
+  - dark fantasy
+  - gothic
+  - grimdark
+  - macabre
+  trigger_words:
+  - dark fantasy concept art
+- compatible_models:
+  - sdxl
+  default_weight: 0.9
+  filename: vintage_photo_film.safetensors
+  id: vintage_photography
+  keywords:
+  - vintage
+  - retro
+  - sepia
+  - polaroid
+  - film grain
+  trigger_words:
+  - vintage photograph
+  - analog film

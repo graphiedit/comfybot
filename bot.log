@@ -1,0 +1,133 @@
+2026-03-22 04:36:36,451 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 04:36:36,451 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 04:36:36,452 [INFO] llm.base: Creating LLM provider: gemini
+2026-03-22 04:36:37,603 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 04:36:37,604 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 04:36:37,604 [INFO] engine: Starting AI Director Engine...
+2026-03-22 04:36:37,604 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 04:36:37,605 [INFO] registry.model_registry: Created default model catalog at c:\Users\Grappiedit\Downloads\comfyui-advanced-workflow\comfyui-advanced-workflow\registry\data\model_catalog.yaml
+2026-03-22 04:36:37,607 [INFO] registry.model_registry: Created default LoRA catalog at c:\Users\Grappiedit\Downloads\comfyui-advanced-workflow\comfyui-advanced-workflow\registry\data\lora_catalog.yaml
+2026-03-22 04:36:39,628 [WARNING] registry.model_registry: Could not query CheckpointLoaderSimple: Cannot connect to host 127.0.0.1:8188 ssl:default [The remote computer refused the network connection]
+2026-03-22 04:36:41,645 [WARNING] registry.model_registry: Could not query LoraLoader: Cannot connect to host 127.0.0.1:8188 ssl:default [The remote computer refused the network connection]
+2026-03-22 04:36:43,653 [WARNING] registry.model_registry: Could not query ControlNetLoader: Cannot connect to host 127.0.0.1:8188 ssl:default [The remote computer refused the network connection]
+2026-03-22 04:36:45,665 [WARNING] registry.model_registry: Could not query IPAdapterModelLoader: Cannot connect to host 127.0.0.1:8188 ssl:default [The remote computer refused the network connection]
+2026-03-22 04:36:47,676 [WARNING] registry.model_registry: Could not query CLIPVisionLoader: Cannot connect to host 127.0.0.1:8188 ssl:default [The remote computer refused the network connection]
+2026-03-22 04:36:47,677 [INFO] registry.model_registry: Registry loaded: 0 checkpoints, 0 LoRAs, 0 ControlNets, 0 IP-Adapters
+2026-03-22 04:36:47,677 [INFO] core.queue_manager: Queue manager started
+2026-03-22 04:36:49,088 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 04:36:49,088 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 04:36:49,088 [INFO] engine: AI Director Engine stopped
+2026-03-22 04:38:04,573 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 04:38:04,574 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 04:38:04,575 [INFO] llm.base: Creating LLM provider: gemini
+2026-03-22 04:38:05,578 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 04:38:05,579 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 04:38:05,579 [INFO] engine: Starting AI Director Engine...
+2026-03-22 04:38:05,579 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 04:38:05,586 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 6 LoRAs, 1 ControlNets, 1 IP-Adapters
+2026-03-22 04:38:05,586 [INFO] core.queue_manager: Queue manager started
+2026-03-22 04:38:05,588 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 04:38:05,588 [INFO] engine: AI Director Engine ready!
+2026-03-22 04:38:06,103 [INFO] ai_director: Synced 8 slash commands
+2026-03-22 04:38:09,215 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 04:38:09,215 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 04:38:09,215 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 04:38:09,215 [INFO] ai_director:   Guilds: 1
+2026-03-22 04:38:09,215 [INFO] ai_director:   LLM: gemini
+2026-03-22 04:38:09,215 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 04:38:32,020 [ERROR] ai_director: Chat error: Gemini chat not yet implemented
+Traceback (most recent call last):
+  File "c:\Users\Grappiedit\Downloads\comfyui-advanced-workflow\comfyui-advanced-workflow\bot.py", line 114, in on_message
+    response = await self.engine.chat(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Grappiedit\Downloads\comfyui-advanced-workflow\comfyui-advanced-workflow\engine.py", line 216, in chat
+    response = await self.llm.chat(message, history, system_context=context)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Grappiedit\Downloads\comfyui-advanced-workflow\comfyui-advanced-workflow\llm\gemini_provider.py", line 75, in chat
+    raise NotImplementedError("Gemini chat not yet implemented")
+NotImplementedError: Gemini chat not yet implemented
+2026-03-22 04:40:55,628 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 04:40:55,629 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 04:40:55,629 [INFO] engine: AI Director Engine stopped
+2026-03-22 04:44:15,816 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 04:44:15,816 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 04:44:16,324 [INFO] llm.base: Creating LLM provider: gemini
+2026-03-22 04:44:17,743 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 04:44:17,744 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 04:44:17,744 [INFO] engine: Starting AI Director Engine...
+2026-03-22 04:44:17,744 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 04:44:17,751 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 6 LoRAs, 1 ControlNets, 1 IP-Adapters
+2026-03-22 04:44:17,752 [INFO] core.queue_manager: Queue manager started
+2026-03-22 04:44:17,755 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 04:44:17,755 [INFO] engine: AI Director Engine ready!
+2026-03-22 04:44:18,315 [INFO] ai_director: Synced 8 slash commands
+2026-03-22 04:44:21,307 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 04:44:21,307 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 04:44:21,307 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 04:44:21,307 [INFO] ai_director:   Guilds: 1
+2026-03-22 04:44:21,307 [INFO] ai_director:   LLM: gemini
+2026-03-22 04:44:21,307 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 04:44:36,974 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 04:45:13,685 [INFO] core.queue_manager: Job 41f23b2e6f68 queued (position: 1)
+2026-03-22 04:45:13,686 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 04:45:21,185 [INFO] core.workflow_builder: Building workflow: action=generate, style=realistic
+2026-03-22 04:45:21,185 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 04:45:21,185 [INFO] core.workflow_builder: Workflow built with 8 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 04:45:21,188 [INFO] core.comfyui_client: Workflow queued: 4331f908-dd32-46d3-8ebb-fc217855040c
+2026-03-22 04:45:53,310 [INFO] core.queue_manager: Job 41f23b2e6f68 completed in 39.6s
+2026-03-22 04:46:33,103 [INFO] core.queue_manager: Job d8a79d51e39d queued (position: 1)
+2026-03-22 04:46:33,103 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 04:46:44,311 [INFO] core.workflow_builder: Building workflow: action=generate, style=realistic
+2026-03-22 04:46:44,311 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 04:46:44,311 [INFO] core.workflow_builder: Workflow built with 8 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 04:46:44,313 [INFO] core.comfyui_client: Workflow queued: 574eb4f2-a99f-4c84-8c89-e96a3bbb005c
+2026-03-22 04:46:53,959 [INFO] core.queue_manager: Job d8a79d51e39d completed in 20.9s
+2026-03-22 04:55:24,753 [INFO] ai_director: Shutting down AI Director...
+2026-03-22 04:55:24,753 [INFO] core.queue_manager: Queue manager stopped
+2026-03-22 04:55:24,753 [INFO] engine: AI Director Engine stopped
+2026-03-22 05:01:42,032 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 05:01:42,032 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 05:01:42,514 [INFO] llm.base: Creating LLM provider: gemini
+2026-03-22 05:01:44,023 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 05:01:44,024 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 05:01:44,024 [INFO] engine: Starting AI Director Engine...
+2026-03-22 05:01:44,024 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 05:01:44,033 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 4 diffusion models, 6 LoRAs, 1 ControlNets, 1 IP-Adapters
+2026-03-22 05:01:44,033 [INFO] registry.model_registry: Diffusion models found: ['flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 05:01:44,033 [INFO] core.queue_manager: Queue manager started
+2026-03-22 05:01:44,035 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 05:01:44,035 [INFO] engine: AI Director Engine ready!
+2026-03-22 05:01:44,562 [INFO] ai_director: Synced 8 slash commands
+2026-03-22 05:01:47,419 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 05:01:47,419 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 05:01:47,420 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 05:01:47,420 [INFO] ai_director:   Guilds: 1
+2026-03-22 05:01:47,420 [INFO] ai_director:   LLM: gemini
+2026-03-22 05:01:47,420 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 05:03:38,158 [INFO] core.queue_manager: Job 877ea96e14b9 queued (position: 1)
+2026-03-22 05:03:38,159 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 05:03:51,373 [INFO] engine: Plan: arch=sdxl, model=z_image_turbo_bf16.safetensors, steps=30, cfg=7.0
+2026-03-22 05:03:51,373 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=stylized 2.5D digital painting
+2026-03-22 05:03:51,373 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 05:03:51,374 [INFO] core.workflow_builder: Workflow built with 8 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 05:03:51,376 [ERROR] core.queue_manager: Job 877ea96e14b9 failed: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"base_model": {"errors": [{"type": "value_not_in_list", "message": "Value not in list", "details": "ckpt_name: 'z_image_turbo_bf16.safetensors' not in ['DreamShaperXL_Lightning.safetensors', 'Juggernaut-XL_v9_RunDiffusion.safetensors', 'hunyuan_3d_v2.1.safetensors']", "extra_info": {"input_name": "ckpt_name", "input_config": [["DreamShaperXL_Lightning.safetensors", "Juggernaut-XL_v9_RunDiffusion.safetensors", "hunyuan_3d_v2.1.safetensors"], {"tooltip": "The name of the checkpoint (model) to load."}], "received_value": "z_image_turbo_bf16.safetensors"}}], "dependent_outputs": ["save_image"], "class_type": "CheckpointLoaderSimple"}}}
+Traceback (most recent call last):
+  File "c:\Users\Grappiedit\Downloads\comfyui-advanced-workflow\comfyui-advanced-workflow\core\queue_manager.py", line 165, in _worker
+    await self._process_job(job)
+  File "c:\Users\Grappiedit\Downloads\comfyui-advanced-workflow\comfyui-advanced-workflow\core\queue_manager.py", line 186, in _process_job
+    result_images = await self._processor(job)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Grappiedit\Downloads\comfyui-advanced-workflow\comfyui-advanced-workflow\engine.py", line 346, in _process_job
+    prompt_id = await self.comfyui.queue_prompt(workflow)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Grappiedit\Downloads\comfyui-advanced-workflow\comfyui-advanced-workflow\core\comfyui_client.py", line 51, in queue_prompt
+    raise RuntimeError(f"ComfyUI rejected workflow: {error_text}")
+RuntimeError: ComfyUI rejected workflow: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"base_model": {"errors": [{"type": "value_not_in_list", "message": "Value not in list", "details": "ckpt_name: 'z_image_turbo_bf16.safetensors' not in ['DreamShaperXL_Lightning.safetensors', 'Juggernaut-XL_v9_RunDiffusion.safetensors', 'hunyuan_3d_v2.1.safetensors']", "extra_info": {"input_name": "ckpt_name", "input_config": [["DreamShaperXL_Lightning.safetensors", "Juggernaut-XL_v9_RunDiffusion.safetensors", "hunyuan_3d_v2.1.safetensors"], {"tooltip": "The name of the checkpoint (model) to load."}], "received_value": "z_image_turbo_bf16.safetensors"}}], "dependent_outputs": ["save_image"], "class_type": "CheckpointLoaderSimple"}}}
+2026-03-22 05:04:20,194 [INFO] core.queue_manager: Job f5242b9a0732 queued (position: 1)
+2026-03-22 05:04:20,195 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
+2026-03-22 05:04:29,994 [INFO] engine: Plan: arch=sdxl, model=Juggernaut-XL_v9_RunDiffusion.safetensors, steps=30, cfg=7.0
+2026-03-22 05:04:29,995 [INFO] core.workflow_builder: Building workflow: action=generate, arch=sdxl, style=stylized 2.5D digital painting
+2026-03-22 05:04:29,995 [INFO] core.workflow_builder: Added 1 LoRAs: ['Bhairavi_Devi_Hindu_Art.safetensors']
+2026-03-22 05:04:29,995 [INFO] core.workflow_builder: Workflow built with 8 nodes: ['base_model', 'positive_prompt', 'negative_prompt', 'empty_latent', 'sampler', 'vae_decode', 'save_image', 'lora_0']
+2026-03-22 05:04:29,997 [INFO] core.comfyui_client: Workflow queued: 9f15d4c7-c929-4ba9-9354-6f4cb147012c
+2026-03-22 05:04:40,446 [INFO] core.queue_manager: Job f5242b9a0732 completed in 20.3s

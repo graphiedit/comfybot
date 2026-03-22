@@ -1,0 +1,198 @@
+{
+    "3": {
+        "inputs": {
+            "seed": 1,
+            "steps": 30,
+            "cfg": 7.0,
+            "sampler_name": "dpmpp_2m_sde",
+            "scheduler": "karras",
+            "denoise": 1.0,
+            "model": [
+                "base_model",
+                0
+            ],
+            "positive": [
+                "positive_prompt",
+                0
+            ],
+            "negative": [
+                "negative_prompt",
+                0
+            ],
+            "latent_image": [
+                "empty_latent",
+                0
+            ]
+        },
+        "class_type": "KSampler"
+    },
+    "8": {
+        "inputs": {
+            "samples": [
+                "3",
+                0
+            ],
+            "vae": [
+                "base_model",
+                2
+            ]
+        },
+        "class_type": "VAEDecode"
+    },
+    "9": {
+        "inputs": {
+            "filename_prefix": "Advanced_Orchestrator",
+            "images": [
+                "8",
+                0
+            ]
+        },
+        "class_type": "SaveImage"
+    },
+    "empty_latent": {
+        "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+        },
+        "class_type": "EmptyLatentImage"
+    },
+    "base_model": {
+        "inputs": {
+            "ckpt_name": "Juggernaut-XL_v9_RunDiffusion.safetensors"
+        },
+        "class_type": "CheckpointLoaderSimple"
+    },
+    "positive_prompt": {
+        "inputs": {
+            "text": "masterpiece, best quality, highres",
+            "clip": [
+                "base_model",
+                1
+            ]
+        },
+        "class_type": "CLIPTextEncode"
+    },
+    "negative_prompt": {
+        "inputs": {
+            "text": "worst quality, low quality, bad anatomy, bad hands, text, error",
+            "clip": [
+                "base_model",
+                1
+            ]
+        },
+        "class_type": "CLIPTextEncode"
+    },
+    "load_pose": {
+        "inputs": {
+            "image": "pose.jpg",
+            "upload": "image"
+        },
+        "class_type": "LoadImage"
+    },
+    "dwpose": {
+        "inputs": {
+            "detect_hand": "enable",
+            "detect_body": "enable",
+            "detect_face": "enable",
+            "resolution": 1024,
+            "image": [
+                "load_pose",
+                0
+            ]
+        },
+        "class_type": "DWPreprocessor"
+    },
+    "controlnet_loader": {
+        "inputs": {
+            "control_net_name": "thibaud_xl_openpose_256lora.safetensors"
+        },
+        "class_type": "ControlNetLoader"
+    },
+    "controlnet_apply": {
+        "inputs": {
+            "strength": 1.0,
+            "start_percent": 0.0,
+            "end_percent": 1.0,
+            "positive": [
+                "positive_prompt",
+                0
+            ],
+            "negative": [
+                "negative_prompt",
+                0
+            ],
+            "control_net": [
+                "controlnet_loader",
+                0
+            ],
+            "image": [
+                "dwpose",
+                0
+            ]
+        },
+        "class_type": "ControlNetApplyAdvanced"
+    },
+    "load_style": {
+        "inputs": {
+            "image": "style.jpg",
+            "upload": "image"
+        },
+        "class_type": "LoadImage"
+    },
+    "ipadapter_model": {
+        "inputs": {
+            "ipadapter_file": "ip-adapter-plus_sdxl_vit-h.safetensors"
+        },
+        "class_type": "IPAdapterModelLoader"
+    },
+    "clip_vision": {
+        "inputs": {
+            "clip_name": "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
+        },
+        "class_type": "CLIPVisionLoader"
+    },
+    "ipadapter_apply": {
+        "inputs": {
+            "weight": 0.8,
+            "weight_type": "linear",
+            "combine_embeds": "concat",
+            "start_at": 0.0,
+            "end_at": 1.0,
+            "embeds_scaling": "V only",
+            "model": [
+                "base_model",
+                0
+            ],
+            "ipadapter": [
+                "ipadapter_model",
+                0
+            ],
+            "image": [
+                "load_style",
+                0
+            ],
+            "clip_vision": [
+                "clip_vision",
+                0
+            ]
+        },
+        "class_type": "IPAdapterAdvanced"
+    },
+    "lora_loader_1": {
+        "inputs": {
+            "lora_name": "placeholder.safetensors",
+            "strength_model": 1.0,
+            "strength_clip": 1.0,
+            "model": [
+                "base_model",
+                0
+            ],
+            "clip": [
+                "base_model",
+                1
+            ]
+        },
+        "class_type": "LoraLoader"
+    }
+}
