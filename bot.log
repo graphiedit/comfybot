@@ -1149,3 +1149,25 @@ aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host gatewa
 2026-03-22 13:15:29,647 [INFO] ai_director: Shutting down AI Director...
 2026-03-22 13:15:29,648 [INFO] core.queue_manager: Queue manager stopped
 2026-03-22 13:15:29,648 [INFO] engine: AI Director Engine stopped
+2026-03-22 13:15:35,717 [WARNING] discord.client: PyNaCl is not installed, voice will NOT be supported
+2026-03-22 13:15:35,717 [WARNING] discord.client: davey is not installed, voice will NOT be supported
+2026-03-22 13:15:36,395 [INFO] llm.base: Creating LLM provider: gemini
+2026-03-22 13:15:36,871 [INFO] registry.style_presets: Loaded 3 style presets.
+2026-03-22 13:15:37,919 [INFO] ai_director: Setting up AI Director Bot...
+2026-03-22 13:15:37,920 [INFO] discord_ui.commands: Slash commands registered
+2026-03-22 13:15:37,920 [INFO] engine: Starting AI Director Engine...
+2026-03-22 13:15:37,920 [INFO] registry.model_registry: Refreshing model registry...
+2026-03-22 13:15:37,943 [INFO] registry.model_registry: Registry loaded: 3 checkpoints, 4 diffusion models, 6 LoRAs, 1 ControlNets, 1 IP-Adapters
+2026-03-22 13:15:37,943 [INFO] registry.model_registry: Diffusion models found: ['flux2_dev_fp8mixed.safetensors', 'qwen_image_edit_2509_fp8_e4m3fn.safetensors', 'z_image_bf16.safetensors', 'z_image_turbo_bf16.safetensors']
+2026-03-22 13:15:37,943 [INFO] core.queue_manager: Queue manager started
+2026-03-22 13:15:37,969 [INFO] engine: ✅ ComfyUI is running and reachable
+2026-03-22 13:15:37,969 [INFO] engine: AI Director Engine ready!
+2026-03-22 13:15:38,582 [INFO] ai_director: Synced 12 slash commands
+2026-03-22 13:15:41,559 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 13:15:41,559 [INFO] ai_director:   🎨 AI Director Bot is ONLINE
+2026-03-22 13:15:41,559 [INFO] ai_director:   Bot: Graphi#6159
+2026-03-22 13:15:41,559 [INFO] ai_director:   Guilds: 1
+2026-03-22 13:15:41,559 [INFO] ai_director:   LLM: gemini
+2026-03-22 13:15:41,560 [INFO] ai_director: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-03-22 13:16:05,335 [INFO] ai_director: Received mention chat text: hello
+2026-03-22 13:16:05,866 [INFO] google_genai.models: AFC is enabled with max remote calls: 10.
