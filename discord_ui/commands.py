@@ -283,64 +283,6 @@ def setup_commands(bot):
             logger.error(f"Chat failed: {e}", exc_info=True)
             await interaction.followup.send(f"❌ Chat error: {str(e)[:200]}")
 
-    @bot.tree.command(name="models", description="📋 List available models and LoRAs")
-    async def models_cmd(interaction: discord.Interaction):
-        await interaction.response.defer(ephemeral=True)
-        
-        available = bot.engine.registry.get_available_models_for_llm()
-        
-        lines = ["**📦 Available Models**\n"]
-        
-        if available.get("checkpoints"):
-            lines.append("__Checkpoints:__")
-            for ckpt in available["checkpoints"]:
-                name = ckpt["filename"] if isinstance(ckpt, dict) else ckpt
-                styles = ""
-                if isinstance(ckpt, dict) and ckpt.get("styles"):
-                    styles = f" (`{', '.join(ckpt['styles'])}`)"
-                arch = ""
-                if isinstance(ckpt, dict) and ckpt.get("arch"):
-                    arch = f" [{ckpt['arch'].upper()}]"
-                lines.append(f"• `{name}`{styles}{arch}")
-        
-        if available.get("diffusion_models"):
-            lines.append("\n__Diffusion Models (Flux/Hunyuan):__")
-            for dm in available["diffusion_models"]:
-                name = dm["filename"] if isinstance(dm, dict) else dm
-                arch = ""
-                if isinstance(dm, dict) and dm.get("arch"):
-                    arch = f" [{dm['arch'].upper()}]"
-                styles = ""
-                if isinstance(dm, dict) and dm.get("styles"):
-                    styles = f" (`{', '.join(dm['styles'])}`)"
-                lines.append(f"• `{name}`{arch}{styles}")
-        
-        if available.get("loras"):
-            lines.append("\n__LoRAs:__")
-            for lora in available["loras"][:15]:
-                name = lora["filename"] if isinstance(lora, dict) else lora
-                kw = ""
-                if isinstance(lora, dict) and lora.get("keywords"):
-                    kw = f" — {', '.join(lora['keywords'][:3])}"
-                lines.append(f"• `{name}`{kw}")
-        
-        if available.get("ipadapters"):
-            lines.append("\n__IP-Adapters:__")
-            for ipa in available["ipadapters"]:
-                name = ipa["filename"] if isinstance(ipa, dict) else ipa
-                lines.append(f"• `{name}`")
-        
-        if available.get("controlnets"):
-            lines.append("\n__ControlNets:__")
-            for cn in available["controlnets"]:
-                name = cn["filename"] if isinstance(cn, dict) else cn
-                lines.append(f"• `{name}`")
-        
-        text = "\n".join(lines)
-        if len(text) > 2000:
-            text = text[:1997] + "..."
-        
-        await interaction.followup.send(text, ephemeral=True)
 
     @bot.tree.command(name="queue", description="📊 Check the generation queue status")
     async def queue_cmd(interaction: discord.Interaction):

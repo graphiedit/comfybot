@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Dict, Any, Tuple
 
 from llm.base import GenerationPlan
+from core.workflow_scorer import WorkflowScorer
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +18,7 @@ class WorkflowManager:
     def __init__(self, data_dir: str):
         self.workflows_dir = Path(data_dir) / "workflows"
         self.workflows_dir.mkdir(parents=True, exist_ok=True)
+        self.scorer = WorkflowScorer(data_dir)
         self.templates = {}
         self.refresh()
 
@@ -56,15 +58,16 @@ class WorkflowManager:
         if not self.templates:
             return ""
             
-        lines = ["\nAVAILABLE WORKFLOW TEMPLATES (Use these instead of standard generation if relevant):"]
+        lines = ["\nAVAILABLE WORKFLOW TEMPLATES (You MUST choose one of these):"]
         for name, info in self.templates.items():
-            lines.append(f"  - {name}: {info['description']}")
+            score_summary = self.scorer.get_template_stats_string(name)
+            lines.append(f"  - {name}: {info['description']} [Score: {score_summary}]")
         return "\n".join(lines)
 
     def has_templates(self) -> bool:
         return len(self.templates) > 0
 
-    def build_from_template(self, plan: GenerationPlan) -> Tuple[Dict[str, Any], bool]:
+    def build_from_template(self, plan: GenerationPlan, reference_image: str = None, pose_image: str = None) -> Tuple[Dict[str, Any], bool]:
         """
         Attempt to build the workflow using the selected template.
         Returns (workflow_json, success_bool).
@@ -83,6 +86,7 @@ class WorkflowManager:
         self._inject_prompts(workflow, plan.enhanced_prompt, plan.negative_prompt)
         self._inject_seed_and_settings(workflow, plan)
         self._inject_dimensions(workflow, plan.width, plan.height)
+        self._inject_images(workflow, reference_image, pose_image)
         
         return workflow, True
 
@@ -161,3 +165,37 @@ class WorkflowManager:
                 inputs = node.get("inputs", {})
                 if "width" in inputs: inputs["width"] = width
                 if "height" in inputs: inputs["height"] = height
+
+    def _inject_images(self, workflow: dict, reference_image: str, pose_image: str):
+        """Heuristically assign visual inputs to LoadImage nodes."""
+        if not reference_image and not pose_image:
+            return
+            
+        for node_id, node in workflow.items():
+            if not isinstance(node, dict): continue
+            
+            c_type = node.get("class_type", "")
+            if c_type == "LoadImage":
+                # Look at ComfyUI native _meta.title if available
+                title = str(node.get("_meta", {}).get("title", "")).lower()
+                inputs = node.get("inputs", {})
+                
+                if ("pose" in title or "depth" in title or "canny" in title) and pose_image:
+                    inputs["image"] = pose_image
+                    inputs["_injected"] = True
+                elif ("ref" in title or "style" in title or "ip" in title) and reference_image:
+                    inputs["image"] = reference_image
+                    inputs["_injected"] = True
+                else:
+                    # Fallbacks based on presence of only one image type
+                    if reference_image and not inputs.get("_injected") and not pose_image:
+                        inputs["image"] = reference_image
+                        inputs["_injected"] = True
+                    elif pose_image and not inputs.get("_injected") and not reference_image:
+                        inputs["image"] = pose_image
+                        inputs["_injected"] = True
+                    elif reference_image and not inputs.get("_injected"):
+                        # If both provided but node is ambiguous, inject reference first
+                        inputs["image"] = reference_image
+                        inputs["_injected"] = True
+

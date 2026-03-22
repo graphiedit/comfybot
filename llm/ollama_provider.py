@@ -26,26 +26,21 @@ Your job: analyze the user's prompt and decide the BEST generation strategy.
 
 You will receive:
 1. The user's prompt
-2. A list of available models (CHECKPOINTS and DIFFUSION MODELS), LoRAs, ControlNets, and IP-Adapters
-3. Input Modality: Whether the user attached a reference image
+2. A list of available models, LoRAs, and PRE-BUILT WORKFLOW TEMPLATES.
+3. Historical Workflow Performance Scores (if available)
 
-IMPORTANT: There are TWO types of models:
-- CHECKPOINTS: Standard SDXL models loaded with CheckpointLoaderSimple (Juggernaut, DreamShaper, etc.)
-- DIFFUSION MODELS: UNET-only models loaded with UNETLoader (Flux, Hunyuan, Z-Image, Qwen-Image, etc.)
+IMPORTANT:
+- Focus first and foremost on selecting the right WORKFLOW TEMPLATE.
+- We no longer dynamically build graphs node-by-node. You MUST select a workflow template.
 
 You MUST output ONLY valid JSON with this exact structure:
 {
     "action": "generate",
-    "workflow_template": "",
+    "workflow_template": "name_of_template_here",
     "style_category": "realistic",
     "checkpoint": "model_filename",
     "model_arch": "sdxl",
     "loras": [{"name": "filename.safetensors", "weight": 0.8}],
-    "use_controlnet": false,
-    "controlnet_type": "",
-    "controlnet_strength": 1.0,
-    "use_ipadapter": false,
-    "ipadapter_weight": 0.6,
     "enhanced_prompt": "detailed prompt here...",
     "negative_prompt": "worst quality, low quality...",
     "steps": 30,
@@ -54,20 +49,14 @@ You MUST output ONLY valid JSON with this exact structure:
     "scheduler": "karras",
     "width": 1024,
     "height": 1024,
-    "reasoning": "Brief explanation of your choices"
+    "reasoning": "Brief explanation, specifically why you picked this workflow template."
 }
 
 Rules:
-- ONLY use models/LoRAs that appear in the available_models list. Never invent filenames.
-- Pick the best model for the style. You can choose from BOTH checkpoints AND diffusion_models lists.
-- WORKFLOW TEMPLATES (CRITICAL): Read the "AVAILABLE WORKFLOW TEMPLATES" carefully. If the user's input modality and prompt match a template's description, you MUST set "workflow_template" to that template's name.
-  * If NO image is attached, DO NOT select templates explicitly designed for "image editing" or "ControlNet/pose". Select standard text-to-image templates if appropriate.
-  * If AN IMAGE IS ATTACHED, use the prompt to determine if it's for general editing/restyling, or for ControlNet pose/structure, and select the corresponding template if one exists.
-  * If a template is chosen, it supersedes model architecture choices.
-- "model_arch" MUST match the model type:
-  - SDXL checkpoints → "sdxl"
-  - Flux models → "flux"
-  - Hunyuan models → "hunyuan"
+- ONLY use models/LoRAs/Templates that appear in the available lists. Never invent filenames.
+- WORKFLOW TEMPLATES (CRITICAL): You MUST choose `workflow_template` from the "AVAILABLE WORKFLOW TEMPLATES" list. 
+- Look at the "Historical Workflow Performance Scores" when choosing a template if provided. If a template has a high score for this type of request, prefer it. Occasionally you can experiment with others to find better results.
+- "model_arch" MUST match the model type (sdxl, flux, hunyuan).
 - ARCHITECTURE-SPECIFIC SETTINGS (very important):
   - SDXL: cfg 6-8, steps 25-40, sampler dpmpp_2m_sde, scheduler karras
   - Flux Dev: cfg 1.0, steps 20, sampler euler, scheduler simple
@@ -75,13 +64,7 @@ Rules:
   - Hunyuan: cfg 1.0, steps 30, sampler dpmpp_2m, scheduler normal
 - LORA USAGE (EXTREMELY IMPORTANT):
   - ONLY add LoRAs if they match the specific artistic style requested.
-  - DO NOT use "Style LoRAs" (e.g., Hindu Art, Miniature, Pixel Art) for general subjects (like "Indian girl", "man in a suit") unless the user explicitly asks for that SPECIFIC style.
-  - If the user wants a realistic photo, DO NOT use a style LoRA.
-  - LoRAs MUST be compatible with the chosen "model_arch". Check the "compatible_models" field for each LoRA.
-  - Flux LoRAs work ONLY with Flux models. SDXL LoRAs work ONLY with SDXL models.
-  - Never pair a LoRA with an incompatible model.
-- If user attached an image, consider IP-Adapter (SDXL only) for style reference, UNLESS a specific workflow template is better suited.
-- ControlNet currently works with SDXL models only, unless a workflow template handles it.
+  - LoRAs MUST be compatible with the chosen "model_arch".
 - enhanced_prompt should be detailed (50-80 words) with lighting, camera, mood, medium details.
 - Output ONLY the JSON. No explanations, no markdown."""
 
@@ -101,17 +84,17 @@ KEYWORDS: (comma-separated list of 10-15 visual keywords for style matching)
 LORA_SEARCH: (2-3 short search terms to find matching LoRA models)
 Do NOT include any other text."""
 
-CHAT_SYSTEM_PROMPT = """You are a friendly AI art assistant. You help users create amazing images using Stable Diffusion.
-You can discuss art styles, help refine prompts, explain what models/LoRAs do, and suggest improvements.
+CHAT_SYSTEM_PROMPT = """You are a friendly AI art assistant. You help users create amazing images using Stable Diffusion workflows.
+You can discuss art styles, help refine prompts, explain what workflows/models/LoRAs do, and suggest improvements.
 
 AUTONOMOUS GENERATION:
 If a user asks you to create or generate an image, and you have enough information, you should trigger a generation by including the tag `<generate>image description</generate>` at the end of your message. 
 The text inside the tag should be a descriptive prompt for the image.
 Example: "Sure! I'll create a majestic lion for you. <generate>a majestic lion sitting on a rock, sunset, 8k, highly detailed</generate>"
 
-Rules:
-- Be concise, helpful, and enthusiastic about art.
-- If the user's request is too vague, ask clarifying questions first instead of using the tag.
+CRITICAL RULES FOR GENERATION:
+- Do NOT use the `<generate>` tag if the user's request is vague or missing key details (like style, vibe, subject matter).
+- If the request is vague, ask 1 or 2 clarifying questions to strengthen the prompt BEFORE generating.
 - Keep responses under 150 words."""
 
 REFINE_SYSTEM_PROMPT = """You are an AI Director refining an image generation plan based on user feedback.
@@ -133,7 +116,7 @@ class OllamaProvider(LLMProvider):
     def __init__(self, config: dict):
         super().__init__(config)
         self.base_url = config.get("url", "http://127.0.0.1:11434")
-        self.model = config.get("model", "qwen2.5:7b")
+        self.model = config.get("model", "llama3.2:3b")  # Best lightweight model for 6GB VRAM
         self.vision_model = config.get("vision_model", "llava")
 
     async def _chat(

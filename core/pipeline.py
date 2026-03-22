@@ -64,14 +64,22 @@ class GenerationPipeline:
             await status_callback(JobStatus.BUILDING)
             
         workflow = None
-        if plan.workflow_template and hasattr(self.engine, "workflow_manager"):
-            workflow, success = self.engine.workflow_manager.build_from_template(plan)
+        if hasattr(self.engine, "workflow_manager"):
+            workflow, success = self.engine.workflow_manager.build_from_template(plan, reference_image, pose_image)
             if not success:
-                logger.warning(f"Failed to build from template {plan.workflow_template}, falling back to dynamic builder.")
-                workflow = None
+                logger.warning(f"Failed to build from template {plan.workflow_template}.")
+                # Fallback to first available template if requested one is missing
+                available = list(self.engine.workflow_manager.templates.keys())
+                if available:
+                    fallback = available[0]
+                    logger.warning(f"Using fallback template: {fallback}")
+                    plan.workflow_template = fallback
+                    workflow, success = self.engine.workflow_manager.build_from_template(plan, reference_image, pose_image)
+                else:
+                    raise RuntimeError("No workflow templates found in data/workflows/")
 
-        if workflow is None:
-            workflow = self.engine.builder.build(plan, reference_image, pose_image)
+        if workflow is None or not success:
+            raise RuntimeError(f"Workflow building failed for template: {plan.workflow_template}")
         
         if status_callback:
             await status_callback(JobStatus.GENERATING)
@@ -97,6 +105,10 @@ class GenerationPipeline:
                 
             score = await self.qa.analyze(current_image)
             logger.info(f"Quality Score: {score.overall} (Faces: {score.faces}, Artifacts: {score.artifacts})")
+            
+            # Record score for this workflow template
+            if hasattr(self.engine, "workflow_manager") and hasattr(self.engine.workflow_manager, "scorer"):
+                self.engine.workflow_manager.scorer.record_score(plan.workflow_template, score)
             
             # Save history
             plan.user_overrides.setdefault("pipeline_history", []).append({
@@ -125,24 +137,24 @@ class GenerationPipeline:
                 if hasattr(self.engine.comfyui, "upload_image_bytes"):
                     remote_name = await self.engine.comfyui.upload_image_bytes(current_image, f"qa_refine_{job_id}.png")
                 
-                # Build refine workflow based on specific issues
-                from core.workflow_builder import WorkflowBuilder
-                if hasattr(self.engine.builder, "build_face_fix_workflow") and score.needs_face_fix():
-                    workflow = self.engine.builder.build_face_fix_workflow(remote_name)
-                    if status_callback:
-                        await status_callback(getattr(JobStatus, "FACE_FIXING", JobStatus.REFINING))
-                elif hasattr(self.engine.builder, "build_img2img_workflow"):
-                    # General refinement for artifacts/composition
+                # Try to find a refinement template
+                available_templates = list(self.engine.workflow_manager.templates.keys())
+                refine_template = next((t for t in available_templates if "img2img" in t.lower() or "refine" in t.lower()), None)
+                
+                if refine_template:
+                    refine_plan.workflow_template = refine_template
                     refine_plan.denoise = 0.45
-                    workflow = self.engine.builder.build_img2img_workflow(refine_plan, remote_name)
+                    workflow, success = self.engine.workflow_manager.build_from_template(refine_plan, remote_name)
+                    if not success:
+                        workflow = None
                 else:
-                    # Fallback to standard build
-                    refine_plan.action = "edit"
-                    workflow = self.engine.builder.build(refine_plan, remote_name, pose_image)
+                    logger.warning("No img2img template found for refinement loop. Skipping auto-correction.")
+                    workflow = None
                     
-                output_images = await self._run_workflow(workflow)
-                if output_images:
-                    current_image = output_images[0]
+                if workflow:
+                    output_images = await self._run_workflow(workflow)
+                    if output_images:
+                        current_image = output_images[0]
                 
             except Exception as e:
                 logger.warning(f"Refinement pipeline failed: {e}. Keeping previous image.")
@@ -159,11 +171,17 @@ class GenerationPipeline:
                 if hasattr(self.engine.comfyui, "upload_image_bytes"):
                     remote_name = await self.engine.comfyui.upload_image_bytes(current_image, f"qa_detail_{job_id}.png")
                 
-                if hasattr(self.engine.builder, "build_detail_workflow"):
-                    workflow = self.engine.builder.build_detail_workflow(plan, remote_name)
-                    output_images = await self._run_workflow(workflow)
-                    if output_images:
-                        current_image = output_images[0]
+                # Try to find an upscale template
+                available_templates = list(self.engine.workflow_manager.templates.keys())
+                upscale_template = next((t for t in available_templates if "upscale" in t.lower() or "detail" in t.lower()), None)
+                
+                if upscale_template:
+                    plan.workflow_template = upscale_template
+                    workflow, success = self.engine.workflow_manager.build_from_template(plan, remote_name)
+                    if success and workflow:
+                        output_images = await self._run_workflow(workflow)
+                        if output_images:
+                            current_image = output_images[0]
             except Exception as e:
                 logger.warning(f"Enhancement pipeline failed: {e}. Keeping previous image.")
             

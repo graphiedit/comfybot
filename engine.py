@@ -25,7 +25,6 @@ import discord
 from llm.base import create_llm_provider, GenerationPlan
 from registry.model_registry import ModelRegistry
 from core.comfyui_client import ComfyUIClient
-from core.workflow_builder import WorkflowBuilder
 from core.queue_manager import QueueManager, Job, JobStatus
 from core.pipeline import GenerationPipeline
 from core.quality_analyzer import QualityScore
@@ -59,7 +58,6 @@ class AIDirectorEngine:
         self.llm = create_llm_provider(config)  # Returns ProviderManager with failover
         self.registry = ModelRegistry(config)
         self.comfyui = ComfyUIClient(config)
-        self.builder = WorkflowBuilder(config, registry=self.registry)
         
         from core.workflow_manager import WorkflowManager
         self.workflow_manager = WorkflowManager(config.get("data_dir", "data"))
